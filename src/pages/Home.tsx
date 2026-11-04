@@ -1,313 +1,420 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  TypingText,
+  TypingTextCursor,
+} from '@animate-ui/react/primitives/texts/typing';
+import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
+import { HighlightText } from '@animate-ui/react/primitives/texts/highlight';
+import {
+  CarouselCounter,
+  CarouselDots,
+} from '@animate-ui/react/primitives/carousel';
+import { Effect } from '@animate-ui/react/primitives/effects/effect';
+import {
+  Highlight,
+  HighlightItem,
+} from '@animate-ui/react/primitives/effects/highlight';
 import { Button } from '../components/ui/Button';
+import { Accordion } from '../components/ui/Accordion';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from '../components/ui/carousel';
 import { useReportes } from '../hooks/useReportes';
 import { ReporteList } from '../components/common/ReporteList';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { heroSlides, reportCategories } from '../utils/homeMedia';
+import { ArrowRight } from 'lucide-react';
+
+const FILTERS = [
+  { id: 'todos', label: 'Todos' },
+  { id: 'baches', label: 'Baches' },
+  { id: 'alumbrado', label: 'Alumbrado' },
+  { id: 'basura', label: 'Basura' },
+  { id: 'agua', label: 'Agua' },
+] as const;
+
+const howItWorksPanels = [
+  {
+    id: 'reportar',
+    title: '1 · Reportar',
+    content: (
+      <p>
+        Envía el problema con foto y ubicación. Toma menos de un minuto y queda
+        registrado para tu comunidad.
+      </p>
+    ),
+  },
+  {
+    id: 'mapa',
+    title: '2 · Ver en el mapa',
+    content: (
+      <p>
+        Tu reporte aparece en el mapa público para que vecinos y autoridades
+        puedan ubicarlo con claridad.
+      </p>
+    ),
+  },
+  {
+    id: 'seguimiento',
+    title: '3 · Seguimiento',
+    content: (
+      <p>
+        Recibe actualizaciones del estado: reportado, en proceso, resuelto o
+        rechazado, sin perder el hilo.
+      </p>
+    ),
+  },
+  {
+    id: 'resultado',
+    title: '4 · Resultado',
+    content: (
+      <p>
+        Cuando se atiende, lo verificas en la plataforma y ayudas a cerrar el
+        ciclo de mejora urbana.
+      </p>
+    ),
+  },
+];
 
 export const Home: React.FC = () => {
   const { reportes, isLoading } = useReportes();
-  const openReports = reportes.filter(r => r.estadoActual === 'REPORTADO').length;
-  const resolvedToday = reportes.filter(r => r.estadoActual === 'RESUELTO').length;
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [activeFilter, setActiveFilter] = useState<string>('todos');
+
+  const openReports = reportes.filter((r) => r.estadoActual === 'REPORTADO').length;
+  const resolvedToday = reportes.filter((r) => r.estadoActual === 'RESUELTO').length;
   const hasStats = openReports > 0 || resolvedToday > 0;
-  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const slides = [
-    { title: 'Reporta baches', subtitle: 'Mejora las calles de tu ciudad' },
-    { title: 'Alumbrado roto', subtitle: 'Iluminación para todos' },
-    { title: 'Basura acumulada', subtitle: 'Ciudad limpia' },
-    { title: 'Áreas verdes', subtitle: 'Más espacios naturales' },
-    { title: 'Señales dañadas', subtitle: 'Seguridad vial' },
-  ];
+  const filteredReportes = useMemo(() => {
+    const base = reportes.slice(0, 12);
+    if (activeFilter === 'todos') return base.slice(0, 6);
+    return base
+      .filter((r) =>
+        (r.categoria?.nombre ?? '').toLowerCase().includes(activeFilter),
+      )
+      .slice(0, 6);
+  }, [reportes, activeFilter]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+  useEffect(() => {
+    if (!carouselApi) return;
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+    const syncActive = () => setActiveSlide(carouselApi.selectedScrollSnap());
+    syncActive();
+    carouselApi.on('select', syncActive);
+    carouselApi.on('reInit', syncActive);
+
+    return () => {
+      carouselApi.off('select', syncActive);
+      carouselApi.off('reInit', syncActive);
+    };
+  }, [carouselApi]);
 
   return (
-    <div className="min-h-screen bg-bg">
-      {/* Hero Section */}
-      <section className="section">
+    <div className="home-page min-h-screen bg-bg">
+      {/* Hero */}
+      <section className="section home-hero-band">
         <div className="hero">
-          <div>
-            <h1 className="font-heading font-bold uppercase tracking-tight text-text mb-8">
-              TU CIUDAD<br />
-              REPORTADA
+          <div className="hero-copy">
+            <p className="hero-kicker">UrbanFix</p>
+            <h1 className="font-heading font-bold uppercase tracking-tight text-text mb-6">
+              TU CIUDAD
+              <br />
+              <span className="hero-typing-line">
+                <TypingText
+                  text={['REPORTADA', 'MEJORADA', 'ACTIVA']}
+                  loop
+                  duration={80}
+                  holdDelay={2200}
+                  className="inline"
+                >
+                  <TypingTextCursor className="ml-1 bg-accent" />
+                </TypingText>
+              </span>
             </h1>
-            <p className="text-lg text-text-muted mb-8 max-w-md">
-              Reporta problemas urbanos y mejora tu comunidad
+            <p className="hero-lead text-text-muted mb-8 max-w-md min-h-[3.2rem]">
+              <TypingText
+                text="Reporta problemas urbanos y mejora tu comunidad"
+                delay={400}
+                duration={35}
+              >
+                <TypingTextCursor className="ml-0.5 bg-text-muted" />
+              </TypingText>
             </p>
-            <div className="flex flex-row gap-4 mb-8">
+            <div className="flex flex-wrap gap-3 mb-8">
               <Link to="/reportes/crear">
-                <button className="btn-primary font-semibold">
+                <button type="button" className="btn-primary font-semibold">
                   Reportar un problema
                 </button>
               </Link>
               <Link to="/mapa">
-                <button className="btn-secondary font-semibold">
+                <button type="button" className="btn-secondary font-semibold">
                   Ver mapa de reportes
                 </button>
               </Link>
             </div>
-            
-            {!isLoading && hasStats && (
-              <div className="p-4 bg-panel-light rounded border border-line">
-                <div className="flex items-center justify-between">
-                  <div className="text-center">
-                    <p className="text-2xl font-heading font-bold text-text">{openReports}</p>
-                    <p className="text-xs text-text-muted uppercase tracking-wider">Reportes Abiertos</p>
-                  </div>
-                  <div className="h-8 w-px bg-line"></div>
-                  <div className="text-center">
-                    <p className="text-2xl font-heading font-bold text-text">{resolvedToday}</p>
-                    <p className="text-xs text-text-muted uppercase tracking-wider">Resueltos Hoy</p>
-                  </div>
+
+            {(isLoading || hasStats) && (
+              <div className="hero-stats">
+                <div className="hero-stat">
+                  {isLoading ? (
+                    <div className="h-8 w-14 bg-surface-2 rounded animate-pulse mx-auto mb-2" />
+                  ) : (
+                    <CountingNumber
+                      number={openReports}
+                      className="hero-stat-value"
+                      inView
+                    />
+                  )}
+                  <p className="hero-stat-label">Reportes abiertos</p>
                 </div>
-              </div>
-            )}
-            {isLoading && (
-              <div className="p-4 bg-panel-light rounded border border-line">
-                <div className="flex items-center justify-between">
-                  <div className="text-center">
-                    <div className="h-8 w-16 bg-surface-2 rounded animate-pulse mx-auto mb-2"></div>
-                    <p className="text-xs text-text-muted uppercase tracking-wider">Reportes Abiertos</p>
-                  </div>
-                  <div className="h-8 w-px bg-line"></div>
-                  <div className="text-center">
-                    <div className="h-8 w-16 bg-surface-2 rounded animate-pulse mx-auto mb-2"></div>
-                    <p className="text-xs text-text-muted uppercase tracking-wider">Resueltos Hoy</p>
-                  </div>
+                <div className="hero-stats-divider" aria-hidden />
+                <div className="hero-stat">
+                  {isLoading ? (
+                    <div className="h-8 w-14 bg-surface-2 rounded animate-pulse mx-auto mb-2" />
+                  ) : (
+                    <CountingNumber
+                      number={resolvedToday}
+                      className="hero-stat-value"
+                      inView
+                    />
+                  )}
+                  <p className="hero-stat-label">Resueltos hoy</p>
                 </div>
               </div>
             )}
           </div>
-          
-          <div className="hero-card rounded p-8 border border-line">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-heading font-bold text-xl uppercase">
-                {slides[currentSlide].title}
-              </h3>
-              <div className="flex gap-2">
-                <button
-                  onClick={prevSlide}
-                  aria-label="Anterior"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  aria-label="Siguiente"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-            <p className="mb-4">{slides[currentSlide].subtitle}</p>
-            <div className="flex gap-2">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-150 ${
-                    index === currentSlide ? 'bg-accent-ink' : 'bg-line hover:bg-accent hover:scale-125'
-                  }`}
-                  aria-label={`Slide ${index + 1}`}
+
+          <div className="hero-carousel overflow-visible">
+            <Carousel
+              setApi={setCarouselApi}
+              opts={{
+                loop: true,
+                align: 'center',
+                scale: 0.8,
+                visible: 3,
+              }}
+              className="w-full"
+              onMouseOver={(event) => {
+                const target = (event.target as HTMLElement).closest(
+                  '[data-slide-index]',
+                );
+                if (!target || !carouselApi) return;
+                const index = Number(target.getAttribute('data-slide-index'));
+                if (
+                  Number.isNaN(index) ||
+                  carouselApi.selectedScrollSnap() === index
+                ) {
+                  return;
+                }
+                carouselApi.scrollTo(index);
+              }}
+            >
+              <div className="mb-5 flex items-center justify-between gap-3 px-2">
+                <CarouselCounter
+                  className="font-heading text-sm uppercase tracking-wide text-text"
+                  format={(current, count) => (
+                    <>
+                      {current}
+                      <span className="mx-1 text-text-muted">/</span>
+                      {count}
+                    </>
+                  )}
                 />
+                <CarouselDots className="text-accent" />
+              </div>
+
+              <CarouselContent className="-ml-4">
+                {heroSlides.map((slide, index) => (
+                  <CarouselItem key={slide.title} className="basis-[40%] pl-4">
+                    <div data-slide-index={index} className="py-3">
+                      <article
+                        data-active={activeSlide === index}
+                        className="hero-report-card group cursor-pointer"
+                      >
+                        <div className="hero-report-media">
+                          <img
+                            src={slide.image}
+                            alt={slide.alt}
+                            loading={index === 0 ? 'eager' : 'lazy'}
+                            decoding="async"
+                          />
+                        </div>
+                        <div className="hero-report-body">
+                          <h3 className="font-heading text-lg font-bold uppercase leading-tight text-text">
+                            {slide.title}
+                          </h3>
+                          <p className="mt-1 text-sm text-text-muted">
+                            {slide.subtitle}
+                          </p>
+                        </div>
+                      </article>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+
+              <CarouselPrevious className="left-0 border-line bg-surface/90 text-text shadow-lg backdrop-blur-sm hover:bg-accent hover:text-accent-ink" />
+              <CarouselNext className="right-0 border-line bg-surface/90 text-text shadow-lg backdrop-blur-sm hover:bg-accent hover:text-accent-ink" />
+            </Carousel>
+          </div>
+        </div>
+      </section>
+
+      {/* Qué puedes reportar */}
+      <section className="section section-band">
+        <div className="container">
+          <Effect fade slide={{ direction: 'up', offset: 24 }} inView className="section-intro">
+            <h2 className="section-title">Qué puedes reportar</h2>
+            <p className="section-subtitle">
+              Elige la categoría que mejor describe el problema. Cada reporte
+              suma evidencia para actuar más rápido.
+            </p>
+          </Effect>
+
+          <div className="report-categories">
+            {reportCategories.map((category, index) => (
+              <Effect
+                key={category.id}
+                fade
+                slide={{ direction: 'up', offset: 20 }}
+                delay={0.05 * index}
+                inView
+                className={category.featured ? 'is-featured-wrap' : undefined}
+              >
+                <article
+                  className={`report-category-card${category.featured ? ' is-featured' : ''}`}
+                >
+                  <div className="report-category-media">
+                    <img
+                      src={category.image}
+                      alt={category.alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="report-category-body">
+                    <h3 className="font-heading font-semibold text-lg uppercase text-text mb-2">
+                      {category.title}
+                    </h3>
+                    <p className="text-text-muted text-sm">{category.description}</p>
+                  </div>
+                </article>
+              </Effect>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Promesa */}
+      <section className="section section-band-muted">
+        <div className="container">
+          <Effect fade blur slide={{ direction: 'up', offset: 18 }} inView className="promise-block">
+            <h2 className="section-title section-title-center">
+              Tu voz{' '}
+              <HighlightText
+                text="importa"
+                className="text-accent"
+                inView
+              />
+            </h2>
+            <p className="section-subtitle section-subtitle-center max-w-3xl mx-auto">
+              Cada reporte cuenta. Cuando señalas un problema, ayudas a que se
+              priorice y mejoras la calidad de vida de tu comunidad.
+            </p>
+          </Effect>
+        </div>
+      </section>
+
+      {/* Reportes recientes */}
+      <section className="section section-band">
+        <div className="container">
+          <Effect fade slide={{ direction: 'up', offset: 20 }} inView className="section-intro section-intro-left">
+            <h2 className="section-title">Reportes recientes</h2>
+            <p className="section-subtitle">
+              Lo último que la comunidad está reportando cerca de ti.
+            </p>
+          </Effect>
+
+          <Highlight
+            hover
+            className="home-filter-highlight mb-8"
+            defaultValue={activeFilter}
+          >
+            <div className="flex flex-wrap gap-2">
+              {FILTERS.map((filter) => (
+                <HighlightItem key={filter.id} value={filter.id}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveFilter(filter.id)}
+                    className={`home-filter-chip${
+                      activeFilter === filter.id ? ' is-active' : ''
+                    }`}
+                    aria-pressed={activeFilter === filter.id}
+                  >
+                    {filter.label}
+                  </button>
+                </HighlightItem>
               ))}
             </div>
-            <div className="mt-6 h-48 bg-surface rounded flex items-center justify-center overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&h=600&fit=crop" 
-                alt="Bache en la calle" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+          </Highlight>
 
-      {/* Qué se puede reportar */}
-      <section className="section">
-        <div className="container">
-          <h2 className="font-heading font-bold uppercase tracking-tight text-text mb-8" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-            Qué puedes reportar
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="md:col-span-2 lg:col-span-2 bg-surface rounded p-6 border border-line">
-              <div className="h-48 bg-surface-2 rounded mb-4 flex items-center justify-center">
-                <span className="text-text-muted text-sm">Imagen de baches</span>
-              </div>
-              <h3 className="font-heading font-semibold text-lg uppercase text-text mb-2">Baches</h3>
-              <p className="text-text-muted text-sm">Reporta baches en calles y aceras para mejorar la transitabilidad</p>
-            </div>
-            <div className="bg-surface rounded p-6 border border-line">
-              <div className="h-32 bg-surface-2 rounded mb-4 flex items-center justify-center">
-                <span className="text-text-muted text-sm">Imagen alumbrado</span>
-              </div>
-              <h3 className="font-heading font-semibold text-lg uppercase text-text mb-2">Alumbrado</h3>
-              <p className="text-text-muted text-sm">Luces dañadas o faltantes en tu barrio</p>
-            </div>
-            <div className="bg-surface rounded p-6 border border-line">
-              <div className="h-32 bg-surface-2 rounded mb-4 flex items-center justify-center">
-                <span className="text-text-muted text-sm">Imagen basura</span>
-              </div>
-              <h3 className="font-heading font-semibold text-lg uppercase text-text mb-2">Basura</h3>
-              <p className="text-text-muted text-sm">Acumulación de residuos en espacios públicos</p>
-            </div>
-            <div className="bg-surface rounded p-6 border border-line">
-              <div className="h-32 bg-surface-2 rounded mb-4 flex items-center justify-center">
-                <span className="text-text-muted text-sm">Imagen agua</span>
-              </div>
-              <h3 className="font-heading font-semibold text-lg uppercase text-text mb-2">Agua</h3>
-              <p className="text-text-muted text-sm">Fugas y problemas en la red de agua potable</p>
-            </div>
-            <div className="bg-surface rounded p-6 border border-line">
-              <div className="h-32 bg-surface-2 rounded mb-4 flex items-center justify-center">
-                <span className="text-text-muted text-sm">Imagen áreas verdes</span>
-              </div>
-              <h3 className="font-heading font-semibold text-lg uppercase text-text mb-2">Áreas verdes</h3>
-              <p className="text-text-muted text-sm">Parques y jardines que necesitan mantenimiento</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          <ReporteList
+            reportes={filteredReportes}
+            isLoading={isLoading}
+            error={null}
+          />
 
-      {/* El problema y la promesa */}
-      <section className="section bg-surface-2">
-        <div className="container">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="font-heading font-bold uppercase tracking-tight text-text mb-6" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-              Tu voz importa
-            </h2>
-            <p className="text-xl text-text-muted">
-              Cada reporte cuenta. Cuando reportas un problema, ayudas a que las autoridades lo resuelvan y mejoras la calidad de vida de toda tu comunidad.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Reportes recientes con chips */}
-      <section className="section">
-        <div className="container">
-          <h2 className="font-heading font-bold uppercase tracking-tight text-text mb-8" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-            Reportes Recientes
-          </h2>
-          
-          <div className="flex flex-wrap gap-3 mb-8">
-            <button className="px-4 py-2 bg-accent text-accent-ink rounded font-medium text-sm">
-              Todos
-            </button>
-            <button className="px-4 py-2 bg-surface text-text-muted hover:text-text rounded font-medium text-sm transition-colors">
-              Baches
-            </button>
-            <button className="px-4 py-2 bg-surface text-text-muted hover:text-text rounded font-medium text-sm transition-colors">
-              Alumbrado
-            </button>
-            <button className="px-4 py-2 bg-surface text-text-muted hover:text-text rounded font-medium text-sm transition-colors">
-              Basura
-            </button>
-            <button className="px-4 py-2 bg-surface text-text-muted hover:text-text rounded font-medium text-sm transition-colors">
-              Agua
-            </button>
-          </div>
-          
-          <ReporteList reportes={reportes.slice(0, 6)} isLoading={isLoading} error={null} />
-          
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link to="/reportes">
-              <Button variant="secondary">Ver Todos los Reportes</Button>
+              <Button variant="secondary">Ver todos los reportes</Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Cómo funciona - Acordeón vertical */}
-      <section className="section bg-surface-2">
+      {/* Cómo funciona */}
+      <section className="section section-band-muted">
         <div className="container">
-          <h2 className="font-heading font-bold uppercase tracking-tight text-center text-text mb-12" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-            Cómo funciona
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-accent text-accent-ink rounded p-6">
-              <h3 className="font-heading font-bold text-lg uppercase mb-2">Reportar</h3>
-              <p className="text-sm">Envía tu reporte con foto y ubicación</p>
-            </div>
-            <div className="bg-panel-white text-text rounded p-6">
-              <h3 className="font-heading font-bold text-lg uppercase mb-2">Mapa</h3>
-              <p className="text-sm text-text-muted">Visualiza todos los reportes en el mapa</p>
-            </div>
-            <div className="bg-panel-light text-text rounded p-6">
-              <h3 className="font-heading font-bold text-lg uppercase mb-2">Seguimiento</h3>
-              <p className="text-sm text-text-muted">Rastrea el estado de tu reporte</p>
-            </div>
-            <div className="bg-surface text-text rounded p-6">
-              <h3 className="font-heading font-bold text-lg uppercase mb-2">Resultados</h3>
-              <p className="text-sm text-text-muted">Verifica cuando se resuelva</p>
-            </div>
-          </div>
+          <Effect fade slide={{ direction: 'up', offset: 20 }} inView className="section-intro">
+            <h2 className="section-title section-title-center">Cómo funciona</h2>
+            <p className="section-subtitle section-subtitle-center">
+              Cuatro pasos claros desde que reportas hasta que se resuelve.
+            </p>
+          </Effect>
+
+          <Effect fade slide={{ direction: 'up', offset: 16 }} delay={0.1} inView>
+            <Accordion
+              panels={howItWorksPanels}
+              defaultPanel="reportar"
+              variant="horizontal"
+              className="home-accordion"
+            />
+          </Effect>
         </div>
       </section>
 
-      {/* Flujo del reporte en 4 pasos */}
-      <section className="section">
+      {/* CTA */}
+      <section className="section section-band-cta">
         <div className="container">
-          <h2 className="font-heading font-bold uppercase tracking-tight text-center text-text mb-12" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-            Flujo del reporte
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent/10 rounded flex items-center justify-center mx-auto mb-4 text-accent font-heading font-bold text-2xl">
-                1
-              </div>
-              <h3 className="font-heading font-semibold mb-2 text-text uppercase">Reportas</h3>
-              <p className="text-text-muted text-sm">Envías el problema con foto y ubicación</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent/10 rounded flex items-center justify-center mx-auto mb-4 text-accent font-heading font-bold text-2xl">
-                2
-              </div>
-              <h3 className="font-heading font-semibold mb-2 text-text uppercase">Se verifica</h3>
-              <p className="text-text-muted text-sm">El municipio revisa tu reporte</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent/10 rounded flex items-center justify-center mx-auto mb-4 text-accent font-heading font-bold text-2xl">
-                3
-              </div>
-              <h3 className="font-heading font-semibold mb-2 text-text uppercase">Se atiende</h3>
-              <p className="text-text-muted text-sm">Se asigna al equipo correspondiente</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-accent/10 rounded flex items-center justify-center mx-auto mb-4 text-accent font-heading font-bold text-2xl">
-                4
-              </div>
-              <h3 className="font-heading font-semibold mb-2 text-text uppercase">Se resuelve</h3>
-              <p className="text-text-muted text-sm">El problema es solucionado</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Final */}
-      <section className="section bg-panel-light">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-heading font-bold uppercase tracking-tight text-text mb-6" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-              Empieza ahora
-            </h2>
-            <p className="text-lg text-text-muted mb-8">
-              Crea tu cuenta y comienza a reportar problemas en tu ciudad. Juntos podemos hacerla mejor.
+          <Effect fade zoom={{ initialScale: 0.98, scale: 1 }} inView className="cta-block">
+            <h2 className="cta-title">Empieza ahora</h2>
+            <p className="cta-copy">
+              Crea tu cuenta y comienza a reportar. Juntos hacemos la ciudad más
+              visible y más cuidada.
             </p>
             <Link to="/register">
-              <Button size="lg" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto inline-flex items-center justify-center">
                 Crear cuenta y reportar
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
-          </div>
+          </Effect>
         </div>
       </section>
     </div>

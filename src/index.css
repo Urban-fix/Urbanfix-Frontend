@@ -1,115 +1,154 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+@theme {
+  /* Paleta de colores - Tema oscuro por defecto */
+  --color-bg: #1E1E1E;
+  --color-surface: #2B2B2B;
+  --color-surface-2: #363636;
+  --color-line: #4A4A4A;
+  --color-text: #F2F2F0;
+  --color-text-muted: #A8A8A4;
+  --color-accent: #D4F58C;
+  --color-accent-ink: #1E1E1E;
+  --color-panel-light: #D9D9D9;
+  --color-panel-white: #FFFFFF;
+  
+  /* Estados semánticos */
+  --color-success: #D4F58C;
+  --color-warning: #F2C14E;
+  --color-error: #FF6B5E;
+  
+  /* Mapeo para compatibilidad con componentes existentes */
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-text);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-text);
+  --color-primary: var(--color-accent);
+  --color-primary-foreground: var(--color-accent-ink);
+  --color-primary-hover: #E3FFA6;
+  --color-secondary: var(--color-surface-2);
+  --color-secondary-foreground: var(--color-text);
+  --color-muted: var(--color-surface-2);
+  --color-muted-foreground: var(--color-text-muted);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-ink);
+  --color-destructive: var(--color-error);
+  --color-destructive-foreground: var(--color-text);
+  --color-border: var(--color-line);
+  --color-input: var(--color-surface);
+  --color-ring: var(--color-accent);
+  
+  /* Colores de estado para reportes */
+  --color-status-reportado: var(--color-warning);
+  --color-status-en-proceso: #5B8FF9;
+  --color-status-resuelto: var(--color-success);
+  --color-status-rechazado: var(--color-error);
+  
+  /* Border radius - 4px (esquinas casi rectas) */
+  --radius-lg: 4px;
+  --radius-md: 4px;
+  --radius-sm: 4px;
+  
+  /* Tipografía */
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+  --font-family-heading: 'Anton', 'Bebas Neue', sans-serif;
+  --font-family-mono: 'JetBrains Mono', ui-monospace, monospace;
+  
+  /* Escala de fuentes */
+  --font-size-h1: clamp(2.75rem, 8vw, 6rem);
+  --font-size-h2: clamp(2rem, 4vw, 3.5rem);
+  --font-size-h3: 1.5rem;
+  --font-size-body: 1rem;
+  --font-size-small: 0.875rem;
+  
+  /* Duraciones de transición */
+  --duration-150: 150ms;
+  --duration-200: 200ms;
+  
+  /* Espaciado */
+  --container-max: 1200px;
+  --gutter-desktop: 24px;
+  --gutter-mobile: 16px;
+  --section-spacing-desktop: 96px;
+  --section-spacing-mobile: 64px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
+/* Utilidades de espaciado */
+.container {
+  max-width: var(--container-max);
   margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  padding-left: var(--gutter-mobile);
+  padding-right: var(--gutter-mobile);
 }
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: var(--gutter-desktop);
+    padding-right: var(--gutter-desktop);
+  }
+}
+
+.section {
+  padding-top: var(--section-spacing-mobile);
+  padding-bottom: var(--section-spacing-mobile);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-top: var(--section-spacing-desktop);
+    padding-bottom: var(--section-spacing-desktop);
+  }
+}
+
+/* Un solo color visible para todo enlace/botón secundario de la navbar y el hero */
+.nav a,
+.btn-secondary {
+  color: #C9C9C4;              /* gris visible sobre el fondo carbón */
+  background: transparent;
+  padding: 8px 14px;
+  border-radius: 4px;
+  transition: background .15s, color .15s;
+}
+.nav a:hover,
+.btn-secondary:hover {
+  background: #D4F58C;         /* mismo lima del botón Reportar */
+  color: #1E1E1E;
+}
+
+/* Botones primarios (Reportar un problema, Registrarse): siempre lima, siempre visibles */
+.btn-primary {
+  background: #D4F58C;
+  color: #1E1E1E;
+  padding: 12px 20px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: #E3FFA6; }
+
+/* Tarjeta clara: todo el texto oscuro */
+.hero-card { background: #D9D9D9; color: #1E1E1E; }
+.hero-card h3, .hero-card button, .hero-card svg { color: #1E1E1E; }
+.hero-card p { color: #4A4A4A; }
+
+/* Hero en dos columnas reales, sin superposición */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 440px;
+  gap: 96px;
+  align-items: center;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+.hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); line-height: .95; }
+.hero-card { position: static; margin: 0; transform: none; }
 
 body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+  font-feature-settings: "rlig" 1, "calt" 1;
 }

@@ -21,41 +21,41 @@ export const Sidebar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <aside className="w-64 bg-white shadow-md dark:bg-gray-800 min-h-screen">
+    <aside className="w-64 border-r border-border bg-card min-h-screen">
       <div className="p-6">
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-6">Menú</h2>
+        <h2 className="text-xl font-heading font-bold text-foreground mb-6">MENÚ</h2>
         
-        <nav className="space-y-2">
+        <nav className="space-y-1">
           {menuItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 isActive(item.path)
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:bg-muted'
               }`}
             >
               <item.icon className="w-5 h-5" />
-              <span>{item.label}</span>
+              <span className="font-medium">{item.label}</span>
             </Link>
           ))}
 
           {user?.rol === 'ADMIN_MUNICIPAL' && (
             <>
-              <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+              <div className="border-t border-border my-4"></div>
               {adminMenuItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                     isActive(item.path)
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:bg-muted'
                   }`}
                 >
                   <item.icon className="w-5 h-5" />
-                  <span>{item.label}</span>
+                  <span className="font-medium">{item.label}</span>
                 </Link>
               ))}
             </>

@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
+import { AppShell } from '../components/layout/AppShell';
 import type { ReporteCreateDTO } from '../types/reporte.types';
 import toast from 'react-hot-toast';
-import { MapPin } from 'lucide-react';
+import { MapPin, Upload } from 'lucide-react';
 
 export const ReporteCreate: React.FC = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -18,12 +19,13 @@ export const ReporteCreate: React.FC = () => {
   const { zonas } = useZonas();
   const navigate = useNavigate();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-        (err) => toast.error('No se pudo obtener la ubicación')
+        () => toast.error('No se pudo obtener la ubicación')
       );
     } else {
       toast.error('Geolocalización no soportada');
@@ -51,12 +53,11 @@ export const ReporteCreate: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-        Crear Nuevo Reporte
-      </h1>
-      
-      <Card className="max-w-2xl mx-auto">
+    <AppShell
+      title="Crear Reporte"
+      subtitle="Reporta un problema en tu ciudad"
+    >
+      <Card className="max-w-2xl mx-auto bg-surface border-line">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <Input
             label="Título"
@@ -69,7 +70,7 @@ export const ReporteCreate: React.FC = () => {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-text mb-2">
               Descripción
             </label>
             <textarea
@@ -78,10 +79,13 @@ export const ReporteCreate: React.FC = () => {
                 minLength: { value: 10, message: 'Mínimo 10 caracteres' },
                 maxLength: { value: 2000, message: 'Máximo 2000 caracteres' }
               })}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white h-32"
+              className="w-full h-32 px-4 py-3 border border-line bg-surface rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200 text-text resize-none"
             />
             {errors.descripcion && (
-              <p className="mt-1 text-sm text-red-600">{errors.descripcion.message as string}</p>
+              <p className="mt-2 text-sm text-error flex items-center gap-1">
+                <span className="text-xs">⚠</span>
+                {errors.descripcion.message as string}
+              </p>
             )}
           </div>
 
@@ -96,7 +100,7 @@ export const ReporteCreate: React.FC = () => {
               Obtener Ubicación
             </Button>
             {location && (
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-text-muted">
                 {location.lat.toFixed(6)}, {location.lng.toFixed(6)}
               </span>
             )}
@@ -132,12 +136,12 @@ export const ReporteCreate: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-text mb-2">
               Categoría
             </label>
             <select
               {...register('categoriaId', { required: 'Categoría es requerida' })}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full h-12 px-4 border border-line bg-surface rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200 text-text"
             >
               <option value="">Selecciona una categoría</option>
               {categorias.map(cat => (
@@ -145,17 +149,20 @@ export const ReporteCreate: React.FC = () => {
               ))}
             </select>
             {errors.categoriaId && (
-              <p className="mt-1 text-sm text-red-600">{errors.categoriaId.message as string}</p>
+              <p className="mt-2 text-sm text-error flex items-center gap-1">
+                <span className="text-xs">⚠</span>
+                {errors.categoriaId.message as string}
+              </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-text mb-2">
               Zona
             </label>
             <select
               {...register('zonaId', { required: 'Zona es requerida' })}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full h-12 px-4 border border-line bg-surface rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200 text-text"
             >
               <option value="">Selecciona una zona</option>
               {zonas.map(zona => (
@@ -163,22 +170,46 @@ export const ReporteCreate: React.FC = () => {
               ))}
             </select>
             {errors.zonaId && (
-              <p className="mt-1 text-sm text-red-600">{errors.zonaId.message as string}</p>
+              <p className="mt-2 text-sm text-error flex items-center gap-1">
+                <span className="text-xs">⚠</span>
+                {errors.zonaId.message as string}
+              </p>
             )}
           </div>
 
-          <Input
-            label="URL de Foto (opcional)"
-            type="url"
-            {...register('fotoUrl')}
-            error={errors.fotoUrl?.message as string}
-          />
+          <div>
+            <label className="block text-sm font-medium text-text mb-2">
+              Foto (opcional)
+            </label>
+            <div
+              className={`
+                border-2 border-dashed rounded p-8 text-center transition-all duration-200
+                ${isDragging ? 'border-accent bg-accent/5' : 'border-line bg-surface-2'}
+              `}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
+            >
+              <Upload className="w-8 h-8 text-text-muted mx-auto mb-2" />
+              <p className="text-sm text-text-muted">
+                Arrastra una imagen aquí o
+              </p>
+              <Input
+                label=""
+                type="url"
+                {...register('fotoUrl')}
+                error={errors.fotoUrl?.message as string}
+                placeholder="O ingresa la URL de la imagen"
+                className="mt-4"
+              />
+            </div>
+          </div>
 
           <Button type="submit" isLoading={isSubmitting} className="w-full">
-            Crear Reporte
+            {isSubmitting ? 'Creando...' : 'Crear Reporte'}
           </Button>
         </form>
       </Card>
-    </div>
+    </AppShell>
   );
 };

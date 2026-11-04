@@ -13,10 +13,17 @@ export const ROLES = {
 } as const;
 
 export const ESTADO_COLORS = {
-  REPORTADO: 'bg-red-100 text-red-800',
-  EN_PROCESO: 'bg-yellow-100 text-yellow-800',
-  RESUELTO: 'bg-green-100 text-green-800',
-  RECHAZADO: 'bg-gray-100 text-gray-800',
+  REPORTADO: 'bg-status-reportado/10 text-status-reportado border-status-reportado/20',
+  EN_PROCESO: 'bg-status-en-proceso/10 text-status-en-proceso border-status-en-proceso/20',
+  RESUELTO: 'bg-status-resuelto/10 text-status-resuelto border-status-resuelto/20',
+  RECHAZADO: 'bg-status-rechazado/10 text-status-rechazado border-status-rechazado/20',
+} as const;
+
+export const ESTADO_ICONS = {
+  REPORTADO: 'AlertCircle',
+  EN_PROCESO: 'Clock',
+  RESUELTO: 'CheckCircle2',
+  RECHAZADO: 'XCircle',
 } as const;
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';

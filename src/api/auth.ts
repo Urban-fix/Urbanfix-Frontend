@@ -15,4 +15,7 @@ export const authApi = {
   
   confirmPasswordReset: (token: string, newPassword: string) => 
     api.post('/auth/password-reset/confirm', { token, newPassword }),
+  
+  googleLogin: (idToken: string) => 
+    api.post('/auth/google', { idToken }),
 };

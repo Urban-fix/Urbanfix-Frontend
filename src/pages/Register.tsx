@@ -59,7 +59,7 @@ export const Register: React.FC = () => {
                 <div className="w-full border-t border-line"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-bg text-text-muted">o regístrate con</span>
+                <span className="px-2 bg-surface text-text-muted">o regístrate con</span>
               </div>
             </div>
           </>
@@ -117,18 +117,17 @@ export const Register: React.FC = () => {
           />
         </div>
 
-        <Button
-          type="submit"
-          isLoading={isSubmitting}
-          className="w-full"
-        >
+        <Button type="submit" isLoading={isSubmitting} className="w-full">
           {isSubmitting ? 'Registrando...' : 'Registrarse'}
         </Button>
 
         <div className="text-center">
           <p className="text-sm text-text-muted">
             ¿Ya tienes cuenta?{' '}
-            <Link to="/login" className="text-text-muted hover:text-text hover:underline transition-colors">
+            <Link
+              to="/login"
+              className="text-accent hover:text-[#E3FFA6] font-medium transition-colors"
+            >
               Inicia Sesión
             </Link>
           </p>

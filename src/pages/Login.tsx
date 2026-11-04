@@ -52,7 +52,7 @@ export const Login: React.FC = () => {
                 <div className="w-full border-t border-line"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-bg text-text-muted">o continúa con</span>
+                <span className="px-2 bg-surface text-text-muted">o continúa con</span>
               </div>
             </div>
           </>
@@ -87,23 +87,25 @@ export const Login: React.FC = () => {
         </div>
 
         <div className="flex justify-between items-center">
-          <Link to="/forgot-password" className="text-sm text-text-muted hover:text-text hover:underline transition-colors">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-text-muted hover:text-accent transition-colors"
+          >
             ¿Olvidaste tu contraseña?
           </Link>
         </div>
 
-        <Button
-          type="submit"
-          isLoading={isSubmitting}
-          className="w-full"
-        >
+        <Button type="submit" isLoading={isSubmitting} className="w-full">
           {isSubmitting ? 'Ingresando...' : 'Ingresar'}
         </Button>
 
         <div className="text-center">
           <p className="text-sm text-text-muted">
             ¿No tienes cuenta?{' '}
-            <Link to="/register" className="text-text-muted hover:text-text hover:underline transition-colors">
+            <Link
+              to="/register"
+              className="text-accent hover:text-[#E3FFA6] font-medium transition-colors"
+            >
               Regístrate
             </Link>
           </p>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { ReporteCard } from './ReporteCard';
-import type { ReporteResponseDTO } from '../../types/reporte.types';
+import type { ReporteResponseDTO, ReportePublicDTO } from '../../types/reporte.types';
 import { Spinner } from '../ui/Spinner';
 
 interface ReporteListProps {
-  reportes: ReporteResponseDTO[];
+  reportes: ReporteResponseDTO[] | ReportePublicDTO[];
   isLoading: boolean;
   error: string | null;
 }

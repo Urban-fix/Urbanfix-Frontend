@@ -1,16 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../api/axios';
-import type { AuthResponseDTO, UsuarioResponseDTO, RegisterRequestDTO } from '../types/auth.types';
+import type { UsuarioResponseDTO, RegisterRequestDTO, AuthResponseDTO } from '../types/auth.types';
 
 interface AuthContextType {
   user: UsuarioResponseDTO | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: RegisterRequestDTO) => Promise<void>;
-  googleLogin: (idToken: string) => Promise<void>;
-  logout: () => void;
-  refreshToken: () => Promise<void>;
+  login: (email: string, password: string) => Promise<UsuarioResponseDTO>;
+  register: (data: RegisterRequestDTO) => Promise<UsuarioResponseDTO>;
+  googleLogin: (idToken: string) => Promise<UsuarioResponseDTO>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,67 +19,57 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      refreshToken();
-    } else {
-      setIsLoading(false);
-    }
+    const checkAuth = async () => {
+      try {
+        const response = await api.get<UsuarioResponseDTO>('/api/v1/auth/me');
+        setUser(response.data);
+      } catch (error) {
+        // User is not authenticated, that's fine
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const response = await api.post<AuthResponseDTO>('/auth/login', { email, password });
-    const { accessToken, refreshToken, usuario } = response.data;
-    
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  const login = async (email: string, password: string): Promise<UsuarioResponseDTO> => {
+    const response = await api.post<AuthResponseDTO>('/api/v1/auth/login', { email, password });
+    const { usuario } = response.data;
     setUser(usuario);
+    setIsLoading(false);
+    return usuario;
   };
 
-  const register = async (data: RegisterRequestDTO) => {
-    const response = await api.post<AuthResponseDTO>('/auth/register', data);
-    const { accessToken, refreshToken, usuario } = response.data;
-    
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  const register = async (data: RegisterRequestDTO): Promise<UsuarioResponseDTO> => {
+    const response = await api.post<AuthResponseDTO>('/api/v1/auth/register', data);
+    const { usuario } = response.data;
     setUser(usuario);
-  };
-
-  const googleLogin = async (idToken: string) => {
-    const response = await api.post<AuthResponseDTO>('/auth/google', { idToken });
-    const { accessToken, refreshToken, usuario } = response.data;
+    setIsLoading(false);
     
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    return usuario;
+  };
+
+  const googleLogin = async (idToken: string): Promise<UsuarioResponseDTO> => {
+    const response = await api.post<AuthResponseDTO>('/api/v1/auth/google', { idToken });
+    const { usuario } = response.data;
     setUser(usuario);
+    setIsLoading(false);
+    return usuario;
   };
 
-  const logout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    setUser(null);
-  };
-
-  const refreshToken = async () => {
+  const logout = async () => {
     try {
-      const token = localStorage.getItem('refreshToken');
-      const response = await api.post<AuthResponseDTO>('/auth/refresh', {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const { accessToken, refreshToken: newRefreshToken, usuario } = response.data;
-      
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', newRefreshToken);
-      setUser(usuario);
+      await api.post('/api/v1/auth/logout');
     } catch (error) {
-      logout();
+      console.error('Error during logout:', error);
     } finally {
-      setIsLoading(false);
+      setUser(null);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, register, googleLogin, logout, refreshToken }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, register, googleLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -14,7 +14,7 @@ export const useCategorias = () => {
   const fetchCategorias = async () => {
     try {
       setIsLoading(true);
-      const response = await api.get<CategoriaResponseDTO[]>('/categorias');
+      const response = await api.get<CategoriaResponseDTO[]>('/api/v1/categorias');
       setCategorias(response.data);
       setError(null);
     } catch (err: any) {
@@ -26,7 +26,7 @@ export const useCategorias = () => {
 
   const createCategoria = async (data: CategoriaCreateDTO) => {
     try {
-      const response = await api.post<CategoriaResponseDTO>('/categorias', data);
+      const response = await api.post<CategoriaResponseDTO>('/api/v1/categorias', data);
       setCategorias([...categorias, response.data]);
       return response.data;
     } catch (err: any) {
@@ -36,7 +36,7 @@ export const useCategorias = () => {
 
   const updateCategoria = async (id: number, data: CategoriaUpdateDTO) => {
     try {
-      const response = await api.put<CategoriaResponseDTO>(`/categorias/${id}`, data);
+      const response = await api.put<CategoriaResponseDTO>(`/api/v1/categorias/${id}`, data);
       setCategorias(categorias.map(c => c.id === id ? response.data : c));
       return response.data;
     } catch (err: any) {
@@ -46,7 +46,7 @@ export const useCategorias = () => {
 
   const deleteCategoria = async (id: number) => {
     try {
-      await api.delete(`/categorias/${id}`);
+      await api.delete(`/api/v1/categorias/${id}`);
       setCategorias(categorias.filter(c => c.id !== id));
     } catch (err: any) {
       throw new Error(err.response?.data?.message || 'Error al eliminar categoría');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -7,8 +7,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = '', id, type = 'text', ...props }, ref) => {
-    const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
+  ({ label, error, className = '', id, type = 'text', name, ...props }, ref) => {
+    const uniqueId = useId();
+    const inputId = id || uniqueId;
     const isPassword = type === 'password';
     const [showPassword, setShowPassword] = useState(false);
     const resolvedType = isPassword ? (showPassword ? 'text' : 'password') : type;
@@ -27,6 +28,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
+            name={name}
             type={resolvedType}
             className={`w-full h-12 px-4 border border-line bg-surface text-text rounded placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200 ${
               isPassword ? 'pr-12' : ''

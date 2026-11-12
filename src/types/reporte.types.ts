@@ -1,4 +1,4 @@
-export type EstadoReporte = 'REPORTADO' | 'EN_PROCESO' | 'RESUELTO' | 'RECHAZADO';
+export type EstadoReporte = 'PENDIENTE' | 'EN_PROGRESO' | 'RESUELTO' | 'RECHAZADO';
 
 export interface ReporteCreateDTO {
   titulo: string;
@@ -36,7 +36,7 @@ export interface CategoriaResponseDTO {
 export interface ZonaResponseDTO {
   id: number;
   nombre: string;
-  descripcion: string;
+  coordenadasReferencia: string;
 }
 
 export interface EstadoHistorialResponseDTO {
@@ -63,6 +63,21 @@ export interface ReporteResponseDTO {
   fechaCreacion: string;
   estadoActual: EstadoReporte;
   usuario: UsuarioResponseDTO;
+  categoria: CategoriaResponseDTO;
+  zona: ZonaResponseDTO;
+  confirmacionesCount: number;
+}
+
+// DTO público sin datos de usuario (para Home/Mapa)
+export interface ReportePublicDTO {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  latitud: number;
+  longitud: number;
+  fotoUrl?: string; // Puede ser null o undefined si no hay foto
+  fechaCreacion: string;
+  estadoActual: EstadoReporte;
   categoria: CategoriaResponseDTO;
   zona: ZonaResponseDTO;
   confirmacionesCount: number;

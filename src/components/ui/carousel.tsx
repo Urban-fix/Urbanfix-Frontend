@@ -126,6 +126,7 @@ const Carousel = React.forwardRef<
           className={cn('relative', className)}
           role="region"
           aria-roledescription="carousel"
+          data-slot="carousel"
           {...props}
         >
           {children}
@@ -191,7 +192,7 @@ const CarouselPrevious = React.forwardRef<
       ref={ref}
       type="button"
       className={cn(
-        'absolute z-10 flex h-8 w-8 items-center justify-center rounded border border-line bg-panel-white/90 text-accent-ink transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-40',
+        'absolute z-10 flex h-10 w-10 min-h-10 min-w-10 items-center justify-center rounded border border-line bg-surface/90 text-text transition-colors duration-200 hover:bg-accent hover:text-accent-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-40',
         orientation === 'horizontal'
           ? 'left-2 top-1/2 -translate-y-1/2'
           : 'left-1/2 top-2 -translate-x-1/2 rotate-90',
@@ -219,7 +220,7 @@ const CarouselNext = React.forwardRef<
       ref={ref}
       type="button"
       className={cn(
-        'absolute z-10 flex h-8 w-8 items-center justify-center rounded border border-line bg-panel-white/90 text-accent-ink transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-40',
+        'absolute z-10 flex h-10 w-10 min-h-10 min-w-10 items-center justify-center rounded border border-line bg-surface/90 text-text transition-colors duration-200 hover:bg-accent hover:text-accent-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-40',
         orientation === 'horizontal'
           ? 'right-2 top-1/2 -translate-y-1/2'
           : 'bottom-2 left-1/2 -translate-x-1/2 rotate-90',

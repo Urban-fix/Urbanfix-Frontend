@@ -10,7 +10,16 @@ import type { RegisterRequestDTO } from '../types/auth.types';
 import toast from 'react-hot-toast';
 
 export const Register: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+    defaultValues: {
+      nombre: '',
+      apellido: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    mode: 'onSubmit' // Solo validar al enviar el formulario
+  });
   const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
 
@@ -18,6 +27,7 @@ export const Register: React.FC = () => {
     try {
       const registerData: RegisterRequestDTO = {
         nombre: data.nombre,
+        apellido: data.apellido,
         email: data.email,
         password: data.password,
         rol: 'CIUDADANO',
@@ -67,16 +77,29 @@ export const Register: React.FC = () => {
         
         <div className="space-y-4">
           <Input
-            label="Nombre Completo"
+            label="Nombre"
             type="text"
             {...register('nombre', { 
               required: 'Nombre es requerido',
               minLength: {
-                value: 3,
-                message: 'Mínimo 3 caracteres'
+                value: 2,
+                message: 'Mínimo 2 caracteres'
               }
             })}
             error={errors.nombre?.message as string}
+          />
+          
+          <Input
+            label="Apellido"
+            type="text"
+            {...register('apellido', { 
+              required: 'Apellido es requerido',
+              minLength: {
+                value: 2,
+                message: 'Mínimo 2 caracteres'
+              }
+            })}
+            error={errors.apellido?.message as string}
           />
           
           <Input
@@ -100,10 +123,17 @@ export const Register: React.FC = () => {
               minLength: {
                 value: 8,
                 message: 'Mínimo 8 caracteres'
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+                message: 'Debe incluir mayúscula, minúscula y número'
               }
             })}
             error={errors.password?.message as string}
           />
+          <p className="text-xs text-text-muted mt-1">
+            Mínimo 8 caracteres, una mayúscula, una minúscula y un número
+          </p>
           
           <Input
             label="Confirmar Contraseña"

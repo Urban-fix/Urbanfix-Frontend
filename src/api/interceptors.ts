@@ -1,44 +1,44 @@
 import { api } from './axios';
 
-// Request interceptor para agregar token
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response interceptor para manejar errores y refresh token
+// Response interceptor para manejar errores y redirección automática
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const url = originalRequest.url;
 
-    // Error 401 - Token expirado
+    // No intentar refresh para endpoints de autenticación que deben fallar con 401 cuando no hay sesión
+    if (url?.includes('/api/v1/auth/me') || 
+        url?.includes('/api/v1/auth/login') ||
+        url?.includes('/api/v1/auth/register') ||
+        url?.includes('/api/v1/auth/refresh') ||
+        url?.includes('/api/v1/auth/password-reset')) {
+      return Promise.reject(error);
+    }
+
+    // No intentar refresh para endpoints públicos
+    if (url?.includes('/api/v1/reportes/public')) {
+      return Promise.reject(error);
+    }
+
+    // Error 401 - Token expirado, intentar refresh automático (solo una vez)
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       
       try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        const response = await api.post('/auth/refresh', {}, {
-          headers: { Authorization: `Bearer ${refreshToken}` }
-        });
-
-        const { accessToken, refreshToken: newRefreshToken } = response.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', newRefreshToken);
-
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        // Llamar al endpoint de refresh (usa cookies HttpOnly automáticamente)
+        await api.post('/api/v1/auth/refresh');
+        // Reintentar la petición original
         return api(originalRequest);
       } catch (refreshError) {
-        // Refresh falló, redirigir a login
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        // Refresh falló, limpiar estado y redirigir a login
+        // No redirigir si ya estamos en login para evitar bucles
+        if (window.location.pathname !== '/login' && 
+            window.location.pathname !== '/register' &&
+            window.location.pathname !== '/password-reset/request' &&
+            window.location.pathname !== '/password-reset/confirm') {
+          window.location.href = '/login';
+        }
         return Promise.reject(refreshError);
       }
     }

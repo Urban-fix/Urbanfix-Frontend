@@ -14,7 +14,7 @@ export const useZonas = () => {
   const fetchZonas = async () => {
     try {
       setIsLoading(true);
-      const response = await api.get<ZonaResponseDTO[]>('/zonas');
+      const response = await api.get<ZonaResponseDTO[]>('/api/v1/zonas');
       setZonas(response.data);
       setError(null);
     } catch (err: any) {
@@ -26,7 +26,7 @@ export const useZonas = () => {
 
   const createZona = async (data: ZonaCreateDTO) => {
     try {
-      const response = await api.post<ZonaResponseDTO>('/zonas', data);
+      const response = await api.post<ZonaResponseDTO>('/api/v1/zonas', data);
       setZonas([...zonas, response.data]);
       return response.data;
     } catch (err: any) {
@@ -36,7 +36,7 @@ export const useZonas = () => {
 
   const updateZona = async (id: number, data: ZonaUpdateDTO) => {
     try {
-      const response = await api.put<ZonaResponseDTO>(`/zonas/${id}`, data);
+      const response = await api.put<ZonaResponseDTO>(`/api/v1/zonas/${id}`, data);
       setZonas(zonas.map(z => z.id === id ? response.data : z));
       return response.data;
     } catch (err: any) {
@@ -46,7 +46,7 @@ export const useZonas = () => {
 
   const deleteZona = async (id: number) => {
     try {
-      await api.delete(`/zonas/${id}`);
+      await api.delete(`/api/v1/zonas/${id}`);
       setZonas(zonas.filter(z => z.id !== id));
     } catch (err: any) {
       throw new Error(err.response?.data?.message || 'Error al eliminar zona');

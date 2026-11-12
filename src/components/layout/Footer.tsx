@@ -1,93 +1,93 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const COPYRIGHT_YEAR = 2026;
+
 export const Footer: React.FC = () => {
   return (
     <footer className="border-t border-line bg-surface py-12">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div className="md:col-span-1">
-            <Link to="/" className="font-heading text-xl font-bold uppercase tracking-tight text-text mb-4 block">
-              UrbanFix
+        <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div>
+            <Link
+              to="/"
+              className="mb-4 block font-heading text-xl font-bold uppercase tracking-tight text-text"
+            >
+              Urban<span className="text-accent">Fix</span>
             </Link>
-            <p className="text-sm text-text-muted">
+            <p className="text-sm leading-relaxed text-text-secondary">
               Reporta problemas urbanos y mejora tu comunidad.
             </p>
           </div>
-          
+
           <div>
-            <h3 className="font-heading font-semibold text-sm uppercase tracking-tight text-text mb-4">
-              Producto
+            <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-tight text-text">
+              Explorar
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/reportes" className="text-sm text-text-muted hover:text-text transition-colors">
-                  Reportes
-                </Link>
-              </li>
-              <li>
-                <Link to="/mapa" className="text-sm text-text-muted hover:text-text transition-colors">
+                <Link
+                  to="/mapa"
+                  className="text-sm text-text-secondary transition-colors duration-200 hover:text-text"
+                >
                   Mapa
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard" className="text-sm text-text-muted hover:text-text transition-colors">
+                <Link
+                  to="/informes"
+                  className="text-sm text-text-secondary transition-colors duration-200 hover:text-text"
+                >
+                  Informes
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard"
+                  className="text-sm text-text-secondary transition-colors duration-200 hover:text-text"
+                >
                   Dashboard
                 </Link>
               </li>
             </ul>
           </div>
-          
+
           <div>
-            <h3 className="font-heading font-semibold text-sm uppercase tracking-tight text-text mb-4">
-              Ayuda
+            <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-tight text-text">
+              Cuenta
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/ayuda" className="text-sm text-text-muted hover:text-text transition-colors">
-                  Centro de ayuda
+                <Link
+                  to="/login"
+                  className="text-sm text-text-secondary transition-colors duration-200 hover:text-text"
+                >
+                  Iniciar sesión
                 </Link>
               </li>
               <li>
-                <Link to="/terminos" className="text-sm text-text-muted hover:text-text transition-colors">
-                  Términos de uso
+                <Link
+                  to="/register"
+                  className="text-sm text-text-secondary transition-colors duration-200 hover:text-text"
+                >
+                  Registrarse
                 </Link>
               </li>
               <li>
-                <Link to="/privacidad" className="text-sm text-text-muted hover:text-text transition-colors">
-                  Política de privacidad
+                <Link
+                  to="/perfil"
+                  className="text-sm text-text-secondary transition-colors duration-200 hover:text-text"
+                >
+                  Perfil
                 </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-heading font-semibold text-sm uppercase tracking-tight text-text mb-4">
-              Contacto
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="mailto:contacto@urbanfix.com" className="text-sm text-text-muted hover:text-text transition-colors">
-                  contacto@urbanfix.com
-                </a>
-              </li>
-              <li>
-                <a href="https://twitter.com/urbanfix" className="text-sm text-text-muted hover:text-text transition-colors">
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/urbanfix" className="text-sm text-text-muted hover:text-text transition-colors">
-                  GitHub
-                </a>
               </li>
             </ul>
           </div>
         </div>
-        
+
         <div className="border-t border-line pt-8">
-          <p className="text-sm text-text-muted text-center">
-            © {new Date().getFullYear()} UrbanFix. Todos los derechos reservados.
+          <p className="text-center text-sm text-text-muted">
+            © {COPYRIGHT_YEAR} UrbanFix. Todos los derechos reservados.
           </p>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { User, FileText, Map, LayoutDashboard, UserCircle, Menu } from 'lucide-react';
+import { User, FileText, LayoutDashboard, UserCircle, Menu } from 'lucide-react';
+import { MobileNavSheet } from './MobileNavSheet';
 
 export const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -14,37 +15,36 @@ export const Header: React.FC = () => {
     navigate('/login');
   };
 
-  const navItems = [
-    { path: '/reportes', label: 'Reportes', icon: FileText },
-    { path: '/mapa', label: 'Mapa', icon: Map },
-  ];
+  const navItems: { path: string; label: string }[] = [];
 
   const authNavItems = [
-    { path: '/dashboard', label: 'Mis Reportes', icon: LayoutDashboard },
+    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/informes', label: 'Informes', icon: FileText },
     { path: '/perfil', label: 'Perfil', icon: UserCircle },
   ];
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="border-b border-line bg-bg max-h-20">
+    <header className="site-header sticky top-0 z-40 border-b border-line bg-bg/80 backdrop-blur-md">
       <div className="container">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex h-20 items-center justify-between">
           <div className="flex items-center">
-            <Link to="/" className="font-heading text-2xl font-bold uppercase tracking-tight text-text">
-              UrbanFix
+            <Link
+              to="/"
+              className="font-heading text-2xl font-bold uppercase tracking-tight text-text"
+            >
+              Urban<span className="text-accent">Fix</span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-8 nav">
+          <nav className="nav hidden items-center gap-2 md:flex">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 className={`text-sm font-medium ${
-                  isActive(item.path)
-                    ? 'bg-accent text-accent-ink'
-                    : ''
+                  isActive(item.path) ? 'bg-accent text-accent-ink' : ''
                 }`}
               >
                 {item.label}
@@ -52,135 +52,56 @@ export const Header: React.FC = () => {
             ))}
           </nav>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-3">
             {isAuthenticated ? (
-              <div className="hidden md:flex items-center space-x-4">
-                <div className="flex items-center space-x-2 px-3 py-1.5 bg-surface-2 rounded">
-                  <User className="w-4 h-4 text-text-muted" />
-                  <span className="text-sm font-medium text-text">{user?.nombre}</span>
+              <div className="hidden items-center gap-3 md:flex">
+                <div className="flex items-center gap-2 rounded bg-surface-2 px-3 py-1.5">
+                  <User className="h-4 w-4 text-text-muted" />
+                  <span className="text-sm font-medium text-text">
+                    {user?.nombre}
+                  </span>
                 </div>
                 <button
+                  type="button"
                   onClick={handleLogout}
-                  className="text-sm text-text-muted hover:text-text transition-colors"
+                  className="text-sm font-medium text-text-secondary transition-colors duration-200 hover:text-text"
                 >
                   Salir
                 </button>
               </div>
             ) : (
-              <div className="hidden md:flex items-center space-x-4">
+              <div className="hidden items-center gap-3 md:flex">
                 <Link
                   to="/login"
-                  className="text-sm text-text-muted hover:text-text transition-colors"
+                  className="btn-secondary text-sm font-semibold min-w-[140px] text-center"
                 >
-                  Iniciar Sesión
+                  Iniciar sesión
                 </Link>
-                <Link
-                  to="/register"
-                  className="btn-primary font-semibold"
-                >
+                <Link to="/register" className="btn-primary font-semibold min-w-[140px] text-center">
                   Registrarse
                 </Link>
               </div>
             )}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-text hover:text-accent transition-colors"
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="rounded p-2 text-text transition-colors duration-200 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:hidden"
               aria-label="Menú"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="h-6 w-6" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-bg">
-          <div className="flex flex-col h-full p-6">
-            <div className="flex justify-between items-center mb-8">
-              <Link to="/" className="font-heading text-2xl font-bold uppercase tracking-tight text-text">
-                UrbanFix
-              </Link>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-text hover:text-accent transition-colors"
-              >
-                <Menu className="w-6 h-6" />
-              </button>
-            </div>
-            <nav className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`text-lg font-medium transition-colors ${
-                    isActive(item.path)
-                      ? 'text-accent'
-                      : 'text-text-muted hover:text-text'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {isAuthenticated && authNavItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`text-lg font-medium transition-colors ${
-                    isActive(item.path)
-                      ? 'text-accent'
-                      : 'text-text-muted hover:text-text'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <Link
-                to="/mapa"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-lg font-medium text-text-muted hover:text-text transition-colors"
-              >
-                Ver mapa
-              </Link>
-            </nav>
-            <div className="mt-auto pt-8 border-t border-line">
-              {isAuthenticated ? (
-                <div className="flex flex-col space-y-4">
-                  <div className="flex items-center space-x-2 px-3 py-1.5 bg-surface-2 rounded">
-                    <User className="w-4 h-4 text-text-muted" />
-                    <span className="text-sm font-medium text-text">{user?.nombre}</span>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="text-sm text-text-muted hover:text-text transition-colors"
-                  >
-                    Salir
-                  </button>
-                </div>
-              ) : (
-                <div className="flex flex-col space-y-4">
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-lg text-text-muted hover:text-text transition-colors"
-                  >
-                    Iniciar Sesión
-                  </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="bg-accent text-accent-ink px-4 py-3 rounded font-semibold hover:bg-primary-hover transition-all duration-200 text-center"
-                  >
-                    Registrarse
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <MobileNavSheet
+        open={mobileMenuOpen}
+        onOpenChange={setMobileMenuOpen}
+        isAuthenticated={isAuthenticated}
+        userName={user?.nombre}
+        authLinks={authNavItems.map(({ path, label }) => ({ path, label }))}
+        onLogout={handleLogout}
+      />
     </header>
   );
 };

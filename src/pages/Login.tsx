@@ -9,17 +9,30 @@ import { GoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
 
 export const Login: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    mode: 'onSubmit' // Solo validar al enviar el formulario
+  });
   const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (data: any) => {
     try {
-      await login(data.email, data.password);
+      const loggedUser = await login(data.email, data.password);
       toast.success('Login exitoso');
-      navigate('/dashboard');
+      
+      // Redirigir según rol
+      if (loggedUser?.rol === 'ADMIN_MUNICIPAL') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Error al iniciar sesión');
+      const errorMessage = error.response?.data?.message || 'Error al iniciar sesión';
+      toast.error(errorMessage);
     }
   };
 
@@ -88,7 +101,7 @@ export const Login: React.FC = () => {
 
         <div className="flex justify-between items-center">
           <Link
-            to="/forgot-password"
+            to="/password-reset/request"
             className="text-sm text-text-muted hover:text-accent transition-colors"
           >
             ¿Olvidaste tu contraseña?

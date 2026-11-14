@@ -1,0 +1,68 @@
+{
+  "expo": {
+    "name": "UrbanFix",
+    "slug": "urbanfix-mobile",
+    "scheme": "urbanfix",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#1A1A1A",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "pe.urbanfix.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "UrbanFix usa tu ubicación para fijar dónde está el problema que reportas.",
+        "NSCameraUsageDescription": "UrbanFix usa la cámara para adjuntar una foto al reporte.",
+        "NSPhotoLibraryUsageDescription": "UrbanFix accede a tus fotos para adjuntarlas al reporte."
+      }
+    },
+    "android": {
+      "package": "pe.urbanfix.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#1A1A1A",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#1A1A1A",
+          "image": "./assets/icon.png",
+          "imageWidth": 160
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "UrbanFix usa tu ubicación para fijar dónde está el problema que reportas."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "UrbanFix accede a tus fotos para adjuntarlas al reporte.",
+          "cameraPermission": "UrbanFix usa la cámara para adjuntar una foto al reporte."
+        }
+      ]
+    ],
+    "extra": {
+      "apiUrl": "http://localhost:8080"
+    }
+  }
+}

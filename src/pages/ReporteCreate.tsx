@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
+import { Shine } from '@animate-ui/react/primitives/effects/shine';
+import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
 import { useForm } from '../hooks/useForm';
 import { useReportes } from '../hooks/useReportes';
 import { useCategorias } from '../hooks/useCategorias';
@@ -15,7 +17,7 @@ import {
 import type { ReporteCreateDTO } from '../types/reporte.types';
 import { api } from '../api/axios';
 import toast from 'react-hot-toast';
-import { Upload, X } from 'lucide-react';
+import { Upload, X, Sparkles } from 'lucide-react';
 
 export const ReporteCreate: React.FC = () => {
   const {
@@ -122,8 +124,16 @@ export const ReporteCreate: React.FC = () => {
       subtitle="Reporta un problema en tu ciudad"
     >
       <Effect fade slide={{ direction: 'up', offset: 16 }} inView>
-        <div className="auth-filter-panel mx-auto max-w-3xl">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <Magnetic strength={0.08} onlyOnHover>
+          <Shine
+            enableOnHover
+            color="rgba(212,245,140,0.12)"
+            className="block"
+          >
+            <div className="auth-filter-panel mx-auto max-w-3xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-accent/5 blur-3xl" />
+              <div className="relative">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label className="mb-2 block text-sm font-medium text-text">
                 Título
@@ -295,11 +305,23 @@ export const ReporteCreate: React.FC = () => {
               )}
             </div>
 
-            <Button type="submit" isLoading={isSubmitting} className="w-full">
-              {isSubmitting ? 'Creando…' : 'Crear Reporte'}
-            </Button>
-          </form>
-        </div>
+            <Magnetic strength={0.2} onlyOnHover>
+              <Shine
+                enableOnHover
+                color="rgba(212,245,140,0.35)"
+                className="inline-block"
+              >
+                <Button type="submit" isLoading={isSubmitting} className="w-full">
+                  {isSubmitting ? 'Creando…' : 'Crear Reporte'}
+                  <Sparkles className="ml-2 h-4 w-4 text-accent/60" />
+                </Button>
+              </Shine>
+            </Magnetic>
+                </form>
+              </div>
+            </div>
+          </Shine>
+        </Magnetic>
       </Effect>
     </AppShell>
   );

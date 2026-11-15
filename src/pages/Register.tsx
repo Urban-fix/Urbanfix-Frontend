@@ -36,7 +36,7 @@ export const Register: React.FC = () => {
       toast.success('Registro exitoso');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Error al registrar');
+      toast.error(error.response?.data?.message ?? 'Error al registrar');
     }
   };
 
@@ -46,7 +46,7 @@ export const Register: React.FC = () => {
       toast.success('Registro con Google exitoso');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Error al registrarse con Google');
+      toast.error(error.response?.data?.message ?? 'Error al registrarse con Google');
     }
   };
 

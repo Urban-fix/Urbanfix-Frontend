@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
+import { Shine } from '@animate-ui/react/primitives/effects/shine';
+import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
 import {
   Highlight,
   HighlightItem,
@@ -13,7 +15,7 @@ import { AppShell } from '../components/layout/AppShell';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { ESTADOS_REPORTE } from '../utils/constants';
-import { Plus, Search, X } from 'lucide-react';
+import { Plus, Search, X, Sparkles, Filter } from 'lucide-react';
 
 export const ReporteList: React.FC = () => {
   const [estado, setEstado] = useState<string>('');
@@ -94,105 +96,141 @@ export const ReporteList: React.FC = () => {
       title="Informes"
       subtitle="Explora todos los reportes de la comunidad"
       action={
-        <Link to="/informes/crear">
-          <Button className="inline-flex items-center" size="sm">
-            <Plus className="mr-2 h-4 w-4" />
-            Nuevo
-          </Button>
-        </Link>
+        <Magnetic strength={0.2} onlyOnHover>
+          <Link to="/informes/crear">
+            <Shine
+              enableOnHover
+              color="rgba(212,245,140,0.35)"
+              className="inline-flex"
+            >
+              <Button className="inline-flex items-center" size="sm">
+                <Plus className="mr-2 h-4 w-4" />
+                Nuevo
+                <Sparkles className="ml-2 h-3 w-3 text-accent/60" />
+              </Button>
+            </Shine>
+          </Link>
+        </Magnetic>
       }
     >
       <div className="space-y-8">
         <div className="auth-filter-sticky">
           <Effect fade slide={{ direction: 'up', offset: 16 }} inView>
-            <div className="auth-filter-panel">
-              <Highlight hover className="mb-5" defaultValue={estado || 'all'}>
-                <div className="flex flex-wrap gap-2">
-                  {estadoFilters.map((filter) => (
-                    <HighlightItem
-                      key={filter.id || 'all'}
-                      value={filter.id || 'all'}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setEstado(filter.id)}
-                        className={`auth-filter-chip${
-                          estado === filter.id ? ' is-active' : ''
-                        }`}
+            <div className="auth-filter-panel relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-accent/5 blur-3xl" />
+              <div className="relative">
+                <div className="mb-4 flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-accent" />
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-text">
+                    Filtros
+                  </h3>
+                </div>
+                <Highlight hover className="mb-5" defaultValue={estado || 'all'}>
+                  <div className="flex flex-wrap gap-2">
+                    {estadoFilters.map((filter) => (
+                      <HighlightItem
+                        key={filter.id || 'all'}
+                        value={filter.id || 'all'}
                       >
-                        {filter.label}
-                      </button>
-                    </HighlightItem>
-                  ))}
-                </div>
-              </Highlight>
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="relative">
-                  <Search className="pointer-events-none absolute left-3 top-[2.65rem] h-4 w-4 text-text-muted" />
-                  <Input
-                    label="Buscar"
-                    placeholder="Título o descripción…"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-text">
-                    Categoría
-                  </label>
-                  <select
-                    value={categoriaId}
-                    onChange={(e) => setCategoriaId(e.target.value)}
-                    className="auth-select"
-                  >
-                    <option value="">Todas las categorías</option>
-                    {categorias.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.nombre}
-                      </option>
+                        <Magnetic strength={0.1} onlyOnHover>
+                          <button
+                            type="button"
+                            onClick={() => setEstado(filter.id)}
+                            className={`auth-filter-chip${
+                              estado === filter.id ? ' is-active' : ''
+                            }`}
+                          >
+                            {filter.label}
+                          </button>
+                        </Magnetic>
+                      </HighlightItem>
                     ))}
-                  </select>
-                </div>
+                  </div>
+                </Highlight>
 
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-text">
-                    Zona
-                  </label>
-                  <select
-                    value={zonaId}
-                    onChange={(e) => setZonaId(e.target.value)}
-                    className="auth-select"
-                  >
-                    <option value="">Todas las zonas</option>
-                    {zonas.map((zona) => (
-                      <option key={zona.id} value={zona.id}>
-                        {zona.nombre}
-                      </option>
-                    ))}
-                  </select>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                  <div className="relative">
+                    <Search className="pointer-events-none absolute left-3 top-[2.65rem] h-4 w-4 text-text-muted" />
+                    <Input
+                      label="Buscar"
+                      placeholder="Título o descripción…"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-text">
+                      Categoría
+                    </label>
+                    <select
+                      value={categoriaId}
+                      onChange={(e) => setCategoriaId(e.target.value)}
+                      className="auth-select"
+                    >
+                      <option value="">Todas las categorías</option>
+                      {categorias.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-text">
+                      Zona
+                    </label>
+                    <select
+                      value={zonaId}
+                      onChange={(e) => setZonaId(e.target.value)}
+                      className="auth-select"
+                    >
+                      <option value="">Todas las zonas</option>
+                      {zonas.map((zona) => (
+                        <option key={zona.id} value={zona.id}>
+                          {zona.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
               {activeChips.length > 0 && (
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   {activeChips.map((chip) => (
-                    <button
-                      key={chip.key}
-                      type="button"
-                      onClick={chip.clear}
-                      className="auth-filter-chip is-active inline-flex items-center gap-1.5 !py-1.5 !text-xs"
-                    >
-                      {chip.label}
-                      <X className="h-3.5 w-3.5" aria-hidden />
-                      <span className="sr-only">Quitar filtro</span>
-                    </button>
+                    <Magnetic strength={0.08} onlyOnHover key={chip.key}>
+                      <Shine
+                        enableOnHover
+                        color="rgba(212,245,140,0.15)"
+                        className="inline-block"
+                      >
+                        <button
+                          key={chip.key}
+                          type="button"
+                          onClick={chip.clear}
+                          className="auth-filter-chip is-active inline-flex items-center gap-1.5 !py-1.5 !text-xs"
+                        >
+                          {chip.label}
+                          <X className="h-3.5 w-3.5" aria-hidden />
+                          <span className="sr-only">Quitar filtro</span>
+                        </button>
+                      </Shine>
+                    </Magnetic>
                   ))}
-                  <Button variant="ghost" size="sm" onClick={clearAll}>
-                    Limpiar
-                  </Button>
+                  <Magnetic strength={0.1} onlyOnHover>
+                    <Shine
+                      enableOnHover
+                      color="rgba(212,245,140,0.2)"
+                      className="inline-block"
+                    >
+                      <Button variant="ghost" size="sm" onClick={clearAll}>
+                        Limpiar
+                      </Button>
+                    </Shine>
+                  </Magnetic>
                 </div>
               )}
             </div>

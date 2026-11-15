@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Shine } from '@animate-ui/react/primitives/effects/shine';
+import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
 import { useAuth } from '../../hooks/useAuth';
-import { User, FileText, LayoutDashboard, UserCircle, Menu } from 'lucide-react';
+import { User, FileText, LayoutDashboard, UserCircle, Menu, LogOut } from 'lucide-react';
 import { MobileNavSheet } from './MobileNavSheet';
 
 export const Header: React.FC = () => {
@@ -61,25 +63,44 @@ export const Header: React.FC = () => {
                     {user?.nombre}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="text-sm font-medium text-text-secondary transition-colors duration-200 hover:text-text"
-                >
-                  Salir
-                </button>
+                <Magnetic strength={0.15} onlyOnHover>
+                  <Shine
+                    enableOnHover
+                    color="rgba(239,68,68,0.15)"
+                    className="inline-block"
+                  >
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="inline-flex items-center gap-2 rounded border border-error/30 bg-error/10 px-3 py-1.5 text-sm font-medium text-error transition-colors duration-200 hover:border-error hover:bg-error/20"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Salir
+                    </button>
+                  </Shine>
+                </Magnetic>
               </div>
             ) : (
               <div className="hidden items-center gap-3 md:flex">
-                <Link
-                  to="/login"
-                  className="btn-secondary text-sm font-semibold min-w-[140px] text-center"
-                >
-                  Iniciar sesión
-                </Link>
-                <Link to="/register" className="btn-primary font-semibold min-w-[140px] text-center">
-                  Registrarse
-                </Link>
+                <Magnetic strength={0.15} onlyOnHover>
+                  <Link
+                    to="/login"
+                    className="btn-secondary text-sm font-semibold min-w-[140px] text-center"
+                  >
+                    Iniciar sesión
+                  </Link>
+                </Magnetic>
+                <Magnetic strength={0.15} onlyOnHover>
+                  <Shine
+                    enableOnHover
+                    color="rgba(212,245,140,0.25)"
+                    className="inline-block"
+                  >
+                    <Link to="/register" className="btn-primary font-semibold min-w-[140px] text-center">
+                      Registrarse
+                    </Link>
+                  </Shine>
+                </Magnetic>
               </div>
             )}
             <button

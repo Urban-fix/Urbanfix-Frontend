@@ -1,37 +1,50 @@
 import React from 'react';
+import { Effect } from '@animate-ui/react/primitives/effects/effect';
 import type { ComentarioResponseDTO } from '../../types/reporte.types';
 import { formatDateTime } from '../../utils/formatters';
-import { User } from 'lucide-react';
 
 interface CommentItemProps {
   comentario: ComentarioResponseDTO;
+  index?: number;
 }
 
-export const CommentItem: React.FC<CommentItemProps> = ({ comentario }) => {
+export const CommentItem: React.FC<CommentItemProps> = ({
+  comentario,
+  index = 0,
+}) => {
+  const initials =
+    comentario.usuario.nombre
+      ?.split(/\s+/)
+      .map((part) => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || 'U';
+
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-3">
-      <div className="flex items-start space-x-3">
-        <div className="flex-shrink-0">
-          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-            <User className="w-5 h-5 text-blue-600 dark:text-blue-300" />
-          </div>
+    <Effect
+      fade
+      slide={{ direction: 'up', offset: 10 }}
+      delay={0.04 * index}
+      inView
+    >
+      <article className="auth-comment">
+        <div className="auth-avatar auth-avatar-sm shrink-0" aria-hidden>
+          {initials}
         </div>
-        
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
+        <div className="min-w-0 flex-1">
+          <div className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
+            <p className="text-sm font-semibold text-text">
               {comentario.usuario.nombre}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <time className="text-xs text-text-muted">
               {formatDateTime(comentario.fechaCreacion)}
-            </p>
+            </time>
           </div>
-          
-          <p className="text-sm text-gray-700 dark:text-gray-300">
+          <p className="text-sm leading-relaxed text-text-secondary">
             {comentario.contenido}
           </p>
         </div>
-      </div>
-    </div>
+      </article>
+    </Effect>
   );
 };

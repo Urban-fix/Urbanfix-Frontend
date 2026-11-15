@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
 import {
@@ -19,7 +19,15 @@ export const ReporteList: React.FC = () => {
   const [estado, setEstado] = useState<string>('');
   const [categoriaId, setCategoriaId] = useState<string>('');
   const [zonaId, setZonaId] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<string>('');
   const [search, setSearch] = useState<string>('');
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setSearch(searchInput.trim());
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [searchInput]);
 
   const { reportes, isLoading, error, refetch } = useReportes({
     estado,
@@ -62,11 +70,14 @@ export const ReporteList: React.FC = () => {
       clear: () => setZonaId(''),
     });
   }
-  if (search.trim()) {
+  if (search) {
     activeChips.push({
       key: 'search',
-      label: `Buscar: ${search.trim()}`,
-      clear: () => setSearch(''),
+      label: `Buscar: ${search}`,
+      clear: () => {
+        setSearch('');
+        setSearchInput('');
+      },
     });
   }
 
@@ -75,6 +86,7 @@ export const ReporteList: React.FC = () => {
     setCategoriaId('');
     setZonaId('');
     setSearch('');
+    setSearchInput('');
   };
 
   return (
@@ -83,9 +95,9 @@ export const ReporteList: React.FC = () => {
       subtitle="Explora todos los reportes de la comunidad"
       action={
         <Link to="/informes/crear">
-          <Button className="inline-flex items-center">
-            <Plus className="mr-2 h-5 w-5" />
-            Nuevo Reporte
+          <Button className="inline-flex items-center" size="sm">
+            <Plus className="mr-2 h-4 w-4" />
+            Nuevo
           </Button>
         </Link>
       }
@@ -121,8 +133,8 @@ export const ReporteList: React.FC = () => {
                   <Input
                     label="Buscar"
                     placeholder="Título o descripción…"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                     className="pl-10"
                   />
                 </div>
@@ -171,7 +183,7 @@ export const ReporteList: React.FC = () => {
                       key={chip.key}
                       type="button"
                       onClick={chip.clear}
-                      className="inline-flex items-center gap-1.5 rounded border border-line bg-surface-2 px-2.5 py-1.5 text-xs text-text-secondary transition-colors hover:border-accent hover:text-text"
+                      className="auth-filter-chip is-active inline-flex items-center gap-1.5 !py-1.5 !text-xs"
                     >
                       {chip.label}
                       <X className="h-3.5 w-3.5" aria-hidden />

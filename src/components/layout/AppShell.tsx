@@ -37,6 +37,7 @@ import {
   PanelLeft,
   ChevronRight,
   Shield,
+  Plus,
 } from 'lucide-react';
 
 interface AppShellProps {
@@ -216,6 +217,27 @@ export const AppShell: React.FC<AppShellProps> = ({
               </DialogClose>
             </div>
             <NavLinks onNavigate={() => setMobileOpen(false)} />
+            <div className="mt-auto space-y-2 border-t border-line p-4">
+              <Link
+                to="/informes/crear"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-2 rounded bg-accent px-3 py-3 text-sm font-semibold uppercase tracking-wide text-accent-ink transition-colors hover:bg-accent-hover"
+              >
+                <Plus className="h-4 w-4" />
+                Nuevo reporte
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  handleLogout();
+                }}
+                className="flex w-full items-center justify-center gap-2 rounded border border-error/40 px-3 py-3 text-sm font-medium text-error transition-colors hover:bg-error/10"
+              >
+                <LogOut className="h-4 w-4" />
+                Cerrar sesión
+              </button>
+            </div>
           </DialogContent>
         </DialogPortal>
       </DialogRoot>
@@ -262,7 +284,12 @@ export const AppShell: React.FC<AppShellProps> = ({
             </div>
 
             <div className="flex items-center gap-2 md:gap-3">
-              {action && <div className="hidden md:block">{action}</div>}
+              {action && (
+                <>
+                  <div className="hidden md:block">{action}</div>
+                  <div className="md:hidden">{action}</div>
+                </>
+              )}
 
               <DropdownRoot>
                 <DropdownTrigger asChild>
@@ -322,6 +349,15 @@ export const AppShell: React.FC<AppShellProps> = ({
             {children}
           </Effect>
         </main>
+
+        {!action &&
+          !location.pathname.includes('/crear') &&
+          !location.pathname.includes('/editar') && (
+            <Link to="/informes/crear" className="auth-fab" aria-label="Nuevo reporte">
+              <Plus className="h-5 w-5" />
+              Nuevo
+            </Link>
+          )}
       </div>
     </div>
   );

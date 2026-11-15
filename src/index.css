@@ -1250,6 +1250,99 @@
   background: var(--color-surface-2);
 }
 
+.auth-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface-2);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.auth-comment:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-line));
+  transform: translateY(-1px);
+}
+
+.auth-textarea {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  resize: vertical;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.auth-textarea:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+.auth-timeline-item {
+  position: relative;
+  padding-left: 1.15rem;
+  border-left: 2px solid var(--color-accent);
+}
+
+.auth-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+}
+
+.auth-map-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.auth-map-legend-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+}
+
+.auth-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.auth-fab:hover {
+  transform: translateY(-2px);
+  background: var(--color-accent-hover);
+}
+
+@media (min-width: 768px) {
+  .auth-fab {
+    display: none;
+  }
+}
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);

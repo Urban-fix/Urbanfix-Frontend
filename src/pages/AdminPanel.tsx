@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Card } from '../components/ui/Card';
+import { Effect } from '@animate-ui/react/primitives/effects/effect';
+import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
+import { AppShell } from '../components/layout/AppShell';
 import { useCategorias } from '../hooks/useCategorias';
 import { useZonas } from '../hooks/useZonas';
 import { useReportes } from '../hooks/useReportes';
 import { authApi } from '../api/auth';
-import { Settings, Users, FileText, Map } from 'lucide-react';
+import { Settings, Users, FileText, Map, Plus, X } from 'lucide-react';
 import { useForm } from '../hooks/useForm';
 import type { Rol } from '../types/auth.types';
 import toast from 'react-hot-toast';
@@ -16,7 +18,7 @@ export const AdminPanel: React.FC = () => {
   const { zonas } = useZonas();
   const { reportes } = useReportes();
   const [showCreateUser, setShowCreateUser] = useState(false);
-  
+
   const {
     register,
     handleSubmit,
@@ -24,16 +26,29 @@ export const AdminPanel: React.FC = () => {
     reset,
   } = useForm();
 
-  const roles: Rol[] = ['CIUDADANO', 'ADMIN_MUNICIPAL', 'TECNICO', 'SUPERVISOR', 'OPERADOR', 'AUDITOR'];
+  const roles: Rol[] = [
+    'CIUDADANO',
+    'ADMIN_MUNICIPAL',
+    'TECNICO',
+    'SUPERVISOR',
+    'OPERADOR',
+    'AUDITOR',
+  ];
 
-  const onCreateUser = async (data: any) => {
+  const onCreateUser = async (data: Record<string, unknown>) => {
     try {
       await authApi.createUserAsAdmin(data);
       toast.success('Usuario creado exitosamente');
       reset();
       setShowCreateUser(false);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Error al crear usuario');
+    } catch (error: unknown) {
+      const message =
+        error &&
+        typeof error === 'object' &&
+        'response' in error &&
+        (error as { response?: { data?: { message?: string } } }).response?.data
+          ?.message;
+      toast.error(message || 'Error al crear usuario');
     }
   };
 
@@ -42,150 +57,233 @@ export const AdminPanel: React.FC = () => {
       title: 'Total Reportes',
       value: reportes.length,
       icon: FileText,
-      color: 'bg-blue-500',
+      tone: 'accent' as const,
     },
     {
       title: 'Categorías',
       value: categorias.length,
       icon: Users,
-      color: 'bg-green-500',
+      tone: 'success' as const,
     },
     {
       title: 'Zonas',
       value: zonas.length,
       icon: Map,
-      color: 'bg-purple-500',
+      tone: 'info' as const,
     },
     {
       title: 'Usuarios Activos',
-      value: 'N/A',
+      value: null as number | null,
       icon: Settings,
-      color: 'bg-orange-500',
+      tone: 'warning' as const,
+      display: '—',
     },
   ];
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-        Panel de Administración
-      </h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat) => (
-          <Card key={stat.title} className={`${stat.color} text-white`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">{stat.title}</h3>
-                <p className="text-3xl font-bold mt-2">{stat.value}</p>
+    <AppShell
+      title="Administración"
+      subtitle="Gestión municipal de usuarios, categorías y zonas"
+      action={
+        <Button
+          onClick={() => setShowCreateUser((v) => !v)}
+          className="inline-flex items-center"
+        >
+          {showCreateUser ? (
+            <>
+              <X className="mr-2 h-4 w-4" />
+              Cancelar
+            </>
+          ) : (
+            <>
+              <Plus className="mr-2 h-4 w-4" />
+              Crear Usuario
+            </>
+          )}
+        </Button>
+      }
+    >
+      <div className="space-y-8">
+        <Effect fade slide={{ direction: 'up', offset: 16 }} inView>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.title} className={`auth-stat-card tone-${stat.tone}`}>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="auth-stat-label">{stat.title}</p>
+                    {stat.display != null ? (
+                      <p className="auth-stat-value">{stat.display}</p>
+                    ) : (
+                      <CountingNumber
+                        number={stat.value ?? 0}
+                        className="auth-stat-value"
+                        inView
+                      />
+                    )}
+                  </div>
+                  <stat.icon className="auth-stat-icon" aria-hidden />
+                </div>
               </div>
-              <stat.icon className="w-8 h-8 opacity-80" />
-            </div>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Gestión de Usuarios
-            </h2>
-            <Button onClick={() => setShowCreateUser(!showCreateUser)}>
-              {showCreateUser ? 'Cancelar' : 'Crear Usuario'}
-            </Button>
+            ))}
           </div>
+        </Effect>
 
-          {showCreateUser && (
-            <form onSubmit={handleSubmit(onCreateUser)} className="space-y-4 mb-4 p-4 bg-gray-50 dark:bg-gray-700 rounded">
-              <Input
-                label="Nombre"
-                {...register('nombre', { required: 'Nombre es requerido' })}
-                error={errors.nombre?.message as string}
-              />
-              <Input
-                label="Apellido"
-                {...register('apellido', { required: 'Apellido es requerido' })}
-                error={errors.apellido?.message as string}
-              />
-              <Input
-                label="Email"
-                type="email"
-                {...register('email', { 
-                  required: 'Email es requerido',
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Email inválido'
-                  }
-                })}
-                error={errors.email?.message as string}
-              />
-              <Input
-                label="Contraseña"
-                type="password"
-                {...register('password', { 
-                  required: 'Contraseña es requerida',
-                  minLength: { value: 8, message: 'Mínimo 8 caracteres' }
-                })}
-                error={errors.password?.message as string}
-              />
-              <div>
-                <label className="block text-sm font-medium text-text mb-2">
-                  Rol
-                </label>
-                <select
-                  {...register('rol', { required: 'Rol es requerido' })}
-                  className="w-full h-12 px-4 border border-line bg-surface rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200 text-text"
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <Effect fade slide={{ direction: 'up', offset: 14 }} delay={0.05} inView>
+            <div className="auth-filter-panel h-full">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <h2 className="auth-section-title">Gestión de Usuarios</h2>
+                <Button
+                  size="sm"
+                  variant={showCreateUser ? 'secondary' : 'primary'}
+                  onClick={() => setShowCreateUser((v) => !v)}
+                  className="inline-flex items-center md:hidden"
                 >
-                  <option value="">Selecciona un rol</option>
-                  {roles.map((rol) => (
-                    <option key={rol} value={rol}>
-                      {rol}
-                    </option>
-                  ))}
-                </select>
-                {errors.rol && (
-                  <p className="mt-2 text-sm text-error">{errors.rol.message as string}</p>
+                  {showCreateUser ? 'Cancelar' : 'Crear'}
+                </Button>
+              </div>
+
+              {showCreateUser && (
+                <form
+                  onSubmit={handleSubmit(onCreateUser)}
+                  className="mb-2 space-y-4 rounded border border-line bg-surface-2 p-4"
+                >
+                  <Input
+                    label="Nombre"
+                    {...register('nombre', { required: 'Nombre es requerido' })}
+                    error={errors.nombre?.message as string}
+                  />
+                  <Input
+                    label="Apellido"
+                    {...register('apellido', {
+                      required: 'Apellido es requerido',
+                    })}
+                    error={errors.apellido?.message as string}
+                  />
+                  <Input
+                    label="Email"
+                    type="email"
+                    {...register('email', {
+                      required: 'Email es requerido',
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: 'Email inválido',
+                      },
+                    })}
+                    error={errors.email?.message as string}
+                  />
+                  <Input
+                    label="Contraseña"
+                    type="password"
+                    {...register('password', {
+                      required: 'Contraseña es requerida',
+                      minLength: {
+                        value: 8,
+                        message: 'Mínimo 8 caracteres',
+                      },
+                    })}
+                    error={errors.password?.message as string}
+                  />
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-text">
+                      Rol
+                    </label>
+                    <select
+                      {...register('rol', { required: 'Rol es requerido' })}
+                      className="auth-select"
+                    >
+                      <option value="">Selecciona un rol</option>
+                      {roles.map((rol) => (
+                        <option key={rol} value={rol}>
+                          {rol.replace(/_/g, ' ')}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.rol && (
+                      <p className="mt-2 text-sm text-error">
+                        {errors.rol.message as string}
+                      </p>
+                    )}
+                  </div>
+                  <Button type="submit" isLoading={isSubmitting} className="w-full">
+                    {isSubmitting ? 'Creando…' : 'Crear Usuario'}
+                  </Button>
+                </form>
+              )}
+
+              {!showCreateUser && (
+                <p className="text-sm text-text-secondary">
+                  Crea cuentas municipales con rol y credenciales iniciales.
+                </p>
+              )}
+            </div>
+          </Effect>
+
+          <Effect fade slide={{ direction: 'up', offset: 14 }} delay={0.08} inView>
+            <div className="auth-filter-panel h-full">
+              <h2 className="auth-section-title mb-4">Categorías</h2>
+              <div className="space-y-2">
+                {categorias.map((cat, index) => (
+                  <Effect
+                    key={cat.id}
+                    fade
+                    slide={{ direction: 'up', offset: 8 }}
+                    delay={0.03 * index}
+                    inView
+                  >
+                    <div className="auth-info-row justify-between">
+                      <span className="text-sm text-text">{cat.nombre}</span>
+                      <span className="text-xs uppercase tracking-wide text-text-muted">
+                        #{cat.id}
+                      </span>
+                    </div>
+                  </Effect>
+                ))}
+                {categorias.length === 0 && (
+                  <p className="py-6 text-center text-sm text-text-muted">
+                    No hay categorías
+                  </p>
                 )}
               </div>
-              <Button type="submit" isLoading={isSubmitting} className="w-full">
-                {isSubmitting ? 'Creando...' : 'Crear Usuario'}
-              </Button>
-            </form>
-          )}
-        </Card>
+            </div>
+          </Effect>
 
-        <Card>
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-            Gestión de Categorías
-          </h2>
-          <div className="space-y-2">
-            {categorias.map(cat => (
-              <div key={cat.id} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                <span className="text-gray-900 dark:text-white">{cat.nombre}</span>
+          <Effect
+            fade
+            slide={{ direction: 'up', offset: 14 }}
+            delay={0.1}
+            inView
+            className="lg:col-span-2"
+          >
+            <div className="auth-filter-panel">
+              <h2 className="auth-section-title mb-4">Zonas</h2>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {zonas.map((zona, index) => (
+                  <Effect
+                    key={zona.id}
+                    fade
+                    slide={{ direction: 'up', offset: 8 }}
+                    delay={0.02 * index}
+                    inView
+                  >
+                    <div className="auth-info-row justify-between">
+                      <span className="text-sm text-text">{zona.nombre}</span>
+                      <span className="text-xs uppercase tracking-wide text-text-muted">
+                        #{zona.id}
+                      </span>
+                    </div>
+                  </Effect>
+                ))}
+                {zonas.length === 0 && (
+                  <p className="col-span-full py-6 text-center text-sm text-text-muted">
+                    No hay zonas
+                  </p>
+                )}
               </div>
-            ))}
-            {categorias.length === 0 && (
-              <p className="text-gray-500 text-center py-4">No hay categorías</p>
-            )}
-          </div>
-        </Card>
-
-        <Card>
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-            Gestión de Zonas
-          </h2>
-          <div className="space-y-2">
-            {zonas.map(zona => (
-              <div key={zona.id} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                <span className="text-gray-900 dark:text-white">{zona.nombre}</span>
-              </div>
-            ))}
-            {zonas.length === 0 && (
-              <p className="text-gray-500 text-center py-4">No hay zonas</p>
-            )}
-          </div>
-        </Card>
+            </div>
+          </Effect>
+        </div>
       </div>
-    </div>
+    </AppShell>
   );
 };

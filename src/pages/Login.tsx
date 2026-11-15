@@ -42,7 +42,7 @@ export const Login: React.FC = () => {
       toast.success('Login con Google exitoso');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Error al iniciar sesión con Google');
+      toast.error(error.response?.data?.message ?? 'Error al iniciar sesión con Google');
     }
   };
 

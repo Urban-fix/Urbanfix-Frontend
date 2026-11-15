@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
+import { Shine } from '@animate-ui/react/primitives/effects/shine';
+import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
 import { api } from '../api/axios';
 import { Button } from '../components/ui/Button';
 import { AppShell } from '../components/layout/AppShell';
@@ -17,6 +19,7 @@ import {
   Pencil,
   MessageSquare,
   History,
+  Sparkles,
 } from 'lucide-react';
 import type { ReporteDetailDTO } from '../types/reporte.types';
 import { useAuth } from '../hooks/useAuth';
@@ -154,19 +157,35 @@ export const ReporteDetail: React.FC = () => {
       action={
         <div className="flex items-center gap-2">
           {esDueno && (
-            <Link to={`/reportes/${reporte.id}/editar`}>
-              <Button variant="secondary" className="inline-flex items-center">
-                <Pencil className="mr-2 h-4 w-4" />
-                Editar
-              </Button>
-            </Link>
+            <Magnetic strength={0.15} onlyOnHover>
+              <Link to={`/reportes/${reporte.id}/editar`}>
+                <Shine
+                  enableOnHover
+                  color="rgba(212,245,140,0.25)"
+                  className="inline-flex"
+                >
+                  <Button variant="secondary" className="inline-flex items-center">
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Editar
+                  </Button>
+                </Shine>
+              </Link>
+            </Magnetic>
           )}
-          <Link to="/informes">
-            <Button variant="secondary" className="inline-flex items-center">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver
-            </Button>
-          </Link>
+          <Magnetic strength={0.15} onlyOnHover>
+            <Link to="/informes">
+              <Shine
+                enableOnHover
+                color="rgba(212,245,140,0.25)"
+                className="inline-flex"
+              >
+                <Button variant="secondary" className="inline-flex items-center">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Volver
+                </Button>
+              </Shine>
+            </Link>
+          </Magnetic>
         </div>
       }
     >
@@ -223,23 +242,40 @@ export const ReporteDetail: React.FC = () => {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <Button
-                  onClick={handleConfirm}
-                  disabled={hasConfirmed || isConfirming}
-                  isLoading={isConfirming}
-                  variant={hasConfirmed ? 'secondary' : 'primary'}
-                  className="inline-flex items-center"
-                >
-                  <ThumbsUp className="mr-2 h-4 w-4" />
-                  {hasConfirmed ? 'Confirmado' : 'Confirmar'}
-                </Button>
-                {esDueno && (
-                  <Link to={`/reportes/${reporte.id}/editar`} className="md:hidden">
-                    <Button variant="secondary" className="inline-flex items-center">
-                      <Pencil className="mr-2 h-4 w-4" />
-                      Editar
+                <Magnetic strength={0.15} onlyOnHover>
+                  <Shine
+                    enableOnHover
+                    color="rgba(212,245,140,0.25)"
+                    className="inline-block"
+                  >
+                    <Button
+                      onClick={handleConfirm}
+                      disabled={hasConfirmed || isConfirming}
+                      isLoading={isConfirming}
+                      variant={hasConfirmed ? 'secondary' : 'primary'}
+                      className="inline-flex items-center"
+                    >
+                      <ThumbsUp className="mr-2 h-4 w-4" />
+                      {hasConfirmed ? 'Confirmado' : 'Confirmar'}
+                      {!hasConfirmed && <Sparkles className="ml-2 h-3 w-3 text-accent/60" />}
                     </Button>
-                  </Link>
+                  </Shine>
+                </Magnetic>
+                {esDueno && (
+                  <Magnetic strength={0.15} onlyOnHover>
+                    <Link to={`/reportes/${reporte.id}/editar`} className="md:hidden">
+                      <Shine
+                        enableOnHover
+                        color="rgba(212,245,140,0.25)"
+                        className="inline-block"
+                      >
+                        <Button variant="secondary" className="inline-flex items-center">
+                          <Pencil className="mr-2 h-4 w-4" />
+                          Editar
+                        </Button>
+                      </Shine>
+                    </Link>
+                  </Magnetic>
                 )}
               </div>
 
@@ -261,13 +297,21 @@ export const ReporteDetail: React.FC = () => {
                         </option>
                       ))}
                     </select>
-                    <Button
-                      onClick={handleCambiarEstado}
-                      disabled={!selectedEstado || isUpdatingEstado}
-                      isLoading={isUpdatingEstado}
-                    >
-                      Actualizar
-                    </Button>
+                    <Magnetic strength={0.15} onlyOnHover>
+                      <Shine
+                        enableOnHover
+                        color="rgba(212,245,140,0.25)"
+                        className="inline-block"
+                      >
+                        <Button
+                          onClick={handleCambiarEstado}
+                          disabled={!selectedEstado || isUpdatingEstado}
+                          isLoading={isUpdatingEstado}
+                        >
+                          Actualizar
+                        </Button>
+                      </Shine>
+                    </Magnetic>
                   </div>
                 </div>
               )}
@@ -282,46 +326,65 @@ export const ReporteDetail: React.FC = () => {
             delay={0.05}
             inView
           >
-            <div className="auth-filter-panel h-full">
-              <h2 className="auth-section-title mb-4 inline-flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-accent" />
-                Comentarios ({reporte.comentarios.length})
-              </h2>
+            <Magnetic strength={0.08} onlyOnHover>
+              <Shine
+                enableOnHover
+                color="rgba(212,245,140,0.12)"
+                className="block"
+              >
+                <div className="auth-filter-panel h-full relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-accent/5 blur-3xl" />
+                  <div className="relative">
+                    <h2 className="auth-section-title mb-4 inline-flex items-center gap-2">
+                      <MessageSquare className="h-5 w-5 text-accent" />
+                      Comentarios ({reporte.comentarios.length})
+                    </h2>
 
-              <form onSubmit={handleAddComment} className="mb-6">
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Escribe un comentario…"
-                  className="auth-textarea mb-3"
-                  rows={3}
-                />
-                <Button
-                  type="submit"
-                  size="sm"
-                  disabled={!comment.trim() || isCommenting}
-                  isLoading={isCommenting}
-                >
-                  Agregar comentario
-                </Button>
-              </form>
+                    <form onSubmit={handleAddComment} className="mb-6">
+                      <textarea
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        placeholder="Escribe un comentario…"
+                        className="auth-textarea mb-3"
+                        rows={3}
+                      />
+                      <Magnetic strength={0.15} onlyOnHover>
+                        <Shine
+                          enableOnHover
+                          color="rgba(212,245,140,0.25)"
+                          className="inline-block"
+                        >
+                          <Button
+                            type="submit"
+                            size="sm"
+                            disabled={!comment.trim() || isCommenting}
+                            isLoading={isCommenting}
+                          >
+                            Agregar comentario
+                          </Button>
+                        </Shine>
+                      </Magnetic>
+                    </form>
 
-              <div className="space-y-3">
-                {reporte.comentarios.length === 0 ? (
-                  <p className="py-4 text-center text-sm text-text-muted">
-                    No hay comentarios aún
-                  </p>
-                ) : (
-                  reporte.comentarios.map((comentario, index) => (
-                    <CommentItem
-                      key={comentario.id}
-                      comentario={comentario}
-                      index={index}
-                    />
-                  ))
-                )}
-              </div>
-            </div>
+                    <div className="space-y-3">
+                      {reporte.comentarios.length === 0 ? (
+                        <p className="py-4 text-center text-sm text-text-muted">
+                          No hay comentarios aún
+                        </p>
+                      ) : (
+                        reporte.comentarios.map((comentario, index) => (
+                          <CommentItem
+                            key={comentario.id}
+                            comentario={comentario}
+                            index={index}
+                          />
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Shine>
+            </Magnetic>
           </Effect>
 
           <Effect
@@ -330,47 +393,58 @@ export const ReporteDetail: React.FC = () => {
             delay={0.1}
             inView
           >
-            <div className="auth-filter-panel h-full">
-              <h2 className="auth-section-title mb-4 inline-flex items-center gap-2">
-                <History className="h-5 w-5 text-accent" />
-                Historial de estados
-              </h2>
+            <Magnetic strength={0.08} onlyOnHover>
+              <Shine
+                enableOnHover
+                color="rgba(212,245,140,0.12)"
+                className="block"
+              >
+                <div className="auth-filter-panel h-full relative overflow-hidden">
+                  <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-accent/5 blur-3xl" />
+                  <div className="relative">
+                    <h2 className="auth-section-title mb-4 inline-flex items-center gap-2">
+                      <History className="h-5 w-5 text-accent" />
+                      Historial de estados
+                    </h2>
 
-              {reporte.historialEstados.length === 0 ? (
-                <p className="py-4 text-center text-sm text-text-muted">
-                  No hay historial
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {reporte.historialEstados.map((historial, index) => (
-                    <Effect
-                      key={historial.id}
-                      fade
-                      slide={{ direction: 'up', offset: 8 }}
-                      delay={0.04 * index}
-                      inView
-                    >
-                      <div className="auth-timeline-item">
-                        <div className="mb-1">
-                          <StatusBadge
-                            estado={
-                              historial.estado as keyof typeof ESTADOS_REPORTE
-                            }
-                            showIcon={false}
-                          />
-                        </div>
-                        <p className="mt-1 text-sm text-text-muted">
-                          {formatDateTime(historial.fechaCambio)}
-                        </p>
-                        <p className="text-sm text-text-secondary">
-                          Por: {historial.usuario.nombre}
-                        </p>
+                    {reporte.historialEstados.length === 0 ? (
+                      <p className="py-4 text-center text-sm text-text-muted">
+                        No hay historial
+                      </p>
+                    ) : (
+                      <div className="space-y-4">
+                        {reporte.historialEstados.map((historial, index) => (
+                          <Effect
+                            key={historial.id}
+                            fade
+                            slide={{ direction: 'up', offset: 8 }}
+                            delay={0.04 * index}
+                            inView
+                          >
+                            <div className="auth-timeline-item">
+                              <div className="mb-1">
+                                <StatusBadge
+                                  estado={
+                                    historial.estado as keyof typeof ESTADOS_REPORTE
+                                  }
+                                  showIcon={false}
+                                />
+                              </div>
+                              <p className="mt-1 text-sm text-text-muted">
+                                {formatDateTime(historial.fechaCambio)}
+                              </p>
+                              <p className="text-sm text-text-secondary">
+                                Por: {historial.usuario.nombre}
+                              </p>
+                            </div>
+                          </Effect>
+                        ))}
                       </div>
-                    </Effect>
-                  ))}
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
+              </Shine>
+            </Magnetic>
           </Effect>
         </div>
       </div>

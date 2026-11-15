@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
 import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
+import { Shine } from '@animate-ui/react/primitives/effects/shine';
+import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
 import {
   Close as DialogClose,
   Content as DialogContent,
@@ -19,7 +21,7 @@ import { useReportesPublic } from '../hooks/useReportesPublic';
 import { ESTADOS_REPORTE } from '../utils/constants';
 import { homeImages } from '../utils/homeMedia';
 import type { ReportePublicDTO } from '../types/reporte.types';
-import { MapPin, Plus, X, ArrowRight } from 'lucide-react';
+import { MapPin, Plus, X, ArrowRight, Sparkles } from 'lucide-react';
 
 export const Mapa: React.FC = () => {
   const { reportes, isLoading, error, refetch } = useReportesPublic();
@@ -36,41 +38,58 @@ export const Mapa: React.FC = () => {
       title="Mapa de reportes"
       subtitle="Problemas urbanos geolocalizados con OpenStreetMap"
       action={
-        <Link to="/informes/crear">
-          <Button className="inline-flex items-center">
-            <Plus className="mr-2 h-4 w-4" />
-            Nuevo reporte
-          </Button>
-        </Link>
+        <Magnetic strength={0.2} onlyOnHover>
+          <Link to="/informes/crear">
+            <Shine
+              enableOnHover
+              color="rgba(212,245,140,0.35)"
+              className="inline-flex"
+            >
+              <Button className="inline-flex items-center">
+                <Plus className="mr-2 h-4 w-4" />
+                Nuevo reporte
+                <Sparkles className="ml-2 h-3 w-3 text-accent/60" />
+              </Button>
+            </Shine>
+          </Link>
+        </Magnetic>
       }
     >
       <div className="space-y-5">
         <Effect fade slide={{ direction: 'up', offset: 14 }} inView>
-          <div className="auth-map-toolbar">
-            <div className="flex items-center gap-3">
-              <div className="auth-icon-well">
-                <MapPin className="h-5 w-5 text-accent" />
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-wider text-text-muted">
-                  Pines activos
+          <Magnetic strength={0.08} onlyOnHover>
+            <Shine
+              enableOnHover
+              color="rgba(212,245,140,0.15)"
+              className="block"
+            >
+              <div className="auth-map-toolbar">
+                <div className="flex items-center gap-3">
+                  <div className="auth-icon-well">
+                    <MapPin className="h-5 w-5 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-text-muted">
+                      Pines activos
+                    </p>
+                    {isLoading ? (
+                      <div className="mt-1 h-7 w-16 animate-pulse rounded bg-surface-2" />
+                    ) : (
+                      <CountingNumber
+                        number={reportes.length}
+                        className="font-heading text-2xl text-accent"
+                        inView
+                      />
+                    )}
+                  </div>
+                </div>
+                <p className="max-w-md text-sm text-text-secondary">
+                  Haz clic en un pin para abrir el detalle. Los colores indican el
+                  estado del reporte.
                 </p>
-                {isLoading ? (
-                  <div className="mt-1 h-7 w-16 animate-pulse rounded bg-surface-2" />
-                ) : (
-                  <CountingNumber
-                    number={reportes.length}
-                    className="font-heading text-2xl text-accent"
-                    inView
-                  />
-                )}
               </div>
-            </div>
-            <p className="max-w-md text-sm text-text-secondary">
-              Haz clic en un pin para abrir el detalle. Los colores indican el
-              estado del reporte.
-            </p>
-          </div>
+            </Shine>
+          </Magnetic>
         </Effect>
 
         {error && (
@@ -90,12 +109,21 @@ export const Mapa: React.FC = () => {
               <p className="mb-5 text-text-secondary">
                 No hay reportes en el mapa
               </p>
-              <Link to="/informes/crear">
-                <Button className="inline-flex items-center">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Crear primer reporte
-                </Button>
-              </Link>
+              <Magnetic strength={0.2} onlyOnHover>
+                <Link to="/informes/crear">
+                  <Shine
+                    enableOnHover
+                    color="rgba(212,245,140,0.3)"
+                    className="inline-block"
+                  >
+                    <Button className="inline-flex items-center">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Crear primer reporte
+                      <Sparkles className="ml-2 h-3 w-3 text-accent/60" />
+                    </Button>
+                  </Shine>
+                </Link>
+              </Magnetic>
             </div>
           ) : (
             <div className="auth-map-layout">
@@ -109,40 +137,56 @@ export const Mapa: React.FC = () => {
               </div>
 
               {selected && (
-                <aside className="auth-map-detail hidden w-full max-w-sm shrink-0 lg:block">
-                  <div className="auth-map-detail-media">
-                    <img
-                      src={selected.fotoUrl || homeImages.baches}
-                      alt={selected.titulo}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="space-y-3 p-4">
-                    <div className="flex items-start justify-between gap-2">
-                      <h2 className="font-heading text-lg uppercase text-text">
-                        {selected.titulo}
-                      </h2>
-                      <StatusBadge
-                        estado={
-                          selected.estadoActual as keyof typeof ESTADOS_REPORTE
-                        }
-                        showIcon={false}
-                      />
-                    </div>
-                    <p className="text-sm leading-relaxed text-text-secondary">
-                      {selected.descripcion}
-                    </p>
-                    <p className="text-xs text-text-muted">
-                      {selected.categoria?.nombre} · {selected.zona?.nombre}
-                    </p>
-                    <Link to={`/reportes/${selected.id}`}>
-                      <Button className="inline-flex w-full items-center justify-center">
-                        Ver detalle completo
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                </aside>
+                <Magnetic strength={0.08} onlyOnHover>
+                  <Shine
+                    enableOnHover
+                    color="rgba(212,245,140,0.12)"
+                    className="block"
+                  >
+                    <aside className="auth-map-detail hidden w-full max-w-sm shrink-0 lg:block">
+                      <div className="auth-map-detail-media">
+                        <img
+                          src={selected.fotoUrl || homeImages.baches}
+                          alt={selected.titulo}
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="space-y-3 p-4">
+                        <div className="flex items-start justify-between gap-2">
+                          <h2 className="font-heading text-lg uppercase text-text">
+                            {selected.titulo}
+                          </h2>
+                          <StatusBadge
+                            estado={
+                              selected.estadoActual as keyof typeof ESTADOS_REPORTE
+                            }
+                            showIcon={false}
+                          />
+                        </div>
+                        <p className="text-sm leading-relaxed text-text-secondary">
+                          {selected.descripcion}
+                        </p>
+                        <p className="text-xs text-text-muted">
+                          {selected.categoria?.nombre} · {selected.zona?.nombre}
+                        </p>
+                        <Magnetic strength={0.15} onlyOnHover>
+                          <Shine
+                            enableOnHover
+                            color="rgba(212,245,140,0.25)"
+                            className="inline-block"
+                          >
+                            <Link to={`/reportes/${selected.id}`}>
+                              <Button className="inline-flex w-full items-center justify-center">
+                                Ver detalle completo
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                              </Button>
+                            </Link>
+                          </Shine>
+                        </Magnetic>
+                      </div>
+                    </aside>
+                  </Shine>
+                </Magnetic>
               )}
             </div>
           )}
@@ -198,12 +242,20 @@ export const Mapa: React.FC = () => {
                   <p className="text-xs text-text-muted">
                     {selected.categoria?.nombre} · {selected.zona?.nombre}
                   </p>
-                  <Link to={`/reportes/${selected.id}`}>
-                    <Button className="inline-flex w-full items-center justify-center">
-                      Ver detalle completo
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
+                  <Magnetic strength={0.15} onlyOnHover>
+                    <Shine
+                      enableOnHover
+                      color="rgba(212,245,140,0.25)"
+                      className="inline-block"
+                    >
+                      <Link to={`/reportes/${selected.id}`}>
+                        <Button className="inline-flex w-full items-center justify-center">
+                          Ver detalle completo
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </Shine>
+                  </Magnetic>
                 </div>
               </>
             )}

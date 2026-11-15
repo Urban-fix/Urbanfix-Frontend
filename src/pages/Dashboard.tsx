@@ -19,6 +19,9 @@ import {
   Map,
   TrendingUp,
   ArrowRight,
+  Sparkles,
+  Activity,
+  Zap,
 } from 'lucide-react';
 import { ESTADOS_REPORTE } from '../utils/constants';
 import { formatRelativeTime } from '../utils/formatters';
@@ -49,24 +52,28 @@ export const Dashboard: React.FC = () => {
       value: userStats.total,
       icon: FileText,
       tone: 'accent' as const,
+      icon2: Activity,
     },
     {
       title: 'Pendientes',
       value: userStats.pendientes,
       icon: AlertCircle,
       tone: 'warning' as const,
+      icon2: Zap,
     },
     {
       title: 'En Progreso',
       value: userStats.enProgreso,
       icon: Clock,
       tone: 'info' as const,
+      icon2: Activity,
     },
     {
       title: 'Resueltos',
       value: userStats.resueltos,
       icon: CheckCircle,
       tone: 'success' as const,
+      icon2: Sparkles,
     },
   ];
 
@@ -75,12 +82,21 @@ export const Dashboard: React.FC = () => {
       title="Dashboard"
       subtitle={`Bienvenido, ${user?.nombre}`}
       action={
-        <Link to="/informes/crear">
-          <Button className="inline-flex items-center">
-            <Plus className="mr-2 h-5 w-5" />
-            Nuevo Reporte
-          </Button>
-        </Link>
+        <Magnetic strength={0.25} onlyOnHover>
+          <Link to="/informes/crear">
+            <Shine
+              enableOnHover
+              color="rgba(212,245,140,0.4)"
+              className="inline-flex"
+            >
+              <Button className="inline-flex items-center relative overflow-hidden">
+                <Plus className="mr-2 h-5 w-5" />
+                Nuevo Reporte
+                <Sparkles className="ml-2 h-4 w-4 text-accent/60" />
+              </Button>
+            </Shine>
+          </Link>
+        </Magnetic>
       }
     >
       <div className="space-y-10">
@@ -167,19 +183,33 @@ export const Dashboard: React.FC = () => {
                     delay={0.05 * index}
                     inView
                   >
-                    <article className={`auth-stat-card tone-${stat.tone}`}>
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="auth-stat-label">{stat.title}</p>
-                          <CountingNumber
-                            number={stat.value}
-                            className="auth-stat-value"
-                            inView
-                          />
-                        </div>
-                        <stat.icon className="auth-stat-icon" aria-hidden />
-                      </div>
-                    </article>
+                    <Magnetic strength={0.15} onlyOnHover>
+                      <Shine
+                        enableOnHover
+                        color="rgba(212,245,140,0.25)"
+                        className="block"
+                      >
+                        <article className={`auth-stat-card tone-${stat.tone} relative overflow-hidden`}>
+                          <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5 blur-2xl" />
+                          <div className="relative flex items-start justify-between gap-3">
+                            <div>
+                              <p className="auth-stat-label">{stat.title}</p>
+                              <CountingNumber
+                                number={stat.value}
+                                className="auth-stat-value"
+                                inView
+                              />
+                            </div>
+                            <div className="relative">
+                              <stat.icon className="auth-stat-icon" aria-hidden />
+                              {stat.icon2 && (
+                                <stat.icon2 className="absolute -right-2 -bottom-2 h-4 w-4 text-current opacity-40" aria-hidden />
+                              )}
+                            </div>
+                          </div>
+                        </article>
+                      </Shine>
+                    </Magnetic>
                   </Effect>
                 ))}
           </div>
@@ -196,19 +226,31 @@ export const Dashboard: React.FC = () => {
               delay={0.05}
               inView
             >
-              <article className="auth-stat-card tone-accent">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="auth-stat-label">Pendientes globales</p>
-                    <CountingNumber
-                      number={globalStats.pendientes}
-                      className="auth-stat-value"
-                      inView
-                    />
-                  </div>
-                  <TrendingUp className="auth-stat-icon" aria-hidden />
-                </div>
-              </article>
+              <Magnetic strength={0.15} onlyOnHover>
+                <Shine
+                  enableOnHover
+                  color="rgba(212,245,140,0.25)"
+                  className="block"
+                >
+                  <article className="auth-stat-card tone-accent relative overflow-hidden">
+                    <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5 blur-2xl" />
+                    <div className="relative flex items-center justify-between">
+                      <div>
+                        <p className="auth-stat-label">Pendientes globales</p>
+                        <CountingNumber
+                          number={globalStats.pendientes}
+                          className="auth-stat-value"
+                          inView
+                        />
+                      </div>
+                      <div className="relative">
+                        <TrendingUp className="auth-stat-icon" aria-hidden />
+                        <Activity className="absolute -right-2 -bottom-2 h-4 w-4 text-current opacity-40" aria-hidden />
+                      </div>
+                    </div>
+                  </article>
+                </Shine>
+              </Magnetic>
             </Effect>
             <Effect
               fade
@@ -216,19 +258,31 @@ export const Dashboard: React.FC = () => {
               delay={0.1}
               inView
             >
-              <article className="auth-stat-card tone-success">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="auth-stat-label">Resueltos globales</p>
-                    <CountingNumber
-                      number={globalStats.resueltos}
-                      className="auth-stat-value"
-                      inView
-                    />
-                  </div>
-                  <CheckCircle className="auth-stat-icon" aria-hidden />
-                </div>
-              </article>
+              <Magnetic strength={0.15} onlyOnHover>
+                <Shine
+                  enableOnHover
+                  color="rgba(212,245,140,0.25)"
+                  className="block"
+                >
+                  <article className="auth-stat-card tone-success relative overflow-hidden">
+                    <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5 blur-2xl" />
+                    <div className="relative flex items-center justify-between">
+                      <div>
+                        <p className="auth-stat-label">Resueltos globales</p>
+                        <CountingNumber
+                          number={globalStats.resueltos}
+                          className="auth-stat-value"
+                          inView
+                        />
+                      </div>
+                      <div className="relative">
+                        <CheckCircle className="auth-stat-icon" aria-hidden />
+                        <Sparkles className="absolute -right-2 -bottom-2 h-4 w-4 text-current opacity-40" aria-hidden />
+                      </div>
+                    </div>
+                  </article>
+                </Shine>
+              </Magnetic>
             </Effect>
           </div>
         </section>
@@ -284,42 +338,51 @@ export const Dashboard: React.FC = () => {
                   delay={0.04 * index}
                   inView
                 >
-                  <article className="auth-report-card flex h-full flex-col">
-                    <div className="auth-report-media">
-                      <img
-                        src={reporte.fotoUrl || homeImages.baches}
-                        alt={reporte.titulo}
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-4">
-                      <div className="mb-2 flex items-start justify-between gap-2">
-                        <h3 className="line-clamp-2 font-heading text-base uppercase leading-tight text-text">
-                          {reporte.titulo}
-                        </h3>
-                        <StatusBadge
-                          estado={
-                            reporte.estadoActual as keyof typeof ESTADOS_REPORTE
-                          }
-                          showIcon={false}
-                        />
-                      </div>
-                      <p className="mb-3 line-clamp-2 text-sm text-text-secondary">
-                        {reporte.descripcion}
-                      </p>
-                      <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-                        <span className="text-xs text-text-muted">
-                          {formatRelativeTime(reporte.fechaCreacion)}
-                        </span>
-                        <Link
-                          to={`/reportes/${reporte.id}`}
-                          className="text-sm font-semibold text-accent hover:text-accent-hover"
-                        >
-                          Ver detalle
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
+                  <Magnetic strength={0.12} onlyOnHover>
+                    <Shine
+                      enableOnHover
+                      color="rgba(212,245,140,0.2)"
+                      className="block"
+                    >
+                      <Link to={`/reportes/${reporte.id}`} className="block">
+                        <article className="auth-report-card flex h-full flex-col relative overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
+                          <div className="auth-report-media">
+                            <img
+                              src={reporte.fotoUrl || homeImages.baches}
+                              alt={reporte.titulo}
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className="relative flex flex-1 flex-col p-4">
+                            <div className="mb-2 flex items-start justify-between gap-2">
+                              <h3 className="line-clamp-2 font-heading text-base uppercase leading-tight text-text">
+                                {reporte.titulo}
+                              </h3>
+                              <StatusBadge
+                                estado={
+                                  reporte.estadoActual as keyof typeof ESTADOS_REPORTE
+                                }
+                                showIcon={false}
+                              />
+                            </div>
+                            <p className="mb-3 line-clamp-2 text-sm text-text-secondary">
+                              {reporte.descripcion}
+                            </p>
+                            <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+                              <span className="text-xs text-text-muted">
+                                {formatRelativeTime(reporte.fechaCreacion)}
+                              </span>
+                              <div className="flex items-center gap-1 text-sm font-semibold text-accent hover:text-accent-hover transition-colors">
+                                Ver detalle
+                                <ArrowRight className="h-4 w-4" />
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </Link>
+                    </Shine>
+                  </Magnetic>
                 </Effect>
               ))}
             </div>

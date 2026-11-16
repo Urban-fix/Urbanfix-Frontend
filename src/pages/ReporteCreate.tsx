@@ -184,7 +184,7 @@ export const ReporteCreate: React.FC = () => {
                 setLocationError(undefined);
               }}
               error={locationError}
-              className="h-[min(40vh,400px)] sm:h-[min(50vh,500px)]"
+              className="h-[min(40vh,400px)] sm:h-[min(50vh,500px)] mb-6"
             />
 
             <div>
@@ -310,7 +310,7 @@ export const ReporteCreate: React.FC = () => {
               <Shine
                 enableOnHover
                 color="rgba(212,245,140,0.35)"
-                className="inline-block"
+                className="block"
               >
                 <Button type="submit" isLoading={isSubmitting} className="w-full">
                   {isSubmitting ? 'Creando…' : 'Crear Reporte'}

@@ -5,6 +5,7 @@ import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
 import { useAuth } from '../../hooks/useAuth';
 import { User, FileText, LayoutDashboard, UserCircle, Menu, LogOut, Home } from 'lucide-react';
 import { MobileNavSheet } from './MobileNavSheet';
+import { LiquidButton } from '../ui/LiquidButton';
 
 export const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -104,11 +105,15 @@ export const Header: React.FC = () => {
             ) : (
               <div className="hidden items-center gap-3 md:flex">
                 <Magnetic strength={0.15} onlyOnHover>
-                  <Link
-                    to="/login"
-                    className="btn-secondary text-sm font-semibold min-w-[140px] text-center h-10"
-                  >
-                    Iniciar sesión
+                  <Link to="/login">
+                    <LiquidButton
+                      className="btn-secondary text-sm font-semibold min-w-[140px] text-center h-10"
+                      delay={0.3}
+                      fillHeight={3}
+                      tapScale={0.97}
+                    >
+                      Iniciar sesión
+                    </LiquidButton>
                   </Link>
                 </Magnetic>
                 <Magnetic strength={0.15} onlyOnHover>
@@ -117,8 +122,15 @@ export const Header: React.FC = () => {
                     color="rgba(212,245,140,0.25)"
                     className="inline-block"
                   >
-                    <Link to="/register" className="btn-primary text-sm font-semibold min-w-[140px] text-center h-10">
-                      Registrarse
+                    <Link to="/register">
+                      <LiquidButton
+                        className="btn-primary text-sm font-semibold min-w-[140px] text-center h-10"
+                        delay={0.3}
+                        fillHeight={3}
+                        tapScale={0.97}
+                      >
+                        Registrarse
+                      </LiquidButton>
                     </Link>
                   </Shine>
                 </Magnetic>

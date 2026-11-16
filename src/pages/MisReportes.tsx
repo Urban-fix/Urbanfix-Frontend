@@ -21,6 +21,7 @@ import { Input } from '../components/ui/Input';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { ESTADOS_REPORTE } from '../utils/constants';
 import { homeImages } from '../utils/homeMedia';
+import { normalizeImageUrl } from '../utils/imageHelper';
 import { Trash2, Eye, Plus, Pencil, Search, X, ChevronDown, ChevronUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -191,7 +192,7 @@ export const MisReportes: React.FC = () => {
                 <article className="auth-report-card overflow-hidden">
                   <div className="auth-report-media">
                     <img
-                      src={reporte.fotoUrl || homeImages.baches}
+                      src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
                       alt={reporte.titulo}
                       loading="lazy"
                     />

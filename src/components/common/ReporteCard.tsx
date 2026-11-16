@@ -9,6 +9,7 @@ import type {
 import { formatRelativeTime } from '../../utils/formatters';
 import { ESTADOS_REPORTE } from '../../utils/constants';
 import { homeImages } from '../../utils/homeMedia';
+import { normalizeImageUrl } from '../../utils/imageHelper';
 import { ThumbsUp, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ReporteCardProps {
@@ -39,7 +40,7 @@ export const ReporteCard: React.FC<ReporteCardProps> = ({ reporte }) => {
         <article className="auth-report-card h-full">
           <div className="auth-report-media">
             <img
-              src={reporte.fotoUrl || homeImages.baches}
+              src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
               alt={reporte.titulo}
               loading="lazy"
             />

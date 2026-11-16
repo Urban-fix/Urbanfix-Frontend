@@ -25,6 +25,7 @@ import type { ReporteDetailDTO } from '../types/reporte.types';
 import { useAuth } from '../hooks/useAuth';
 import { useReportes } from '../hooks/useReportes';
 import { homeImages } from '../utils/homeMedia';
+import { normalizeImageUrl } from '../utils/imageHelper';
 import toast from 'react-hot-toast';
 
 export const ReporteDetail: React.FC = () => {
@@ -194,7 +195,7 @@ export const ReporteDetail: React.FC = () => {
           <article className="auth-report-card overflow-hidden">
             <div className="auth-report-media !h-56 md:!h-72">
               <img
-                src={reporte.fotoUrl || homeImages.baches}
+                src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
                 alt={reporte.titulo}
               />
             </div>

@@ -26,6 +26,7 @@ import {
 import { ESTADOS_REPORTE } from '../utils/constants';
 import { formatRelativeTime } from '../utils/formatters';
 import { homeImages } from '../utils/homeMedia';
+import { normalizeImageUrl } from '../utils/imageHelper';
 
 export const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -349,7 +350,7 @@ export const Dashboard: React.FC = () => {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
                           <div className="auth-report-media">
                             <img
-                              src={reporte.fotoUrl || homeImages.baches}
+                              src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
                               alt={reporte.titulo}
                               loading="lazy"
                             />

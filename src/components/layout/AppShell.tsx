@@ -100,7 +100,7 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/login';
+    window.location.href = '/';
   };
 
   const initials =

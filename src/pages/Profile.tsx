@@ -10,7 +10,7 @@ export const Profile: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/login';
+    window.location.href = '/';
   };
 
   if (!user) {

@@ -63,14 +63,17 @@ export const useReportes = (filters?: ReportFilters) => {
     }
   };
 
-  const cambiarEstado = async (id: number, estado: string) => {
+  const cambiarEstado = async (id: number, nuevoEstado: string) => {
     try {
-      await api.patch(`/api/v1/reportes/${id}/estado`, estado, {
-        headers: { 'Content-Type': 'text/plain' }
+      await api.patch(`/api/v1/reportes/${id}/estado`, nuevoEstado, {
+        headers: { 'Content-Type': 'application/json' }
       });
-      await fetchReportes();
-    } catch (err: any) {
-      throw new Error(err.response?.data?.message || 'Error al cambiar estado');
+      
+      // Actualizar estado localmente
+      setReportes(reportes.map(r => r.id === id ? { ...r, estado: nuevoEstado } : r));
+    } catch (error) {
+      console.error('Error al cambiar estado:', error);
+      throw error;
     }
   };
 

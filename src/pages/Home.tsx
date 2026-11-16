@@ -1,21 +1,16 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShimmeringText } from '@animate-ui/react/primitives/texts/shimmering';
 import {
   TypingText,
   TypingTextCursor,
 } from '@animate-ui/react/primitives/texts/typing';
-import { CountingNumber } from '@animate-ui/react/primitives/texts/counting-number';
 import {
   CarouselCounter,
   CarouselDots,
 } from '@animate-ui/react/primitives/carousel';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
-import {
-  Highlight,
-  HighlightItem,
-} from '@animate-ui/react/primitives/effects/highlight';
-import { Button } from '../components/ui/Button';
+import { RippleButton } from '../components/ui/RippleButton';
 import { Card } from '../components/ui/Card';
 import {
   Carousel,
@@ -26,22 +21,15 @@ import {
   type CarouselApi,
 } from '../components/ui/carousel';
 import { useReportesPublic } from '../hooks/useReportesPublic';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import { heroSlides, reportCategories } from '../utils/homeMedia';
-import { ArrowRight, Camera, Users, Route } from 'lucide-react';
+import { ArrowRight, Camera, Users, Route, ChevronDown, ChevronUp, Map } from 'lucide-react';
 
 const StarsBackground = lazy(() =>
   import('../components/animate-ui/backgrounds/stars').then((mod) => ({
     default: mod.StarsBackground,
   })),
 );
-
-const FILTERS = [
-  { id: 'todos', label: 'Todos' },
-  { id: 'baches', label: 'Baches' },
-  { id: 'alumbrado', label: 'Alumbrado' },
-  { id: 'basura', label: 'Basura' },
-  { id: 'agua', label: 'Agua' },
-] as const;
 
 const howItWorksSteps = [
   {
@@ -69,11 +57,13 @@ const howItWorksSteps = [
 
 export const Home: React.FC = () => {
   const { reportes, isLoading } = useReportesPublic();
+  const navigate = useNavigate();
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeFilter, setActiveFilter] = useState<string>('todos');
   const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [showAllReports, setShowAllReports] = useState(false);
+  const isLgOrAbove = useMediaQuery('(min-width: 1024px)');
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -107,15 +97,6 @@ export const Home: React.FC = () => {
     return () => window.clearInterval(id);
   }, [carouselApi, prefersReducedMotion, isHoveringCarousel]);
 
-  const totalReportes = reportes.length;
-  const resueltos = reportes.filter((r) => r.estadoActual === 'RESUELTO').length;
-  const zonasActivas = new Set(
-    reportes
-      .map((r) => r.zona?.nombre || ('zonaNombre' in r ? String((r as { zonaNombre?: string }).zonaNombre ?? '') : ''))
-      .filter(Boolean),
-  ).size;
-  const showMetrics = !isLoading && totalReportes > 0;
-
   return (
     <div className="home-page min-h-screen bg-bg">
       {/* Hero */}
@@ -123,11 +104,11 @@ export const Home: React.FC = () => {
         {!prefersReducedMotion && (
           <Suspense fallback={null}>
             <StarsBackground
-              className="home-hero-stars pointer-events-none absolute inset-0"
+              className="home-hero-stars pointer-events-none absolute inset-0 z-0"
               starColor="color-mix(in srgb, var(--color-accent) 65%, white)"
               pointerEvents={false}
               speed={70}
-              factor={0.05}
+              factor={isLgOrAbove ? 0.05 : 0.02}
             />
           </Suspense>
         )}
@@ -140,10 +121,10 @@ export const Home: React.FC = () => {
                 text="TU CIUDAD"
                 duration={3}
                 color="var(--color-text)"
-                shimmeringColor="var(--color-accent-glow)"
+                shimmeringColor="rgba(212,245,140,0.3)"
                 className="block whitespace-nowrap overflow-visible"
               />
-              <span className="hero-typing-line block">
+              <span className="hero-typing-line block min-h-[1.2em]">
                 {prefersReducedMotion ? (
                   <span className="text-text">MEJORADA</span>
                 ) : (
@@ -159,7 +140,7 @@ export const Home: React.FC = () => {
                 )}
               </span>
             </h1>
-            <p className="hero-lead text-text-secondary mb-8 max-w-lg h-[6rem] overflow-hidden leading-relaxed">
+            <p className="hero-lead text-text-secondary mb-8 w-full max-w-xl min-h-[6rem] break-words leading-relaxed">
               {prefersReducedMotion ? (
                 'Reporta problemas urbanos y mejora tu comunidad con evidencia clara, mapa público y seguimiento hasta la resolución'
               ) : (
@@ -174,133 +155,131 @@ export const Home: React.FC = () => {
                 </TypingText>
               )}
             </p>
-            <div className="flex flex-wrap gap-3 mb-8">
-              <Link to="/reportes/crear">
-                <button type="button" className="btn-primary font-semibold">
+            <div className="flex flex-col gap-3 sm:flex-row mb-8">
+              <Link to="/reportes/crear" className="w-full sm:w-auto">
+                <RippleButton
+                  type="button"
+                  className="btn-primary font-semibold w-full min-h-[44px]"
+                  rippleColor="rgba(212, 245, 140, 0.5)"
+                >
                   Reportar un problema
-                </button>
+                </RippleButton>
               </Link>
+              <RippleButton
+                type="button"
+                onClick={() => navigate('/mapa')}
+                className="btn-secondary font-semibold w-full min-h-[44px] border border-line"
+                rippleColor="rgba(255, 255, 255, 0.3)"
+              >
+                <Map className="mr-2 h-4 w-4 inline" />
+                Ver mapa de reportes
+              </RippleButton>
             </div>
-
-            {showMetrics && (
-              <div className="hero-stats" aria-label="Métricas de la comunidad">
-                <div className="hero-stat">
-                  <CountingNumber
-                    number={totalReportes}
-                    className="hero-stat-value"
-                    inView
-                  />
-                  <span className="hero-stat-label">Reportes</span>
-                </div>
-                <div className="hero-stats-divider" />
-                <div className="hero-stat">
-                  <CountingNumber
-                    number={resueltos}
-                    className="hero-stat-value"
-                    inView
-                  />
-                  <span className="hero-stat-label">Resueltos</span>
-                </div>
-                <div className="hero-stats-divider" />
-                <div className="hero-stat">
-                  <CountingNumber
-                    number={zonasActivas}
-                    className="hero-stat-value"
-                    inView
-                  />
-                  <span className="hero-stat-label">Zonas</span>
-                </div>
-              </div>
-            )}
           </div>
 
-          <div
-            className="hero-carousel overflow-visible"
-            onMouseEnter={() => setIsHoveringCarousel(true)}
-            onMouseLeave={() => setIsHoveringCarousel(false)}
-            onFocusCapture={() => setIsHoveringCarousel(true)}
-            onBlurCapture={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget as Node)) {
-                setIsHoveringCarousel(false);
-              }
-            }}
-          >
-            <Carousel
-              setApi={setCarouselApi}
-              opts={{
-                loop: true,
-                align: 'center',
-                scale: 0.86,
-                visible: 2.2,
-              }}
-              className="w-full"
-              onMouseOver={(event) => {
-                const target = (event.target as HTMLElement).closest(
-                  '[data-slide-index]',
-                );
-                if (!target || !carouselApi) return;
-                const index = Number(target.getAttribute('data-slide-index'));
-                if (
-                  Number.isNaN(index) ||
-                  carouselApi.selectedScrollSnap() === index
-                ) {
-                  return;
+          {isLgOrAbove && (
+            <div
+              className="hero-carousel overflow-visible"
+              onMouseEnter={() => setIsHoveringCarousel(true)}
+              onMouseLeave={() => setIsHoveringCarousel(false)}
+              onFocusCapture={() => setIsHoveringCarousel(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+                  setIsHoveringCarousel(false);
                 }
-                carouselApi.scrollTo(index);
               }}
             >
-              <div className="mb-5 flex items-center justify-between gap-3 px-2">
-                <div className="flex items-center gap-3">
-                  <CarouselPrevious className="left-0" />
-                  <CarouselCounter
-                    className="font-heading text-sm uppercase tracking-wide text-text"
-                    format={(current, count) => (
-                      <>
-                        {current}
-                        <span className="mx-1 text-text-muted">/</span>
-                        {count || heroSlides.length}
-                      </>
-                    )}
-                  />
-                  <CarouselDots className="text-accent" />
-                  <CarouselNext className="right-0" />
+              <Carousel
+                setApi={setCarouselApi}
+                opts={{
+                  loop: true,
+                  align: 'center',
+                  scale: 0.86,
+                  visible: 2.2,
+                }}
+                className="w-full"
+                onMouseOver={(event) => {
+                  const target = (event.target as HTMLElement).closest(
+                    '[data-slide-index]',
+                  );
+                  if (!target || !carouselApi) return;
+                  const index = Number(target.getAttribute('data-slide-index'));
+                  if (
+                    Number.isNaN(index) ||
+                    carouselApi.selectedScrollSnap() === index
+                  ) {
+                    return;
+                  }
+                  carouselApi.scrollTo(index);
+                }}
+              >
+                <div className="mb-5 flex items-center justify-between gap-3 px-2">
+                  <div className="flex items-center gap-3">
+                    <CarouselPrevious className="left-0" />
+                    <CarouselCounter
+                      className="font-heading text-sm uppercase tracking-wide text-text"
+                      format={(current, count) => (
+                        <>
+                          {current}
+                          <span className="mx-1 text-text-muted">/</span>
+                          {count || heroSlides.length}
+                        </>
+                      )}
+                    />
+                    <CarouselDots className="text-accent" />
+                    <CarouselNext className="right-0" />
+                  </div>
                 </div>
-              </div>
 
-              <CarouselContent className="-ml-4">
-                {heroSlides.map((slide, index) => (
-                  <CarouselItem
-                    key={slide.title}
-                    className="basis-[85%] pl-4 sm:basis-[70%] lg:basis-[65%]"
-                  >
-                    <div data-slide-index={index} className="py-3">
-                      <article
-                        data-active={activeSlide === index}
-                        className="hero-report-card group cursor-pointer"
-                      >
-                        <div className="hero-report-media">
-                          <img
-                            src={slide.image}
-                            alt={slide.alt}
-                            loading={index === 0 ? 'eager' : 'lazy'}
-                            decoding="async"
-                          />
-                        </div>
-                        <div className="hero-report-body">
-                          <h3 className="font-heading text-lg font-bold uppercase leading-tight text-text sm:text-xl">
-                            {slide.title}
-                          </h3>
-                          <p className="mt-1 text-sm text-text-secondary sm:text-base">
-                            {slide.subtitle}
-                          </p>
-                        </div>
-                      </article>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
-          </div>
+                <CarouselContent className="-ml-4">
+                  {heroSlides.map((slide, index) => (
+                    <CarouselItem
+                      key={slide.title}
+                      className="basis-[85%] pl-4 sm:basis-[70%] lg:basis-[65%]"
+                    >
+                      <div data-slide-index={index} className="py-3">
+                        <article
+                          data-active={activeSlide === index}
+                          className="hero-report-card group cursor-pointer"
+                        >
+                          <div className="hero-report-media">
+                            <img
+                              src={slide.image}
+                              alt={slide.alt}
+                              loading={index === 0 ? 'eager' : 'lazy'}
+                              decoding="async"
+                            />
+                          </div>
+                          <div className="hero-report-body">
+                            <h3 className="font-heading text-lg font-bold uppercase leading-tight text-text sm:text-xl">
+                              {slide.title}
+                            </h3>
+                            <p className="mt-1 text-sm text-text-secondary sm:text-base">
+                              {slide.subtitle}
+                            </p>
+                          </div>
+                        </article>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            </div>
+          )}
+
+          {!isLgOrAbove && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {reportCategories.slice(0, 4).map((category) => (
+                <Link
+                  key={category.id}
+                  to="/reportes/crear"
+                  className="inline-flex items-center rounded-full bg-surface-2 px-4 py-2 text-sm font-medium text-text transition-colors hover:bg-surface-3 hover:text-accent"
+                >
+                  {category.title}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -417,29 +396,6 @@ export const Home: React.FC = () => {
             </p>
           </Effect>
 
-          <Highlight
-            hover
-            className="home-filter-highlight mb-8"
-            defaultValue={activeFilter}
-          >
-            <div className="flex flex-wrap gap-2">
-              {FILTERS.map((filter) => (
-                <HighlightItem key={filter.id} value={filter.id}>
-                  <button
-                    type="button"
-                    onClick={() => setActiveFilter(filter.id)}
-                    className={`home-filter-chip${
-                      activeFilter === filter.id ? ' is-active' : ''
-                    }`}
-                    aria-pressed={activeFilter === filter.id}
-                  >
-                    {filter.label}
-                  </button>
-                </HighlightItem>
-              ))}
-            </div>
-          </Highlight>
-
           <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
             {isLoading
               ? [1, 2, 3].map((i) => (
@@ -454,7 +410,7 @@ export const Home: React.FC = () => {
                     </div>
                   </Card>
                 ))
-              : reportes.slice(0, 3).map((reporte) => (
+              : reportes.slice(0, showAllReports ? reportes.length : 3).map((reporte) => (
                   <Card
                     key={reporte.id}
                     className="overflow-hidden border-line bg-surface transition-shadow duration-200 hover:shadow-lg"
@@ -491,6 +447,28 @@ export const Home: React.FC = () => {
                   </Card>
                 ))}
           </div>
+
+          {!isLoading && reportes.length > 3 && (
+            <div className="mt-6 text-center">
+              <button
+                type="button"
+                onClick={() => setShowAllReports(!showAllReports)}
+                className="inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-[#E3FFA6]"
+              >
+                {showAllReports ? (
+                  <>
+                    Ver menos
+                    <ChevronUp className="h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    Ver más
+                    <ChevronDown className="h-4 w-4" />
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -570,13 +548,13 @@ export const Home: React.FC = () => {
               visible y más cuidada.
             </p>
             <Link to="/register">
-              <Button
-                size="lg"
-                className="inline-flex w-full items-center justify-center sm:w-auto"
+              <RippleButton
+                className="btn-primary btn-lg inline-flex w-full items-center justify-center sm:w-auto"
+                rippleColor="rgba(212, 245, 140, 0.5)"
               >
-                Crear cuenta y reportar
+                Crear cuenta i reportar
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              </RippleButton>
             </Link>
           </Effect>
         </div>

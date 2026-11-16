@@ -4,8 +4,12 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
+import { RippleButton } from '../components/ui/RippleButton';
 import { AuthLayout } from '../components/layout/AuthLayout';
 import { GoogleLogin } from '@react-oauth/google';
+import { Shine } from '@animate-ui/react/primitives/effects/shine';
+import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
+import { ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export const Login: React.FC = () => {
@@ -48,6 +52,25 @@ export const Login: React.FC = () => {
 
   return (
     <AuthLayout title="Inicia Sesión" subtitle="Ingresa tus credenciales para acceder">
+      <div className="mb-6">
+        <Magnetic strength={0.15} onlyOnHover>
+          <Shine
+            enableOnHover
+            color="rgba(212,245,140,0.2)"
+            className="inline-block"
+          >
+            <RippleButton
+              type="button"
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 rounded border border-line bg-surface px-4 py-2 text-sm font-medium text-text-secondary transition-all duration-200 hover:border-accent/40 hover:text-accent hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              rippleColor="rgba(212, 245, 140, 0.4)"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Volver al inicio
+            </RippleButton>
+          </Shine>
+        </Magnetic>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {import.meta.env.VITE_GOOGLE_CLIENT_ID && (
           <>

@@ -21,7 +21,7 @@ import { Input } from '../components/ui/Input';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { ESTADOS_REPORTE } from '../utils/constants';
 import { homeImages } from '../utils/homeMedia';
-import { Trash2, Eye, Plus, Pencil, Search, X } from 'lucide-react';
+import { Trash2, Eye, Plus, Pencil, Search, X, ChevronDown, ChevronUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export const MisReportes: React.FC = () => {
@@ -31,6 +31,7 @@ export const MisReportes: React.FC = () => {
   const [search, setSearch] = useState('');
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
 
   const estadoFilters = [
     { id: '', label: 'Todos' },
@@ -68,6 +69,20 @@ export const MisReportes: React.FC = () => {
       setIsDeleting(false);
     }
   };
+
+  const toggleExpand = (id: number) => {
+    setExpandedCards((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const reporteToDelete = reportes.find((r) => r.id === deleteId);
 
   return (
     <AppShell
@@ -193,7 +208,7 @@ export const MisReportes: React.FC = () => {
                         showIcon={false}
                       />
                     </div>
-                    <p className="mb-4 line-clamp-3 text-sm text-text-muted">
+                    <p className={`mb-4 text-sm text-text-muted ${expandedCards.has(reporte.id) ? '' : 'line-clamp-3'}`}>
                       {reporte.descripcion}
                     </p>
                     <p className="mb-4 text-xs text-text-muted">
@@ -201,34 +216,53 @@ export const MisReportes: React.FC = () => {
                         'es-ES'
                       )}
                     </p>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="flex-1"
-                        onClick={() => navigate(`/reportes/${reporte.id}`)}
+                    <div className="flex flex-col gap-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleExpand(reporte.id)}
+                        className="flex items-center justify-center gap-1 text-xs font-medium text-accent hover:text-[#E3FFA6] transition-colors"
                       >
-                        <Eye className="mr-2 h-4 w-4" />
-                        Ver
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() =>
-                          navigate(`/reportes/${reporte.id}/editar`)
-                        }
-                        aria-label="Editar reporte"
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => setDeleteId(reporte.id)}
-                        aria-label="Eliminar reporte"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                        {expandedCards.has(reporte.id) ? (
+                          <>
+                            <ChevronUp className="h-3.5 w-3.5" />
+                            Ver menos
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="h-3.5 w-3.5" />
+                            Ver más
+                          </>
+                        )}
+                      </button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => navigate(`/reportes/${reporte.id}`)}
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          Ver
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() =>
+                            navigate(`/reportes/${reporte.id}/editar`)
+                          }
+                          aria-label="Editar reporte"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => setDeleteId(reporte.id)}
+                          aria-label="Eliminar reporte"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </article>
@@ -260,8 +294,13 @@ export const MisReportes: React.FC = () => {
               </DialogClose>
             </div>
             <DialogDescription className="mb-5 text-sm text-text-secondary">
-              Esta acción no se puede deshacer. ¿Seguro que quieres eliminar
-              este reporte?
+              {reporteToDelete ? (
+                <>
+                  Esta acción no se puede deshacer. ¿Seguro que quieres eliminar el reporte <span className="font-medium text-text">"{reporteToDelete.titulo}"</span>?
+                </>
+              ) : (
+                'Esta acción no se puede deshacer. ¿Seguro que quieres eliminar este reporte?'
+              )}
             </DialogDescription>
             <div className="flex justify-end gap-2">
               <Button

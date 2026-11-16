@@ -164,9 +164,9 @@ export const ReporteDetail: React.FC = () => {
                   color="rgba(212,245,140,0.25)"
                   className="inline-flex"
                 >
-                  <Button variant="secondary" className="inline-flex items-center">
+                  <Button variant="secondary" size="sm" className="inline-flex items-center">
                     <Pencil className="mr-2 h-4 w-4" />
-                    Editar
+                    <span className="hidden sm:inline">Editar</span>
                   </Button>
                 </Shine>
               </Link>
@@ -179,9 +179,9 @@ export const ReporteDetail: React.FC = () => {
                 color="rgba(212,245,140,0.25)"
                 className="inline-flex"
               >
-                <Button variant="secondary" className="inline-flex items-center">
+                <Button variant="secondary" size="sm" className="inline-flex items-center">
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Volver
+                  <span className="hidden sm:inline">Volver</span>
                 </Button>
               </Shine>
             </Link>
@@ -198,10 +198,10 @@ export const ReporteDetail: React.FC = () => {
                 alt={reporte.titulo}
               />
             </div>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h2 className="font-heading text-xl uppercase tracking-tight text-text md:text-2xl">
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-heading text-lg uppercase tracking-tight text-text sm:text-xl md:text-2xl">
                     {reporte.titulo}
                   </h2>
                   <div className="mt-2">
@@ -212,30 +212,30 @@ export const ReporteDetail: React.FC = () => {
                     />
                   </div>
                 </div>
-                <p className="inline-flex items-center gap-1.5 text-sm text-text-muted">
+                <p className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-text-muted shrink-0">
                   <ThumbsUp className="h-4 w-4 text-accent" />
                   {reporte.confirmacionesCount} confirmaciones
                 </p>
               </div>
 
-              <p className="mb-6 leading-relaxed text-text-secondary">
+              <p className="mb-6 text-sm sm:text-base leading-relaxed text-text-secondary">
                 {reporte.descripcion}
               </p>
 
-              <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+              <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div className="auth-info-row">
                   <User className="h-4 w-4 shrink-0 text-accent" />
-                  <span className="text-sm text-text">
+                  <span className="text-xs sm:text-sm text-text truncate">
                     {reporte.usuario.nombre}
                   </span>
                 </div>
                 <div className="auth-info-row">
                   <MapPin className="h-4 w-4 shrink-0 text-accent" />
-                  <span className="text-sm text-text">{reporte.zona.nombre}</span>
+                  <span className="text-xs sm:text-sm text-text truncate">{reporte.zona.nombre}</span>
                 </div>
                 <div className="auth-info-row">
                   <Calendar className="h-4 w-4 shrink-0 text-accent" />
-                  <span className="text-sm text-text">
+                  <span className="text-xs sm:text-sm text-text">
                     {formatDateTime(reporte.fechaCreacion)}
                   </span>
                 </div>

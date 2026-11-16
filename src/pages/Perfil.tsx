@@ -66,16 +66,16 @@ export const Perfil: React.FC = () => {
             color="rgba(212,245,140,0.28)"
             className="auth-profile-hero"
           >
-            <div className="flex items-center gap-5">
-              <div className="auth-avatar auth-avatar-lg" aria-hidden>
+            <div className="flex items-center gap-4 sm:gap-5">
+              <div className="auth-avatar auth-avatar-lg shrink-0" aria-hidden>
                 {initials}
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="auth-kicker mb-2">Cuenta</p>
-                <h2 className="font-heading text-2xl font-bold uppercase tracking-tight text-text">
+                <h2 className="font-heading text-xl sm:text-2xl font-bold uppercase tracking-tight text-text">
                   {user.nombre} {user.apellido}
                 </h2>
-                <p className="mt-1 text-text-secondary">{user.email}</p>
+                <p className="mt-1 text-sm text-text-secondary truncate">{user.email}</p>
                 <span className="mt-3 inline-block rounded bg-accent px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-ink">
                   {rolLabel}
                 </span>
@@ -91,12 +91,12 @@ export const Perfil: React.FC = () => {
                 <TabsHighlightItem value="reportes">
                   <TabsTrigger
                     value="reportes"
-                    className="rounded-full px-4 py-2.5 text-sm font-medium text-text-secondary data-[state=active]:bg-accent/15 data-[state=active]:text-accent data-[state=active]:border data-[state=active]:border-accent/30 transition-all duration-200"
+                    className="rounded-full px-3 py-2 text-xs sm:px-4 sm:py-2.5 sm:text-sm font-medium text-text-secondary data-[state=active]:bg-accent/15 data-[state=active]:text-accent data-[state=active]:border data-[state=active]:border-accent/30 transition-all duration-200"
                   >
-                    <FileText className="mr-2 h-4 w-4" />
+                    <FileText className="mr-1.5 h-3.5 w-3.5 sm:mr-2 sm:h-4 sm:w-4" />
                     Mis reportes
                     {reportes.length > 0 && (
-                      <span className="ml-2 rounded-full bg-accent/20 px-2 py-0.5 text-xs font-semibold text-accent">
+                      <span className="ml-1.5 rounded-full bg-accent/20 px-1.5 py-0.5 text-xs font-semibold text-accent sm:ml-2 sm:px-2">
                         {reportes.length}
                       </span>
                     )}
@@ -105,18 +105,18 @@ export const Perfil: React.FC = () => {
                 <TabsHighlightItem value="datos">
                   <TabsTrigger
                     value="datos"
-                    className="rounded-full px-4 py-2.5 text-sm font-medium text-text-secondary data-[state=active]:bg-accent/15 data-[state=active]:text-accent data-[state=active]:border data-[state=active]:border-accent/30 transition-all duration-200"
+                    className="rounded-full px-3 py-2 text-xs sm:px-4 sm:py-2.5 sm:text-sm font-medium text-text-secondary data-[state=active]:bg-accent/15 data-[state=active]:text-accent data-[state=active]:border data-[state=active]:border-accent/30 transition-all duration-200"
                   >
-                    <User className="mr-2 h-4 w-4" />
+                    <User className="mr-1.5 h-3.5 w-3.5 sm:mr-2 sm:h-4 sm:w-4" />
                     Datos de la cuenta
                   </TabsTrigger>
                 </TabsHighlightItem>
                 <TabsHighlightItem value="seguridad">
                   <TabsTrigger
                     value="seguridad"
-                    className="rounded-full px-4 py-2.5 text-sm font-medium text-text-secondary data-[state=active]:bg-accent/15 data-[state=active]:text-accent data-[state=active]:border data-[state=active]:border-accent/30 transition-all duration-200"
+                    className="rounded-full px-3 py-2 text-xs sm:px-4 sm:py-2.5 sm:text-sm font-medium text-text-secondary data-[state=active]:bg-accent/15 data-[state=active]:text-accent data-[state=active]:border data-[state=active]:border-accent/30 transition-all duration-200"
                   >
-                    <Shield className="mr-2 h-4 w-4" />
+                    <Shield className="mr-1.5 h-3.5 w-3.5 sm:mr-2 sm:h-4 sm:w-4" />
                     Seguridad
                   </TabsTrigger>
                 </TabsHighlightItem>

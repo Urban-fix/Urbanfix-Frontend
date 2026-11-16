@@ -167,7 +167,7 @@ export const Dashboard: React.FC = () => {
           <Effect fade slide={{ direction: 'up', offset: 14 }} inView>
             <h2 className="auth-section-title mb-5">Tu actividad</h2>
           </Effect>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {isLoading
               ? Array.from({ length: 4 }).map((_, i) => (
                   <div
@@ -193,15 +193,15 @@ export const Dashboard: React.FC = () => {
                           <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5 blur-2xl" />
                           <div className="relative flex items-start justify-between gap-3">
                             <div>
-                              <p className="auth-stat-label">{stat.title}</p>
+                              <p className="auth-stat-label text-xs">{stat.title}</p>
                               <CountingNumber
                                 number={stat.value}
-                                className="auth-stat-value"
+                                className="auth-stat-value text-xl"
                                 inView
                               />
                             </div>
                             <div className="relative">
-                              <stat.icon className="auth-stat-icon" aria-hidden />
+                              <stat.icon className="auth-stat-icon h-5 w-5" aria-hidden />
                               {stat.icon2 && (
                                 <stat.icon2 className="absolute -right-2 -bottom-2 h-4 w-4 text-current opacity-40" aria-hidden />
                               )}
@@ -219,7 +219,7 @@ export const Dashboard: React.FC = () => {
           <Effect fade slide={{ direction: 'up', offset: 14 }} inView>
             <h2 className="auth-section-title mb-5">Comunidad</h2>
           </Effect>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Effect
               fade
               slide={{ direction: 'up', offset: 14 }}
@@ -236,15 +236,15 @@ export const Dashboard: React.FC = () => {
                     <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5 blur-2xl" />
                     <div className="relative flex items-center justify-between">
                       <div>
-                        <p className="auth-stat-label">Pendientes globales</p>
+                        <p className="auth-stat-label text-xs">Pendientes globales</p>
                         <CountingNumber
                           number={globalStats.pendientes}
-                          className="auth-stat-value"
+                          className="auth-stat-value text-xl"
                           inView
                         />
                       </div>
                       <div className="relative">
-                        <TrendingUp className="auth-stat-icon" aria-hidden />
+                        <TrendingUp className="auth-stat-icon h-5 w-5" aria-hidden />
                         <Activity className="absolute -right-2 -bottom-2 h-4 w-4 text-current opacity-40" aria-hidden />
                       </div>
                     </div>
@@ -268,15 +268,15 @@ export const Dashboard: React.FC = () => {
                     <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5 blur-2xl" />
                     <div className="relative flex items-center justify-between">
                       <div>
-                        <p className="auth-stat-label">Resueltos globales</p>
+                        <p className="auth-stat-label text-xs">Resueltos globales</p>
                         <CountingNumber
                           number={globalStats.resueltos}
-                          className="auth-stat-value"
+                          className="auth-stat-value text-xl"
                           inView
                         />
                       </div>
                       <div className="relative">
-                        <CheckCircle className="auth-stat-icon" aria-hidden />
+                        <CheckCircle className="auth-stat-icon h-5 w-5" aria-hidden />
                         <Sparkles className="absolute -right-2 -bottom-2 h-4 w-4 text-current opacity-40" aria-hidden />
                       </div>
                     </div>
@@ -292,7 +292,7 @@ export const Dashboard: React.FC = () => {
             fade
             slide={{ direction: 'up', offset: 14 }}
             inView
-            className="mb-5 flex items-end justify-between gap-4"
+            className="mb-5 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
           >
             <h2 className="auth-section-title mb-0">Mis reportes recientes</h2>
             {reportes.length > 0 && (
@@ -306,7 +306,7 @@ export const Dashboard: React.FC = () => {
           </Effect>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
@@ -324,12 +324,12 @@ export const Dashboard: React.FC = () => {
                   Aún no tienes reportes. Crea el primero.
                 </p>
                 <Link to="/informes/crear">
-                  <Button>Crear primer reporte</Button>
+                  <Button className="w-full sm:w-auto">Crear primer reporte</Button>
                 </Link>
               </div>
             </Effect>
           ) : (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {reportes.slice(0, 6).map((reporte, index) => (
                 <Effect
                   key={reporte.id}

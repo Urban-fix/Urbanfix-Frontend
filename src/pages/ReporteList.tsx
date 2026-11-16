@@ -113,7 +113,7 @@ export const ReporteList: React.FC = () => {
         </Magnetic>
       }
     >
-      <div className="space-y-8">
+      <div className="space-y-8 sm:space-y-10">
         <div className="auth-filter-sticky">
           <Effect fade slide={{ direction: 'up', offset: 16 }} inView>
             <div className="auth-filter-panel relative overflow-hidden">
@@ -125,7 +125,7 @@ export const ReporteList: React.FC = () => {
                     Filtros
                   </h3>
                 </div>
-                <Highlight hover className="mb-5" defaultValue={estado || 'all'}>
+                <Highlight hover className="mb-4 sm:mb-5" defaultValue={estado || 'all'}>
                   <div className="flex flex-wrap gap-2">
                     {estadoFilters.map((filter) => (
                       <HighlightItem
@@ -148,8 +148,8 @@ export const ReporteList: React.FC = () => {
                   </div>
                 </Highlight>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div className="relative">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="relative lg:col-span-1">
                     <Search className="pointer-events-none absolute left-3 top-[2.65rem] h-4 w-4 text-text-muted" />
                     <Input
                       label="Buscar"
@@ -160,7 +160,7 @@ export const ReporteList: React.FC = () => {
                     />
                   </div>
 
-                  <div>
+                  <div className="lg:col-span-1">
                     <label className="mb-2 block text-sm font-medium text-text">
                       Categoría
                     </label>
@@ -178,7 +178,7 @@ export const ReporteList: React.FC = () => {
                     </select>
                   </div>
 
-                  <div>
+                  <div className="lg:col-span-1">
                     <label className="mb-2 block text-sm font-medium text-text">
                       Zona
                     </label>
@@ -246,7 +246,7 @@ export const ReporteList: React.FC = () => {
               </Button>
             </div>
           ) : isLoading ? (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}

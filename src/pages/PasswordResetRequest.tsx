@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from '../hooks/useForm';
 import { useNavigate, Link } from 'react-router-dom';
 import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
+import { RippleButton } from '../components/ui/RippleButton';
 import { AuthLayout } from '../components/layout/AuthLayout';
 import { authApi } from '../api/auth';
 import toast from 'react-hot-toast';
@@ -15,11 +15,11 @@ export const PasswordResetRequest: React.FC = () => {
     try {
       await authApi.requestPasswordReset(data.email);
       toast.success('Si el email existe, recibirás un código en tu correo');
-      navigate('/password-reset/confirm', { state: { email: data.email } });
+      navigate('/password-reset/verify', { state: { email: data.email } });
     } catch (error: any) {
       // Por seguridad, no revelamos si el email existe o no
       toast.error('Si el email existe, recibirás un código en tu correo');
-      navigate('/password-reset/confirm', { state: { email: data.email } });
+      navigate('/password-reset/verify', { state: { email: data.email } });
     }
   };
 
@@ -48,9 +48,14 @@ export const PasswordResetRequest: React.FC = () => {
           Te enviaremos un código de 6 dígitos válido por 2 minutos.
         </p>
 
-        <Button type="submit" isLoading={isSubmitting} className="w-full">
+        <RippleButton
+          type="submit"
+          className="btn-primary w-full"
+          rippleColor="rgba(212, 245, 140, 0.5)"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? 'Enviando...' : 'Enviar Código'}
-        </Button>
+        </RippleButton>
 
         <div className="text-center">
           <p className="text-sm text-text-muted">

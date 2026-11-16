@@ -1,66 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
+import { RippleButton } from '../components/ui/RippleButton';
 import { AuthLayout } from '../components/layout/AuthLayout';
+import { PasswordRequirements } from '../components/ui/PasswordRequirements';
 import { authApi } from '../api/auth';
 import toast from 'react-hot-toast';
 
 export const PasswordResetConfirm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email || '';
+  const code = location.state?.code || '';
   
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos en segundos
-  const [isExpired, setIsExpired] = useState(false);
+  const passwordValue = watch('newPassword', '');
+  const confirmPasswordValue = watch('confirmPassword', '');
 
+  // Validar que se tenga el código verificado antes de mostrar el formulario
   useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    } else {
-      setIsExpired(true);
+    if (!code) {
+      toast.error('Código no verificado. Por favor, verifica tu código primero.');
+      navigate('/password-reset/request');
     }
-  }, [timeLeft]);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const handleResendCode = async () => {
-    try {
-      await authApi.requestPasswordReset(email);
-      toast.success('Nuevo código enviado');
-      setTimeLeft(120);
-      setIsExpired(false);
-    } catch (error: any) {
-      toast.error('Si el email existe, recibirás un código en tu correo');
-    }
-  };
+  }, [code, navigate]);
 
   const onSubmit = async (data: any) => {
     try {
-      await authApi.confirmPasswordReset(data.code, data.newPassword);
+      // Validar autorización en backend antes de cambiar contraseña
+      await authApi.validatePasswordReset(code);
+      
+      // Cambiar contraseña
+      await authApi.confirmPasswordReset(code, data.newPassword);
       toast.success('Contraseña actualizada exitosamente');
       navigate('/login');
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'Error al restablecer contraseña';
       
-      // Manejo específico de errores del backend
       if (errorMessage.includes('inválido') || errorMessage.includes('incorrecto')) {
-        toast.error('El código ingresado es incorrecto');
+        toast.error('El código ha expirado o es inválido. Por favor, solicita uno nuevo.');
+        navigate('/password-reset/request');
       } else if (errorMessage.includes('expirado')) {
-        toast.error('El código ha expirado. Solicita uno nuevo');
-        setIsExpired(true);
-      } else if (errorMessage.includes('intentos')) {
-        toast.error('Demasiados intentos. Por favor, solicita un nuevo código');
-        setIsExpired(true);
+        toast.error('El código ha expirado. Por favor, solicita uno nuevo.');
+        navigate('/password-reset/request');
       } else {
         toast.error(errorMessage);
       }
@@ -70,41 +52,10 @@ export const PasswordResetConfirm: React.FC = () => {
   return (
     <AuthLayout 
       title="Nueva Contraseña" 
-      subtitle="Ingresa el código recibido y tu nueva contraseña"
+      subtitle="Ingresa tu nueva contraseña"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <Input
-              label="Código de 6 dígitos"
-              type="text"
-              maxLength={6}
-              {...register('code', { 
-                required: 'Código es requerido',
-                pattern: {
-                  value: /^\d{6}$/,
-                  message: 'Debe ser 6 dígitos'
-                }
-              })}
-              error={errors.code?.message as string}
-              placeholder="123456"
-            />
-            <div className={`text-sm font-medium ${isExpired ? 'text-error' : 'text-accent'}`}>
-              {formatTime(timeLeft)}
-            </div>
-          </div>
-          
-          {isExpired && (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleResendCode}
-              className="w-full"
-            >
-              Reenviar Código
-            </Button>
-          )}
-          
           <Input
             label="Nueva Contraseña"
             type="password"
@@ -121,35 +72,43 @@ export const PasswordResetConfirm: React.FC = () => {
             })}
             error={errors.newPassword?.message as string}
           />
-          <p className="text-xs text-text-muted mt-1">
-            Mínimo 8 caracteres, una mayúscula, una minúscula y un número
-          </p>
+          <PasswordRequirements password={passwordValue} />
           
           <Input
             label="Confirmar Contraseña"
             type="password"
             {...register('confirmPassword', { 
               required: 'Confirmar contraseña es requerida',
-              validate: (value: string, formValues: any) => 
-                value === formValues.newPassword || 'Las contraseñas no coinciden'
+              validate: (value: string) => 
+                value === passwordValue || 'Las contraseñas no coinciden'
             })}
             error={errors.confirmPassword?.message as string}
           />
+          {confirmPasswordValue && confirmPasswordValue !== passwordValue && (
+            <p className="text-xs text-error mt-1">
+              Las contraseñas no coinciden
+            </p>
+          )}
         </div>
 
-        <Button type="submit" isLoading={isSubmitting} className="w-full">
+        <RippleButton
+          type="submit"
+          className="btn-primary w-full"
+          rippleColor="rgba(212, 245, 140, 0.5)"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? 'Actualizando...' : 'Actualizar Contraseña'}
-        </Button>
+        </RippleButton>
 
         <div className="text-center">
           <p className="text-sm text-text-muted">
-            ¿No recibiste el código?{' '}
+            ¿Recordaste tu contraseña?{' '}
             <button
               type="button"
-              onClick={handleResendCode}
+              onClick={() => navigate('/login')}
               className="text-accent hover:text-[#E3FFA6] font-medium transition-colors bg-transparent border-none cursor-pointer"
             >
-              Solicitar nuevo código
+              Inicia Sesión
             </button>
           </p>
         </div>

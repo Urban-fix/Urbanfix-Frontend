@@ -9,6 +9,7 @@ import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { PasswordResetRequest } from './pages/PasswordResetRequest';
+import { PasswordResetVerify } from './pages/PasswordResetVerify';
 import { PasswordResetConfirm } from './pages/PasswordResetConfirm';
 import { Dashboard } from './pages/Dashboard';
 import { ReporteList } from './pages/ReporteList';
@@ -55,6 +56,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/password-reset/request" element={<PasswordResetRequest />} />
+              <Route path="/password-reset/verify" element={<PasswordResetVerify />} />
               <Route path="/password-reset/confirm" element={<PasswordResetConfirm />} />
 
               {/* Área autenticada: solo AppShell (sin Header/Footer públicos) */}

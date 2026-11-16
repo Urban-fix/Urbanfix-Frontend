@@ -3,14 +3,15 @@ import { useForm } from '../hooks/useForm';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
 import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
+import { RippleButton } from '../components/ui/RippleButton';
 import { AuthLayout } from '../components/layout/AuthLayout';
+import { PasswordRequirements } from '../components/ui/PasswordRequirements';
 import { GoogleLogin } from '@react-oauth/google';
 import type { RegisterRequestDTO } from '../types/auth.types';
 import toast from 'react-hot-toast';
 
 export const Register: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm({
     defaultValues: {
       nombre: '',
       apellido: '',
@@ -18,10 +19,12 @@ export const Register: React.FC = () => {
       password: '',
       confirmPassword: ''
     },
-    mode: 'onSubmit' // Solo validar al enviar el formulario
+    mode: 'onChange' // Validar en tiempo real para el checklist
   });
   const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
+  const passwordValue = watch('password', '');
+  const confirmPasswordValue = watch('confirmPassword', '');
 
   const onSubmit = async (data: any) => {
     try {
@@ -33,8 +36,8 @@ export const Register: React.FC = () => {
         rol: 'CIUDADANO',
       };
       await registerUser(registerData);
-      toast.success('Registro exitoso');
-      navigate('/dashboard');
+      toast.success('Registro exitoso. Por favor inicia sesión.');
+      navigate('/login');
     } catch (error: any) {
       toast.error(error.response?.data?.message ?? 'Error al registrar');
     }
@@ -131,25 +134,33 @@ export const Register: React.FC = () => {
             })}
             error={errors.password?.message as string}
           />
-          <p className="text-xs text-text-muted mt-1">
-            Mínimo 8 caracteres, una mayúscula, una minúscula y un número
-          </p>
+          <PasswordRequirements password={passwordValue} />
           
           <Input
             label="Confirmar Contraseña"
             type="password"
             {...register('confirmPassword', { 
               required: 'Confirmar contraseña es requerida',
-              validate: (value: string, formValues: any) => 
-                value === formValues.password || 'Las contraseñas no coinciden'
+              validate: (value: string) => 
+                value === passwordValue || 'Las contraseñas no coinciden'
             })}
             error={errors.confirmPassword?.message as string}
           />
+          {confirmPasswordValue && confirmPasswordValue !== passwordValue && (
+            <p className="text-xs text-error mt-1">
+              Las contraseñas no coinciden
+            </p>
+          )}
         </div>
 
-        <Button type="submit" isLoading={isSubmitting} className="w-full">
+        <RippleButton
+          type="submit"
+          className="btn-primary w-full"
+          rippleColor="rgba(212, 245, 140, 0.5)"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? 'Registrando...' : 'Registrarse'}
-        </Button>
+        </RippleButton>
 
         <div className="text-center">
           <p className="text-sm text-text-muted">

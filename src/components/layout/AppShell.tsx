@@ -22,6 +22,7 @@ import {
   Separator as DropdownSeparator,
   Trigger as DropdownTrigger,
 } from '@animate-ui/react/primitives/radix-ui/dropdown-menu';
+import { StarsBackground } from '../animate-ui/backgrounds/stars';
 import { useAuth } from '../../hooks/useAuth';
 import type { Rol } from '../../types/auth.types';
 import {
@@ -172,8 +173,9 @@ export const AppShell: React.FC<AppShellProps> = ({
               <Link
                 to="/dashboard"
                 className="font-heading text-xl font-bold uppercase tracking-tight text-text"
+                data-testid="sidebar-logo"
               >
-                Urban<span className="text-accent">Fix</span>
+                <span className="inline-block">Urban</span><span className="text-accent inline-block">Fix</span>
               </Link>
             )}
             <button
@@ -339,12 +341,19 @@ export const AppShell: React.FC<AppShellProps> = ({
           </div>
         </header>
 
-        <main className="auth-main flex-1 overflow-auto">
+        <main className="auth-main flex-1 overflow-auto relative">
+          <StarsBackground
+            factor={0.08}
+            speed={40}
+            starColor="rgba(212, 245, 140, 0.6)"
+            className="absolute inset-0 rounded-3xl"
+            pointerEvents={false}
+          />
           <Effect
             key={location.pathname}
             fade
             slide={{ direction: 'up', offset: 10 }}
-            className="container py-6 md:py-8"
+            className="container py-6 md:py-8 relative z-10"
           >
             {children}
           </Effect>

@@ -12,8 +12,9 @@ export const Footer: React.FC = () => {
             <Link
               to="/"
               className="mb-4 block font-heading text-xl font-bold uppercase tracking-tight text-text"
+              data-testid="footer-logo"
             >
-              Urban<span className="text-accent">Fix</span>
+              <span className="inline-block">Urban</span><span className="text-accent inline-block">Fix</span>
             </Link>
             <p className="text-sm leading-relaxed text-text-secondary">
               Reporta problemas urbanos y mejora tu comunidad.

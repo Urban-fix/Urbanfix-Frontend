@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
 import { StatusBadge } from '../ui/StatusBadge';
@@ -9,13 +9,15 @@ import type {
 import { formatRelativeTime } from '../../utils/formatters';
 import { ESTADOS_REPORTE } from '../../utils/constants';
 import { homeImages } from '../../utils/homeMedia';
-import { ThumbsUp, MapPin } from 'lucide-react';
+import { ThumbsUp, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ReporteCardProps {
   reporte: ReporteResponseDTO | ReportePublicDTO;
 }
 
 export const ReporteCard: React.FC<ReporteCardProps> = ({ reporte }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const zonaNombre =
     'zona' in reporte && reporte.zona
       ? reporte.zona.nombre
@@ -25,6 +27,11 @@ export const ReporteCard: React.FC<ReporteCardProps> = ({ reporte }) => {
 
   const confirmaciones =
     'confirmacionesCount' in reporte ? reporte.confirmacionesCount : undefined;
+
+  const handleExpandClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <Effect fade slide={{ direction: 'up', offset: 12 }} inView>
@@ -47,7 +54,7 @@ export const ReporteCard: React.FC<ReporteCardProps> = ({ reporte }) => {
                 showIcon={false}
               />
             </div>
-            <p className="text-sm text-text-muted line-clamp-2 mb-3">
+            <p className={`text-sm text-text-muted mb-3 ${isExpanded ? '' : 'line-clamp-2'}`}>
               {reporte.descripcion}
             </p>
             <div className="flex items-center justify-between text-xs text-text-muted">
@@ -62,9 +69,28 @@ export const ReporteCard: React.FC<ReporteCardProps> = ({ reporte }) => {
                 </div>
               )}
             </div>
-            <p className="mt-3 pt-3 border-t border-line text-xs text-text-muted">
-              {formatRelativeTime(reporte.fechaCreacion)}
-            </p>
+            <div className="mt-3 pt-3 border-t border-line flex items-center justify-between">
+              <p className="text-xs text-text-muted">
+                {formatRelativeTime(reporte.fechaCreacion)}
+              </p>
+              <button
+                type="button"
+                onClick={handleExpandClick}
+                className="flex items-center gap-1 text-xs font-medium text-accent hover:text-[#E3FFA6] transition-colors"
+              >
+                {isExpanded ? (
+                  <>
+                    <ChevronUp className="h-3.5 w-3.5" />
+                    Ver menos
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-3.5 w-3.5" />
+                    Ver más
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </article>
       </Link>

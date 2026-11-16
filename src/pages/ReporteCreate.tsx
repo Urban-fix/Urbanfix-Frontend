@@ -133,7 +133,7 @@ export const ReporteCreate: React.FC = () => {
             <div className="auth-filter-panel mx-auto max-w-3xl relative overflow-hidden">
               <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-accent/5 blur-3xl" />
               <div className="relative">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
             <div>
               <label className="mb-2 block text-sm font-medium text-text">
                 Título
@@ -184,6 +184,7 @@ export const ReporteCreate: React.FC = () => {
                 setLocationError(undefined);
               }}
               error={locationError}
+              className="h-[min(40vh,400px)] sm:h-[min(50vh,500px)]"
             />
 
             <div>

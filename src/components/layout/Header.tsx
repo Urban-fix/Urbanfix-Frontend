@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Shine } from '@animate-ui/react/primitives/effects/shine';
 import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
 import { useAuth } from '../../hooks/useAuth';
-import { User, FileText, LayoutDashboard, UserCircle, Menu, LogOut } from 'lucide-react';
+import { User, FileText, LayoutDashboard, UserCircle, Menu, LogOut, Home } from 'lucide-react';
 import { MobileNavSheet } from './MobileNavSheet';
 
 export const Header: React.FC = () => {
@@ -14,7 +14,11 @@ export const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/');
+  };
+
+  const handleGoHome = () => {
+    navigate('/');
   };
 
   const navItems: { path: string; label: string }[] = [];
@@ -35,8 +39,9 @@ export const Header: React.FC = () => {
             <Link
               to="/"
               className="font-heading text-2xl font-bold uppercase tracking-tight text-text"
+              data-testid="logo"
             >
-              Urban<span className="text-accent">Fix</span>
+              <span className="inline-block">Urban</span><span className="text-accent inline-block">Fix</span>
             </Link>
           </div>
 
@@ -66,6 +71,22 @@ export const Header: React.FC = () => {
                 <Magnetic strength={0.15} onlyOnHover>
                   <Shine
                     enableOnHover
+                    color="rgba(212,245,140,0.15)"
+                    className="inline-block"
+                  >
+                    <button
+                      type="button"
+                      onClick={handleGoHome}
+                      className="inline-flex items-center gap-2 rounded border border-line bg-surface px-3 py-1.5 text-sm font-medium text-text transition-colors duration-200 hover:border-accent hover:text-accent"
+                    >
+                      <Home className="h-4 w-4" />
+                      Home
+                    </button>
+                  </Shine>
+                </Magnetic>
+                <Magnetic strength={0.15} onlyOnHover>
+                  <Shine
+                    enableOnHover
                     color="rgba(239,68,68,0.15)"
                     className="inline-block"
                   >
@@ -85,7 +106,7 @@ export const Header: React.FC = () => {
                 <Magnetic strength={0.15} onlyOnHover>
                   <Link
                     to="/login"
-                    className="btn-secondary text-sm font-semibold min-w-[140px] text-center"
+                    className="btn-secondary text-sm font-semibold min-w-[140px] text-center h-10"
                   >
                     Iniciar sesión
                   </Link>
@@ -96,7 +117,7 @@ export const Header: React.FC = () => {
                     color="rgba(212,245,140,0.25)"
                     className="inline-block"
                   >
-                    <Link to="/register" className="btn-primary font-semibold min-w-[140px] text-center">
+                    <Link to="/register" className="btn-primary text-sm font-semibold min-w-[140px] text-center h-10">
                       Registrarse
                     </Link>
                   </Shine>

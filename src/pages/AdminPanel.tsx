@@ -118,9 +118,9 @@ export const AdminPanel: React.FC = () => {
         </Magnetic>
       }
     >
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <Effect fade slide={{ direction: 'up', offset: 16 }} inView>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => (
               <Effect
                 key={stat.title}
@@ -139,18 +139,18 @@ export const AdminPanel: React.FC = () => {
                       <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5 blur-2xl" />
                       <div className="relative flex items-start justify-between gap-3">
                         <div>
-                          <p className="auth-stat-label">{stat.title}</p>
+                          <p className="auth-stat-label text-xs">{stat.title}</p>
                           {stat.display != null ? (
-                            <p className="auth-stat-value">{stat.display}</p>
+                            <p className="auth-stat-value text-xl">{stat.display}</p>
                           ) : (
                             <CountingNumber
                               number={stat.value ?? 0}
-                              className="auth-stat-value"
+                              className="auth-stat-value text-xl"
                               inView
                             />
                           )}
                         </div>
-                        <stat.icon className="auth-stat-icon" aria-hidden />
+                        <stat.icon className="auth-stat-icon h-5 w-5" aria-hidden />
                       </div>
                     </article>
                   </Shine>
@@ -160,7 +160,7 @@ export const AdminPanel: React.FC = () => {
           </div>
         </Effect>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <Effect fade slide={{ direction: 'up', offset: 14 }} delay={0.05} inView>
             <Magnetic strength={0.08} onlyOnHover>
               <Shine

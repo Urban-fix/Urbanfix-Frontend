@@ -20,10 +20,10 @@ import 'leaflet/dist/leaflet.css';
 type MapReporte = ReporteResponseDTO | ReportePublicDTO;
 
 const ESTADO_PIN: Record<string, string> = {
-  PENDIENTE: 'var(--color-status-reportado)',
-  EN_PROGRESO: 'var(--color-status-en-proceso)',
-  RESUELTO: 'var(--color-status-resuelto)',
-  RECHAZADO: 'var(--color-status-rechazado)',
+  PENDIENTE: '#22c55e', // Verde - Reportado
+  RECHAZADO: '#ef4444', // Rojo - Rechazado
+  EN_PROGRESO: '#3b82f6', // Azul - En progreso
+  RESUELTO: '#eab308', // Amarillo - Resuelto
 };
 
 function pinIcon(estado: string) {

@@ -55,7 +55,7 @@ export const Mapa: React.FC = () => {
         </Magnetic>
       }
     >
-      <div className="space-y-5">
+      <div className="space-y-4 sm:space-y-5">
         <Effect fade slide={{ direction: 'up', offset: 14 }} inView>
           <Magnetic strength={0.08} onlyOnHover>
             <Shine
@@ -68,7 +68,7 @@ export const Mapa: React.FC = () => {
                   <div className="auth-icon-well">
                     <MapPin className="h-5 w-5 text-accent" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <p className="text-xs uppercase tracking-wider text-text-muted">
                       Pines activos
                     </p>
@@ -77,13 +77,13 @@ export const Mapa: React.FC = () => {
                     ) : (
                       <CountingNumber
                         number={reportes.length}
-                        className="font-heading text-2xl text-accent"
+                        className="font-heading text-xl sm:text-2xl text-accent"
                         inView
                       />
                     )}
                   </div>
                 </div>
-                <p className="max-w-md text-sm text-text-secondary">
+                <p className="max-w-md text-xs sm:text-sm text-text-secondary">
                   Haz clic en un pin para abrir el detalle. Los colores indican el
                   estado del reporte.
                 </p>
@@ -103,9 +103,9 @@ export const Mapa: React.FC = () => {
 
         <Effect fade slide={{ direction: 'up', offset: 16 }} delay={0.06} inView>
           {isLoading ? (
-            <div className="auth-map-frame h-[min(70vh,640px)] animate-pulse bg-surface-2" />
+            <div className="auth-map-frame h-[min(60vh,640px)] sm:h-[min(70vh,640px)] animate-pulse bg-surface-2" />
           ) : reportes.length === 0 ? (
-            <div className="auth-empty-card py-14 text-center">
+            <div className="auth-empty-card py-10 sm:py-14 text-center">
               <p className="mb-5 text-text-secondary">
                 No hay reportes en el mapa
               </p>
@@ -130,7 +130,7 @@ export const Mapa: React.FC = () => {
               <div className="auth-map-frame min-w-0 flex-1">
                 <ReportesMapView
                   reportes={reportes}
-                  className="h-[min(70vh,640px)]"
+                  className="h-[min(60vh,640px)] sm:h-[min(70vh,640px)]"
                   onSelect={(r) => handleSelect(r as ReportePublicDTO)}
                   selectedId={selected?.id}
                 />

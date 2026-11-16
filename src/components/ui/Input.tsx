@@ -25,6 +25,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         // Chrome no dispara eventos onChange al autocompletar, pero sí dispara 'change'
         // cuando el usuario interactúa con el campo o al perder el foco
         if (input.value) {
+          console.log('[INPUT] autocompletado detectado para:', name, 'valor presente:', !!input.value);
           onAutoComplete(input.value);
         }
       };
@@ -35,7 +36,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       return () => {
         input.removeEventListener('change', handleAutoComplete);
       };
-    }, [onAutoComplete]);
+    }, [onAutoComplete, name]);
 
     return (
       <div className="w-full">

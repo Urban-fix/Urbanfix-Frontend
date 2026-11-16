@@ -548,7 +548,7 @@ export const Home: React.FC = () => {
             </p>
             <Link to="/register">
               <LiquidButton
-                className="btn-primary btn-lg inline-flex w-full items-center justify-center sm:w-auto"
+                className="btn-primary btn-lg inline-flex w-full items-center justify-center sm:w-auto whitespace-nowrap"
                 delay={0.3}
                 fillHeight={3}
                 tapScale={0.97}

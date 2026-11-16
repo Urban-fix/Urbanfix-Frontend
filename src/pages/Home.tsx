@@ -11,6 +11,7 @@ import {
 } from '@animate-ui/react/primitives/carousel';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
 import { RippleButton } from '../components/ui/RippleButton';
+import { LiquidButton } from '../components/ui/LiquidButton';
 import { Card } from '../components/ui/Card';
 import {
   Carousel,
@@ -24,6 +25,8 @@ import { useReportesPublic } from '../hooks/useReportesPublic';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { heroSlides, reportCategories } from '../utils/homeMedia';
 import { ArrowRight, Camera, Users, Route, ChevronDown, ChevronUp, Map } from 'lucide-react';
+import { homeImages } from '../utils/homeMedia';
+import { normalizeImageUrl } from '../utils/imageHelper';
 
 const StarsBackground = lazy(() =>
   import('../components/animate-ui/backgrounds/stars').then((mod) => ({
@@ -415,19 +418,15 @@ export const Home: React.FC = () => {
                     key={reporte.id}
                     className="overflow-hidden border-line bg-surface transition-shadow duration-200 hover:shadow-lg"
                   >
-                    {reporte.fotoUrl ? (
-                      <img
-                        src={reporte.fotoUrl}
-                        alt={reporte.titulo}
-                        className="h-48 w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-48 w-full items-center justify-center bg-surface-2">
-                        <span className="text-sm text-text-muted">
-                          Sin imagen
-                        </span>
-                      </div>
-                    )}
+                    <img
+                      src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
+                      alt={reporte.titulo}
+                      className="h-48 w-full object-cover"
+                      onError={(e) => {
+                        console.error('Error cargando imagen:', reporte.fotoUrl);
+                        e.currentTarget.src = homeImages.baches;
+                      }}
+                    />
                     <div className="p-6">
                       <h3 className="mb-3 line-clamp-2 font-heading text-lg font-semibold uppercase text-text">
                         {reporte.titulo}
@@ -548,13 +547,15 @@ export const Home: React.FC = () => {
               visible y más cuidada.
             </p>
             <Link to="/register">
-              <RippleButton
+              <LiquidButton
                 className="btn-primary btn-lg inline-flex w-full items-center justify-center sm:w-auto"
-                rippleColor="rgba(212, 245, 140, 0.5)"
+                delay={0.3}
+                fillHeight={3}
+                tapScale={0.97}
               >
-                Crear cuenta i reportar
+                Crear cuenta y reportar
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </RippleButton>
+              </LiquidButton>
             </Link>
           </Effect>
         </div>

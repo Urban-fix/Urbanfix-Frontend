@@ -148,7 +148,7 @@ export const ReporteList: React.FC = () => {
                   </div>
                 </Highlight>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 my-6">
                   <div className="relative lg:col-span-1">
                     <Search className="pointer-events-none absolute left-3 top-[2.65rem] h-4 w-4 text-text-muted" />
                     <Input

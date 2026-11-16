@@ -20,6 +20,7 @@ import { StatusBadge } from '../components/ui/StatusBadge';
 import { useReportesPublic } from '../hooks/useReportesPublic';
 import { ESTADOS_REPORTE } from '../utils/constants';
 import { homeImages } from '../utils/homeMedia';
+import { normalizeImageUrl } from '../utils/imageHelper';
 import type { ReportePublicDTO } from '../types/reporte.types';
 import { MapPin, Plus, X, ArrowRight, Sparkles } from 'lucide-react';
 
@@ -146,7 +147,7 @@ export const Mapa: React.FC = () => {
                     <aside className="auth-map-detail hidden w-full max-w-sm shrink-0 lg:block">
                       <div className="auth-map-detail-media">
                         <img
-                          src={selected.fotoUrl || homeImages.baches}
+                          src={normalizeImageUrl(selected.fotoUrl) || homeImages.baches}
                           alt={selected.titulo}
                           loading="lazy"
                         />
@@ -225,7 +226,7 @@ export const Mapa: React.FC = () => {
                 </div>
                 <div className="auth-map-detail-media">
                   <img
-                    src={selected.fotoUrl || homeImages.baches}
+                    src={normalizeImageUrl(selected.fotoUrl) || homeImages.baches}
                     alt={selected.titulo}
                     loading="lazy"
                   />

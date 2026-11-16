@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Effect } from '@animate-ui/react/primitives/effects/effect';
 import { Shine } from '@animate-ui/react/primitives/effects/shine';
 import { Magnetic } from '@animate-ui/react/primitives/effects/magnetic';
@@ -25,11 +25,10 @@ import toast from 'react-hot-toast';
 export const Perfil: React.FC = () => {
   const { user, logout } = useAuth();
   const { reportes, isLoading, error, refetch } = useMisReportes();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
-    navigate('/', { replace: true });
+    window.location.href = '/';
   };
 
   if (!user) {
@@ -86,7 +85,7 @@ export const Perfil: React.FC = () => {
 
         <Effect fade slide={{ direction: 'up', offset: 14 }} delay={0.05} inView>
           <Tabs defaultValue="reportes" className="auth-profile-tabs">
-            <TabsHighlight className="mb-5 rounded-full border border-line bg-surface p-1">
+            <TabsHighlight className="mb-9 rounded-full border border-line bg-surface p-1">
               <TabsList className="flex flex-wrap gap-1">
                 <TabsHighlightItem value="reportes">
                   <TabsTrigger
@@ -356,6 +355,7 @@ export const Perfil: React.FC = () => {
                         >
                           <Button
                             variant="danger"
+                            type="button"
                             className="w-full justify-start"
                             onClick={handleLogout}
                           >

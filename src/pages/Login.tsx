@@ -20,15 +20,8 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: any) => {
-    console.log('[LOGIN] handleSubmit ejecutado');
-    console.log('[LOGIN] email presente:', !!data.email);
-    console.log('[LOGIN] password presente:', !!data.password);
-    console.log('[LOGIN] errores de validación:', Object.keys(errors));
-    
     try {
-      console.log('[LOGIN] iniciando petición de login');
       const loggedUser = await login(data.email, data.password);
-      console.log('[LOGIN] login exitoso, redirigiendo a:', loggedUser?.rol === 'ADMIN_MUNICIPAL' ? '/admin' : '/dashboard');
       toast.success('Login exitoso');
       
       // Redirigir según rol
@@ -38,7 +31,6 @@ export const Login: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (error: any) {
-      console.log('[LOGIN] error en login:', error.response?.status, error.response?.data?.message);
       const errorMessage = error.response?.data?.message || 'Error al iniciar sesión';
       toast.error(errorMessage);
     }

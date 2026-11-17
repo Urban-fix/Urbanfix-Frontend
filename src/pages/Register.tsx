@@ -19,7 +19,7 @@ export const Register: React.FC = () => {
       password: '',
       confirmPassword: ''
     },
-    mode: 'onBlur' // Validar al perder foco para evitar conflictos con change event
+    mode: 'onSubmit' // Validar solo al enviar para evitar conflictos con onAutoComplete
   });
   const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
@@ -124,7 +124,6 @@ export const Register: React.FC = () => {
             label="Contraseña"
             type="password"
             autoComplete="new-password"
-            onAutoComplete={(value) => setValue('password', value, { shouldValidate: true, shouldDirty: true })}
             {...register('password', { 
               required: 'Contraseña es requerida',
               minLength: {
@@ -144,7 +143,6 @@ export const Register: React.FC = () => {
             label="Confirmar Contraseña"
             type="password"
             autoComplete="new-password"
-            onAutoComplete={(value) => setValue('confirmPassword', value, { shouldValidate: true, shouldDirty: true })}
             {...register('confirmPassword', { 
               required: 'Confirmar contraseña es requerida',
               validate: (value: string) => 

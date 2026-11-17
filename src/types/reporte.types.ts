@@ -1,4 +1,4 @@
-export type EstadoReporte = 'PENDIENTE' | 'EN_PROGRESO' | 'RESUELTO' | 'RECHAZADO';
+export type EstadoReporte = 'REPORTADO' | 'EN_PROCESO' | 'RESUELTO' | 'RECHAZADO';
 
 export interface ReporteCreateDTO {
   titulo: string;

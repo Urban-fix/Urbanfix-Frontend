@@ -195,7 +195,7 @@ export const ReporteDetail: React.FC = () => {
           <article className="auth-report-card overflow-hidden">
             <div className="auth-report-media !h-56 md:!h-72">
               <img
-                src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
+                src={normalizeImageUrl(reporte.fotoUrl, reporte.id) || homeImages.baches}
                 alt={reporte.titulo}
               />
             </div>

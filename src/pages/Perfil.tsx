@@ -58,7 +58,7 @@ export const Perfil: React.FC = () => {
       title="Mi Perfil"
       subtitle="Gestiona tu información de cuenta"
     >
-      <div className="mx-auto max-w-3xl space-y-5">
+      <div className="mx-auto max-w-3xl space-y-6">
         <Effect fade slide={{ direction: 'up', offset: 18 }} inView>
           <Shine
             enableOnHover
@@ -85,8 +85,8 @@ export const Perfil: React.FC = () => {
 
         <Effect fade slide={{ direction: 'up', offset: 14 }} delay={0.05} inView>
           <Tabs defaultValue="reportes" className="auth-profile-tabs">
-            <TabsHighlight className="mb-9 rounded-full border border-line bg-surface p-1">
-              <TabsList className="flex flex-wrap gap-1">
+            <TabsHighlight className="mb-4 rounded-full border border-line bg-surface p-1">
+              <TabsList className="flex flex-wrap gap-3">
                 <TabsHighlightItem value="reportes">
                   <TabsTrigger
                     value="reportes"

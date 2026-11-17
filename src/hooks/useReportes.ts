@@ -65,14 +65,20 @@ export const useReportes = (filters?: ReportFilters) => {
 
   const cambiarEstado = async (id: number, nuevoEstado: string) => {
     try {
-      await api.patch(`/api/v1/reportes/${id}/estado`, nuevoEstado, {
+      console.log('[REPORTES] Cambiando estado del reporte', id, 'a:', nuevoEstado);
+      console.log('[REPORTES] Payload enviado:', nuevoEstado);
+      console.log('[REPORTES] Content-Type: application/json');
+      
+      const response = await api.patch(`/api/v1/reportes/${id}/estado`, nuevoEstado, {
         headers: { 'Content-Type': 'application/json' }
       });
       
+      console.log('[REPORTES] Respuesta exitosa:', response.status);
+      
       // Actualizar estado localmente
       setReportes(reportes.map(r => r.id === id ? { ...r, estado: nuevoEstado } : r));
-    } catch (error) {
-      console.error('Error al cambiar estado:', error);
+    } catch (error: any) {
+      console.error('[REPORTES] Error al cambiar estado:', error.response?.status, error.response?.data);
       throw error;
     }
   };

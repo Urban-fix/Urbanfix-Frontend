@@ -20,9 +20,9 @@ import 'leaflet/dist/leaflet.css';
 type MapReporte = ReporteResponseDTO | ReportePublicDTO;
 
 const ESTADO_PIN: Record<string, string> = {
-  PENDIENTE: '#22c55e', // Verde - Reportado
+  REPORTADO: '#22c55e', // Verde - Reportado
   RECHAZADO: '#ef4444', // Rojo - Rechazado
-  EN_PROGRESO: '#3b82f6', // Azul - En progreso
+  EN_PROCESO: '#3b82f6', // Azul - En proceso
   RESUELTO: '#eab308', // Amarillo - Resuelto
 };
 
@@ -109,8 +109,8 @@ export const ReportesMapView: React.FC<ReportesMapViewProps> = ({
       <div className="uf-map-legend" aria-label="Leyenda de estados">
         {(
           [
-            ['PENDIENTE', 'Pendiente'],
-            ['EN_PROGRESO', 'En progreso'],
+            ['REPORTADO', 'Reportado'],
+            ['EN_PROCESO', 'En proceso'],
             ['RESUELTO', 'Resuelto'],
             ['RECHAZADO', 'Rechazado'],
           ] as const

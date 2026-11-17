@@ -11,7 +11,7 @@ import type { RegisterRequestDTO } from '../types/auth.types';
 import toast from 'react-hot-toast';
 
 export const Register: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, getValues } = useForm({
     defaultValues: {
       nombre: '',
       apellido: '',
@@ -19,12 +19,28 @@ export const Register: React.FC = () => {
       password: '',
       confirmPassword: ''
     },
-    mode: 'onChange' // Validar en tiempo real para el checklist
+    mode: 'onSubmit' // Validar solo al enviar el formulario
   });
   const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
   const passwordValue = watch('password', '');
   const confirmPasswordValue = watch('confirmPassword', '');
+
+  // Instrumentación para diagnóstico
+  React.useEffect(() => {
+    console.log('[REGISTER] Componente montado');
+  }, []);
+
+  React.useEffect(() => {
+    const values = getValues();
+    console.log('[REGISTER] Valores del formulario:', {
+      nombre: !!values.nombre,
+      apellido: !!values.apellido,
+      email: !!values.email,
+      password: !!values.password,
+      confirmPassword: !!values.confirmPassword
+    });
+  }, [passwordValue, confirmPasswordValue]);
 
   const onSubmit = async (data: any) => {
     try {

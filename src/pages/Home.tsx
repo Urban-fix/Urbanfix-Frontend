@@ -419,11 +419,11 @@ export const Home: React.FC = () => {
                     className="overflow-hidden border-line bg-surface transition-shadow duration-200 hover:shadow-lg"
                   >
                     <img
-                      src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
+                      src={normalizeImageUrl(reporte.fotoUrl, reporte.id) || homeImages.baches}
                       alt={reporte.titulo}
                       className="h-48 w-full object-cover"
                       onError={(e) => {
-                        console.error('Error cargando imagen:', reporte.fotoUrl);
+                        console.error('[HOME] Error cargando imagen para reporte', reporte.id, ':', reporte.fotoUrl);
                         e.currentTarget.src = homeImages.baches;
                       }}
                     />
@@ -548,13 +548,15 @@ export const Home: React.FC = () => {
             </p>
             <Link to="/register">
               <LiquidButton
-                className="btn-primary btn-lg inline-flex w-full items-center justify-center sm:w-auto whitespace-nowrap"
+                className="btn-primary btn-lg inline-flex w-full items-center justify-center sm:w-auto"
                 delay={0.3}
                 fillHeight={3}
                 tapScale={0.97}
               >
-                Crear cuenta y reportar
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <span className="flex items-center whitespace-nowrap">
+                  Crear cuenta y reportar
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </span>
               </LiquidButton>
             </Link>
           </Effect>

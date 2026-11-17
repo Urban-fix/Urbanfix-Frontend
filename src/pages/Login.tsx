@@ -21,7 +21,7 @@ export const Login: React.FC = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const loggedUser = await login(data.email, data.password);
+      const loggedUser = await login(data.email.trim(), data.password);
       toast.success('Login exitoso');
       
       // Redirigir según rol
@@ -38,9 +38,9 @@ export const Login: React.FC = () => {
 
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
-      await googleLogin(credentialResponse.credential);
+      const loggedUser = await googleLogin(credentialResponse.credential);
       toast.success('Login con Google exitoso');
-      navigate('/dashboard');
+      navigate(loggedUser?.rol === 'ADMIN_MUNICIPAL' ? '/admin' : '/dashboard');
     } catch (error: any) {
       toast.error(error.response?.data?.message ?? 'Error al iniciar sesión con Google');
     }

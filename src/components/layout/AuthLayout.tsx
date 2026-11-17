@@ -24,6 +24,21 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   subtitle,
 }) => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  // El layout tiene una versión de escritorio y otra móvil (una se oculta con CSS).
+  // El formulario (children) se monta SOLO en la versión visible: si se montaba en las dos,
+  // react-hook-form registraba los campos dos veces y leía los valores del formulario oculto,
+  // por eso en computadora el registro decía "Nombre es requerido" aunque estuviera lleno.
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)'); // mismo corte que "lg" de Tailwind
+    const sync = () => setIsDesktop(media.matches);
+    sync();
+    media.addEventListener('change', sync);
+    return () => media.removeEventListener('change', sync);
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -76,7 +91,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
               {subtitle && (
                 <p className="mb-8 text-text-secondary text-center">{subtitle}</p>
               )}
-              {children}
+              {isDesktop && children}
             </Effect>
           </div>
         </div>
@@ -152,7 +167,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
             {subtitle && (
               <p className="mb-8 text-text-secondary text-center">{subtitle}</p>
             )}
-            {children}
+            {!isDesktop && children}
           </Effect>
         </div>
       </div>

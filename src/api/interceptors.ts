@@ -10,6 +10,7 @@ api.interceptors.response.use(
     // No intentar refresh para endpoints de autenticación que deben fallar con 401 cuando no hay sesión
     if (url?.includes('/api/v1/auth/me') || 
         url?.includes('/api/v1/auth/login') ||
+        url?.includes('/api/v1/auth/google') ||
         url?.includes('/api/v1/auth/register') ||
         url?.includes('/api/v1/auth/refresh') ||
         url?.includes('/api/v1/auth/password-reset')) {

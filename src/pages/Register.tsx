@@ -29,15 +29,16 @@ export const Register: React.FC = () => {
   const onSubmit = async (data: any) => {
     try {
       const registerData: RegisterRequestDTO = {
-        nombre: data.nombre,
-        apellido: data.apellido,
-        email: data.email,
+        nombre: data.nombre.trim(),
+        apellido: data.apellido.trim(),
+        email: data.email.trim(),
         password: data.password,
         rol: 'CIUDADANO',
       };
       await registerUser(registerData);
-      toast.success('Registro exitoso. Por favor inicia sesión.');
-      navigate('/login');
+      // El backend ya devuelve la sesión iniciada (cookies + usuario), así que se entra directo
+      toast.success('Registro exitoso. ¡Bienvenido a UrbanFix!');
+      navigate('/dashboard');
     } catch (error: any) {
       toast.error(error.response?.data?.message ?? 'Error al registrar');
     }
@@ -150,7 +151,8 @@ export const Register: React.FC = () => {
             })}
             error={errors.confirmPassword?.message as string}
           />
-          {confirmPasswordValue && confirmPasswordValue !== passwordValue && (
+          {/* Aviso en vivo; si el formulario ya muestra el error, no se repite */}
+          {!errors.confirmPassword && confirmPasswordValue && confirmPasswordValue !== passwordValue && (
             <p className="text-xs text-error mt-1">
               Las contraseñas no coinciden
             </p>

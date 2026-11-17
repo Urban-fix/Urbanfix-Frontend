@@ -20,17 +20,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const checkAuth = async () => {
-      console.log('[AUTH] checkAuth iniciado');
       try {
         const response = await api.get<UsuarioResponseDTO>('/api/v1/auth/me');
-        console.log('[AUTH] checkAuth exitoso, usuario:', response.data.email);
         setUser(response.data);
       } catch (error) {
         // User is not authenticated, that's fine
-        console.log('[AUTH] checkAuth falló, setUser(null)');
         setUser(null);
       } finally {
-        console.log('[AUTH] checkAuth finalizado, isLoading=false');
         setIsLoading(false);
       }
     };
@@ -38,11 +34,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (email: string, password: string): Promise<UsuarioResponseDTO> => {
-    console.log('[AUTH] login iniciado para:', email);
     const response = await api.post<AuthResponseDTO>('/api/v1/auth/login', { email, password });
-    console.log('[AUTH] login HTTP status:', response.status);
     const { usuario } = response.data;
-    console.log('[AUTH] setUser ejecutado, usuario:', usuario.email, 'rol:', usuario.rol);
     setUser(usuario);
     setIsLoading(false);
     return usuario;

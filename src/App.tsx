@@ -36,6 +36,15 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
 
+// /login y /register: si ya hay sesión, no tiene sentido mostrarlos
+const PublicOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) return <Spinner />;
+  if (isAuthenticated) return <Navigate to={user?.rol === 'ADMIN_MUNICIPAL' ? '/admin' : '/dashboard'} replace />;
+  return <>{children}</>;
+};
+
 const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, isAuthenticated, isLoading } = useAuth();
 
@@ -54,8 +63,8 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Layout><Home /></Layout>} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+              <Route path="/register" element={<PublicOnlyRoute><Register /></PublicOnlyRoute>} />
               <Route path="/password-reset/request" element={<PasswordResetRequest />} />
               <Route path="/password-reset/verify" element={<PasswordResetVerify />} />
               <Route path="/password-reset/confirm" element={<PasswordResetConfirm />} />

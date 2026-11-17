@@ -1,18 +1,42 @@
-import React, { useState, useId } from 'react';
+import React, { useState, useId, useEffect } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  onAutoComplete?: (value: string) => void;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = '', id, type = 'text', name, ...props }, ref) => {
+  ({ label, error, className = '', id, type = 'text', name, onAutoComplete, ...props }, ref) => {
     const uniqueId = useId();
     const inputId = id || uniqueId;
     const isPassword = type === 'password';
     const [showPassword, setShowPassword] = useState(false);
     const resolvedType = isPassword ? (showPassword ? 'text' : 'password') : type;
+    const inputRef = React.useRef<HTMLInputElement>(null);
+
+    // Detectar autocompletado de Chrome
+    useEffect(() => {
+      const input = inputRef.current;
+      if (!input || !onAutoComplete) return;
+
+      const handleAutoComplete = () => {
+        // Chrome no dispara eventos onChange al autocompletar, pero sí dispara 'change'
+        // cuando el usuario interactúa con el campo o al perder el foco
+        if (input.value) {
+          console.log('[INPUT] autocompletado detectado para:', name, 'valor presente:', !!input.value);
+          onAutoComplete(input.value);
+        }
+      };
+
+      // Escuchar evento 'change' que Chrome dispara al autocompletar
+      input.addEventListener('change', handleAutoComplete);
+
+      return () => {
+        input.removeEventListener('change', handleAutoComplete);
+      };
+    }, [onAutoComplete, name]);
 
     return (
       <div className="w-full">
@@ -26,7 +50,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative">
           <input
-            ref={ref}
+            ref={(node) => {
+              // Asignar ref a ambos: el ref externo y el ref interno
+              if (typeof ref === 'function') {
+                ref(node);
+              } else if (ref) {
+                ref.current = node;
+              }
+              inputRef.current = node;
+            }}
             id={inputId}
             name={name}
             type={resolvedType}

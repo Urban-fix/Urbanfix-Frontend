@@ -57,7 +57,7 @@ export const PasswordResetRequest: React.FC = () => {
         <RippleButton
           type="submit"
           className="btn-primary w-full"
-          rippleColor="rgba(212, 245, 140, 0.5)"
+          rippleColor="rgba(11, 99, 255, 0.5)"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Enviando...' : 'Enviar Código'}
@@ -68,7 +68,7 @@ export const PasswordResetRequest: React.FC = () => {
             ¿Recordaste tu contraseña?{' '}
             <Link
               to="/login"
-              className="text-accent hover:text-[#E3FFA6] font-medium transition-colors"
+              className="text-accent hover:text-[#2B77FD] font-medium transition-colors"
             >
               Inicia Sesión
             </Link>

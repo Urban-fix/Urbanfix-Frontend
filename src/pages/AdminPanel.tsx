@@ -94,7 +94,7 @@ export const AdminPanel: React.FC = () => {
         <Magnetic strength={0.2} onlyOnHover>
           <Shine
             enableOnHover
-            color="rgba(212,245,140,0.35)"
+            color="rgba(11,99,255,0.35)"
             className="inline-flex"
           >
             <Button
@@ -132,7 +132,7 @@ export const AdminPanel: React.FC = () => {
                 <Magnetic strength={0.15} onlyOnHover>
                   <Shine
                     enableOnHover
-                    color="rgba(212,245,140,0.25)"
+                    color="rgba(11,99,255,0.25)"
                     className="block"
                   >
                     <article className={`auth-stat-card tone-${stat.tone} relative overflow-hidden`}>
@@ -166,7 +166,7 @@ export const AdminPanel: React.FC = () => {
               <Magnetic strength={0.08} onlyOnHover>
                 <Shine
                   enableOnHover
-                  color="rgba(212,245,140,0.12)"
+                  color="rgba(11,99,255,0.12)"
                   className="block"
                 >
                   <div className="auth-filter-panel h-full relative overflow-hidden">
@@ -272,7 +272,7 @@ export const AdminPanel: React.FC = () => {
                 <Magnetic strength={0.08} onlyOnHover>
                   <Shine
                     enableOnHover
-                    color="rgba(212,245,140,0.12)"
+                    color="rgba(11,99,255,0.12)"
                     className="block"
                   >
                     <div className="auth-filter-panel relative overflow-hidden">
@@ -313,7 +313,7 @@ export const AdminPanel: React.FC = () => {
             <Magnetic strength={0.08} onlyOnHover>
               <Shine
                 enableOnHover
-                color="rgba(212,245,140,0.12)"
+                color="rgba(11,99,255,0.12)"
                 className="block"
               >
                 <div className="auth-filter-panel h-full relative overflow-hidden">

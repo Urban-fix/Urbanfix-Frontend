@@ -24,7 +24,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   const getPanelStyle = (panelId: string) => {
     if (variant === 'horizontal') {
       if (panelId === activePanel) {
-        return 'bg-accent text-accent-ink border-accent shadow-[0_12px_32px_rgba(212,245,140,0.22)]';
+        return 'bg-accent text-accent-ink border-accent shadow-[0_12px_32px_rgba(11,99,255,0.22)]';
       }
       // Sobre fondos oscuros del HOME: superficie oscura + texto claro
       return 'bg-surface text-text border-line hover:border-accent/50';

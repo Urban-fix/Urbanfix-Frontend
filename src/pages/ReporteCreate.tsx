@@ -127,7 +127,7 @@ export const ReporteCreate: React.FC = () => {
         <Magnetic strength={0.08} onlyOnHover>
           <Shine
             enableOnHover
-            color="rgba(212,245,140,0.12)"
+            color="rgba(11,99,255,0.12)"
             className="block"
           >
             <div className="auth-filter-panel mx-auto max-w-3xl relative overflow-hidden">
@@ -309,7 +309,7 @@ export const ReporteCreate: React.FC = () => {
             <Magnetic strength={0.2} onlyOnHover>
               <Shine
                 enableOnHover
-                color="rgba(212,245,140,0.35)"
+                color="rgba(11,99,255,0.35)"
                 className="block"
               >
                 <Button type="submit" isLoading={isSubmitting} className="w-full">

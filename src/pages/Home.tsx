@@ -124,7 +124,7 @@ export const Home: React.FC = () => {
                 text="TU CIUDAD"
                 duration={3}
                 color="var(--color-text)"
-                shimmeringColor="rgba(212,245,140,0.3)"
+                shimmeringColor="rgba(11,99,255,0.3)"
                 className="block whitespace-nowrap overflow-visible"
               />
               <span className="hero-typing-line block min-h-[1.2em]">
@@ -163,7 +163,7 @@ export const Home: React.FC = () => {
                 <RippleButton
                   type="button"
                   className="btn-primary font-semibold w-full min-h-[44px]"
-                  rippleColor="rgba(212, 245, 140, 0.5)"
+                  rippleColor="rgba(11, 99, 255, 0.5)"
                 >
                   Reportar un problema
                 </RippleButton>
@@ -452,7 +452,7 @@ export const Home: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowAllReports(!showAllReports)}
-                className="inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-[#E3FFA6]"
+                className="inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-[#2B77FD]"
               >
                 {showAllReports ? (
                   <>

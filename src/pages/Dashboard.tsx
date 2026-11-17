@@ -87,7 +87,7 @@ export const Dashboard: React.FC = () => {
           <Link to="/informes/crear">
             <Shine
               enableOnHover
-              color="rgba(212,245,140,0.4)"
+              color="rgba(11,99,255,0.4)"
               className="inline-flex"
             >
               <Button className="inline-flex items-center relative overflow-hidden">
@@ -116,7 +116,7 @@ export const Dashboard: React.FC = () => {
               <Link to="/informes" className="block">
                 <Shine
                   enableOnHover
-                  color="rgba(212,245,140,0.35)"
+                  color="rgba(11,99,255,0.35)"
                   className="auth-quick-card"
                 >
                   <div className="flex items-center gap-4 p-1">
@@ -141,7 +141,7 @@ export const Dashboard: React.FC = () => {
               <Link to="/mapa" className="block">
                 <Shine
                   enableOnHover
-                  color="rgba(212,245,140,0.35)"
+                  color="rgba(11,99,255,0.35)"
                   className="auth-quick-card"
                 >
                   <div className="flex items-center gap-4 p-1">
@@ -187,7 +187,7 @@ export const Dashboard: React.FC = () => {
                     <Magnetic strength={0.15} onlyOnHover>
                       <Shine
                         enableOnHover
-                        color="rgba(212,245,140,0.25)"
+                        color="rgba(11,99,255,0.25)"
                         className="block"
                       >
                         <article className={`auth-stat-card tone-${stat.tone} relative overflow-hidden`}>
@@ -230,7 +230,7 @@ export const Dashboard: React.FC = () => {
               <Magnetic strength={0.15} onlyOnHover>
                 <Shine
                   enableOnHover
-                  color="rgba(212,245,140,0.25)"
+                  color="rgba(11,99,255,0.25)"
                   className="block"
                 >
                   <article className="auth-stat-card tone-accent relative overflow-hidden">
@@ -262,7 +262,7 @@ export const Dashboard: React.FC = () => {
               <Magnetic strength={0.15} onlyOnHover>
                 <Shine
                   enableOnHover
-                  color="rgba(212,245,140,0.25)"
+                  color="rgba(11,99,255,0.25)"
                   className="block"
                 >
                   <article className="auth-stat-card tone-success relative overflow-hidden">
@@ -342,7 +342,7 @@ export const Dashboard: React.FC = () => {
                   <Magnetic strength={0.12} onlyOnHover>
                     <Shine
                       enableOnHover
-                      color="rgba(212,245,140,0.2)"
+                      color="rgba(11,99,255,0.2)"
                       className="block"
                     >
                       <Link to={`/reportes/${reporte.id}`} className="block">

@@ -108,7 +108,7 @@ export const PasswordResetVerify: React.FC = () => {
         <RippleButton
           type="submit"
           className="btn-primary w-full"
-          rippleColor="rgba(212, 245, 140, 0.5)"
+          rippleColor="rgba(11, 99, 255, 0.5)"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Verificando...' : 'Verificar Código'}
@@ -120,7 +120,7 @@ export const PasswordResetVerify: React.FC = () => {
             <button
               type="button"
               onClick={handleResendCode}
-              className="text-accent hover:text-[#E3FFA6] font-medium transition-colors bg-transparent border-none cursor-pointer"
+              className="text-accent hover:text-[#2B77FD] font-medium transition-colors bg-transparent border-none cursor-pointer"
             >
               Solicitar nuevo código
             </button>
@@ -133,7 +133,7 @@ export const PasswordResetVerify: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/login')}
-              className="text-accent hover:text-[#E3FFA6] font-medium transition-colors bg-transparent border-none cursor-pointer"
+              className="text-accent hover:text-[#2B77FD] font-medium transition-colors bg-transparent border-none cursor-pointer"
             >
               Inicia Sesión
             </button>

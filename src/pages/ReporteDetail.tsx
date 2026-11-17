@@ -162,7 +162,7 @@ export const ReporteDetail: React.FC = () => {
               <Link to={`/reportes/${reporte.id}/editar`}>
                 <Shine
                   enableOnHover
-                  color="rgba(212,245,140,0.25)"
+                  color="rgba(11,99,255,0.25)"
                   className="inline-flex"
                 >
                   <Button variant="secondary" size="sm" className="inline-flex items-center">
@@ -177,7 +177,7 @@ export const ReporteDetail: React.FC = () => {
             <Link to="/informes">
               <Shine
                 enableOnHover
-                color="rgba(212,245,140,0.25)"
+                color="rgba(11,99,255,0.25)"
                 className="inline-flex"
               >
                 <Button variant="secondary" size="sm" className="inline-flex items-center">
@@ -248,7 +248,7 @@ export const ReporteDetail: React.FC = () => {
                 <Magnetic strength={0.15} onlyOnHover>
                   <Shine
                     enableOnHover
-                    color="rgba(212,245,140,0.25)"
+                    color="rgba(11,99,255,0.25)"
                     className="inline-block"
                   >
                     <Button
@@ -269,7 +269,7 @@ export const ReporteDetail: React.FC = () => {
                     <Link to={`/reportes/${reporte.id}/editar`} className="md:hidden">
                       <Shine
                         enableOnHover
-                        color="rgba(212,245,140,0.25)"
+                        color="rgba(11,99,255,0.25)"
                         className="inline-block"
                       >
                         <Button variant="secondary" className="inline-flex items-center">
@@ -303,7 +303,7 @@ export const ReporteDetail: React.FC = () => {
                     <Magnetic strength={0.15} onlyOnHover>
                       <Shine
                         enableOnHover
-                        color="rgba(212,245,140,0.25)"
+                        color="rgba(11,99,255,0.25)"
                         className="inline-block"
                       >
                         <Button
@@ -332,7 +332,7 @@ export const ReporteDetail: React.FC = () => {
             <Magnetic strength={0.08} onlyOnHover>
               <Shine
                 enableOnHover
-                color="rgba(212,245,140,0.12)"
+                color="rgba(11,99,255,0.12)"
                 className="block"
               >
                 <div className="auth-filter-panel h-full relative overflow-hidden">
@@ -354,7 +354,7 @@ export const ReporteDetail: React.FC = () => {
                       <Magnetic strength={0.15} onlyOnHover>
                         <Shine
                           enableOnHover
-                          color="rgba(212,245,140,0.25)"
+                          color="rgba(11,99,255,0.25)"
                           className="inline-block"
                         >
                           <Button
@@ -399,7 +399,7 @@ export const ReporteDetail: React.FC = () => {
             <Magnetic strength={0.08} onlyOnHover>
               <Shine
                 enableOnHover
-                color="rgba(212,245,140,0.12)"
+                color="rgba(11,99,255,0.12)"
                 className="block"
               >
                 <div className="auth-filter-panel h-full relative overflow-hidden">

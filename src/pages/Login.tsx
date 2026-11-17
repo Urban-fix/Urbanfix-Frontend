@@ -119,7 +119,7 @@ export const Login: React.FC = () => {
             ¿No tienes cuenta?{' '}
             <Link
               to="/register"
-              className="text-accent hover:text-[#E3FFA6] font-medium transition-colors"
+              className="text-accent hover:text-[#2B77FD] font-medium transition-colors"
             >
               Regístrate
             </Link>

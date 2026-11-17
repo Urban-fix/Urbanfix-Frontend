@@ -77,7 +77,7 @@ export const ReporteCard: React.FC<ReporteCardProps> = ({ reporte }) => {
               <button
                 type="button"
                 onClick={handleExpandClick}
-                className="flex items-center gap-1 text-xs font-medium text-accent hover:text-[#E3FFA6] transition-colors"
+                className="flex items-center gap-1 text-xs font-medium text-accent hover:text-[#2B77FD] transition-colors"
               >
                 {isExpanded ? (
                   <>

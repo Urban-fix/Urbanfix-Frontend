@@ -2,46 +2,46 @@
 
 @theme {
   /* Superficies */
-  --color-bg: #1A1A1A;
-  --color-background: #1A1A1A;
-  --color-surface: #2B2B2B;
-  --color-surface-elevated: #363636;
-  --color-surface-2: #363636;
-  --color-border: #4A4A4A;
-  --color-line: #4A4A4A;
+  --color-bg: #0F172A;
+  --color-background: #0F172A;
+  --color-surface: #1A2337;
+  --color-surface-elevated: #232D40;
+  --color-surface-2: #232D40;
+  --color-border: #334155;
+  --color-line: #334155;
 
   /* Texto (≥ 4.5:1 sobre bg/surface) */
-  --color-text: #F2F2F0;
-  --color-text-primary: #F2F2F0;
-  --color-text-secondary: #C9C9C4;
-  --color-text-muted: #A8A8A4;
-  --color-foreground: #F2F2F0;
+  --color-text: #E2E8F0;
+  --color-text-primary: #E2E8F0;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #9DA8B7;
+  --color-foreground: #E2E8F0;
 
-  /* Acento lima */
-  --color-accent: #D4F58C;
-  --color-accent-hover: #E3FFA6;
-  --color-accent-active: #C6F56B;
-  --color-accent-glow: #EAFFB0;
-  --color-accent-ink: #1A1A1A;
-  --color-on-accent: #1A1A1A;
-  --color-primary: #D4F58C;
-  --color-primary-foreground: #1A1A1A;
-  --color-primary-hover: #E3FFA6;
-  --color-accent-foreground: #1A1A1A;
+  /* Acento azul */
+  --color-accent: #0B63FF;
+  --color-accent-hover: #2B77FD;
+  --color-accent-active: #0952D6;
+  --color-accent-glow: #5B95FF;
+  --color-accent-ink: #FFFFFF;
+  --color-on-accent: #FFFFFF;
+  --color-primary: #0B63FF;
+  --color-primary-foreground: #FFFFFF;
+  --color-primary-hover: #2B77FD;
+  --color-accent-foreground: #FFFFFF;
 
   /* Paneles claros (CTA / auth visual) */
-  --color-panel-light: #D9D9D9;
+  --color-panel-light: #E2E8F0;
   --color-panel-white: #FFFFFF;
-  --color-on-panel: #1A1A1A;
-  --color-on-panel-muted: #4A4A46;
+  --color-on-panel: #0F172A;
+  --color-on-panel-muted: #475569;
 
   /* Semánticos de estado */
-  --color-success: #D4F58C;
+  --color-success: #22C55E;
   --color-warning: #F2C14E;
   --color-error: #FF6B5E;
   --color-status-reportado: #F2C14E;
-  --color-status-en-proceso: #5B8FF9;
-  --color-status-resuelto: #D4F58C;
+  --color-status-en-proceso: #38BDF8;
+  --color-status-resuelto: #22C55E;
   --color-status-rechazado: #FF6B5E;
 
   /* Compat shadcn */
@@ -429,7 +429,7 @@ body {
 
 .home-hero-band {
   background:
-    radial-gradient(ellipse 60% 50% at 10% 20%, rgba(212, 245, 140, 0.08), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 20%, rgba(11, 99, 255, 0.08), transparent 60%),
     radial-gradient(ellipse 45% 40% at 90% 10%, rgba(255, 255, 255, 0.04), transparent 55%),
     var(--color-bg);
 }
@@ -447,7 +447,7 @@ body {
 
 .section-band-muted {
   background:
-    linear-gradient(180deg, #2a2a2a 0%, var(--color-surface-2) 100%);
+    linear-gradient(180deg, #1a2337 0%, var(--color-surface-2) 100%);
 }
 
 .section-band-cta {
@@ -717,8 +717,8 @@ body {
 
 .auth-visual {
   background:
-    radial-gradient(ellipse 70% 55% at 50% 20%, rgba(212, 245, 140, 0.45), transparent 65%),
-    linear-gradient(160deg, #ecece8 0%, #d9d9d9 50%, #c8c8c2 100%);
+    radial-gradient(ellipse 70% 55% at 50% 20%, rgba(11, 99, 255, 0.45), transparent 65%),
+    linear-gradient(160deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
 }
 
 .auth-visual-kicker {
@@ -990,7 +990,7 @@ body {
 /* ——— Área autenticada (AppShell + paneles) ——— */
 .auth-shell {
   background:
-    radial-gradient(ellipse 50% 40% at 0% 0%, rgba(212, 245, 140, 0.06), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 0% 0%, rgba(11, 99, 255, 0.06), transparent 55%),
     var(--color-bg);
   overflow-x: hidden;
 }
@@ -1003,7 +1003,7 @@ body {
 
 .auth-sidebar {
   background:
-    linear-gradient(180deg, #2a2a2a 0%, var(--color-surface) 40%, #252525 100%);
+    linear-gradient(180deg, #1a2337 0%, var(--color-surface) 40%, #131C30 100%);
   border-right: 1px solid var(--color-line);
   box-shadow: 8px 0 32px rgba(0, 0, 0, 0.18);
 }
@@ -1011,7 +1011,7 @@ body {
 .auth-nav-link[data-active='true'] {
   background: var(--color-accent);
   color: var(--color-accent-ink);
-  box-shadow: 0 8px 20px rgba(212, 245, 140, 0.2);
+  box-shadow: 0 8px 20px rgba(11, 99, 255, 0.2);
 }
 
 .auth-nav-link[data-active='true'] svg {
@@ -1020,7 +1020,7 @@ body {
 
 .auth-page-header {
   background:
-    linear-gradient(180deg, rgba(43, 43, 43, 0.65) 0%, transparent 100%);
+    linear-gradient(180deg, rgba(26, 35, 55, 0.65) 0%, transparent 100%);
 }
 
 .auth-main {
@@ -1125,8 +1125,8 @@ body {
   border-color: color-mix(in srgb, var(--color-warning) 28%, var(--color-line));
 }
 .auth-stat-card.tone-info {
-  background: color-mix(in srgb, #5B8FF9 10%, var(--color-surface));
-  border-color: color-mix(in srgb, #5B8FF9 28%, var(--color-line));
+  background: color-mix(in srgb, #38BDF8 10%, var(--color-surface));
+  border-color: color-mix(in srgb, #38BDF8 28%, var(--color-line));
 }
 .auth-stat-card.tone-success {
   background: color-mix(in srgb, var(--color-success) 10%, var(--color-surface));
@@ -1154,7 +1154,7 @@ body {
 .auth-stat-card.tone-warning .auth-stat-value,
 .auth-stat-card.tone-warning .auth-stat-icon { color: var(--color-warning); }
 .auth-stat-card.tone-info .auth-stat-value,
-.auth-stat-card.tone-info .auth-stat-icon { color: #5B8FF9; }
+.auth-stat-card.tone-info .auth-stat-icon { color: #38BDF8; }
 .auth-stat-card.tone-success .auth-stat-value,
 .auth-stat-card.tone-success .auth-stat-icon { color: var(--color-success); }
 

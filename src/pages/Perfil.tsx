@@ -62,7 +62,7 @@ export const Perfil: React.FC = () => {
         <Effect fade slide={{ direction: 'up', offset: 18 }} inView>
           <Shine
             enableOnHover
-            color="rgba(212,245,140,0.28)"
+            color="rgba(11,99,255,0.28)"
             className="auth-profile-hero"
           >
             <div className="flex items-center gap-4 sm:gap-5">
@@ -156,7 +156,7 @@ export const Perfil: React.FC = () => {
                         <Link to="/informes/crear">
                           <Shine
                             enableOnHover
-                            color="rgba(212,245,140,0.3)"
+                            color="rgba(11,99,255,0.3)"
                             className="inline-block"
                           >
                             <Button>
@@ -174,7 +174,7 @@ export const Perfil: React.FC = () => {
                           <Magnetic strength={0.1} onlyOnHover>
                             <Shine
                               enableOnHover
-                              color="rgba(212,245,140,0.15)"
+                              color="rgba(11,99,255,0.15)"
                               className="block"
                             >
                               <Link
@@ -211,7 +211,7 @@ export const Perfil: React.FC = () => {
                     <Magnetic strength={0.08} onlyOnHover>
                       <Shine
                         enableOnHover
-                        color="rgba(212,245,140,0.12)"
+                        color="rgba(11,99,255,0.12)"
                         className="block"
                       >
                         <div className="auth-info-row">
@@ -229,7 +229,7 @@ export const Perfil: React.FC = () => {
                       <Magnetic strength={0.08} onlyOnHover>
                         <Shine
                           enableOnHover
-                          color="rgba(212,245,140,0.12)"
+                          color="rgba(11,99,255,0.12)"
                           className="block"
                         >
                           <div className="auth-info-row">
@@ -247,7 +247,7 @@ export const Perfil: React.FC = () => {
                     <Magnetic strength={0.08} onlyOnHover>
                       <Shine
                         enableOnHover
-                        color="rgba(212,245,140,0.12)"
+                        color="rgba(11,99,255,0.12)"
                         className="block"
                       >
                         <div className="auth-info-row">
@@ -264,7 +264,7 @@ export const Perfil: React.FC = () => {
                     <Magnetic strength={0.08} onlyOnHover>
                       <Shine
                         enableOnHover
-                        color="rgba(212,245,140,0.12)"
+                        color="rgba(11,99,255,0.12)"
                         className="block"
                       >
                         <div className="auth-info-row">
@@ -282,7 +282,7 @@ export const Perfil: React.FC = () => {
                       <Magnetic strength={0.08} onlyOnHover>
                         <Shine
                           enableOnHover
-                          color="rgba(212,245,140,0.12)"
+                          color="rgba(11,99,255,0.12)"
                           className="block"
                         >
                           <div className="auth-info-row">
@@ -303,7 +303,7 @@ export const Perfil: React.FC = () => {
                   <Magnetic strength={0.15} onlyOnHover>
                     <Shine
                       enableOnHover
-                      color="rgba(212,245,140,0.25)"
+                      color="rgba(11,99,255,0.25)"
                       className="inline-block"
                     >
                       <Button
@@ -332,7 +332,7 @@ export const Perfil: React.FC = () => {
                       <Magnetic strength={0.12} onlyOnHover>
                         <Shine
                           enableOnHover
-                          color="rgba(212,245,140,0.2)"
+                          color="rgba(11,99,255,0.2)"
                           className="block"
                         >
                           <Button

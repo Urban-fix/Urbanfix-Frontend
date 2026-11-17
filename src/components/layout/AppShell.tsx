@@ -345,7 +345,7 @@ export const AppShell: React.FC<AppShellProps> = ({
           <StarsBackground
             factor={0.08}
             speed={40}
-            starColor="rgba(212, 245, 140, 0.6)"
+            starColor="rgba(11, 99, 255, 0.6)"
             className="absolute inset-0 rounded-3xl"
             pointerEvents={false}
           />

@@ -221,7 +221,7 @@ export const MisReportes: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => toggleExpand(reporte.id)}
-                        className="flex items-center justify-center gap-1 text-xs font-medium text-accent hover:text-[#E3FFA6] transition-colors"
+                        className="flex items-center justify-center gap-1 text-xs font-medium text-accent hover:text-[#2B77FD] transition-colors"
                       >
                         {expandedCards.has(reporte.id) ? (
                           <>

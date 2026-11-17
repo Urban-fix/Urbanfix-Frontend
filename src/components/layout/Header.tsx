@@ -72,7 +72,7 @@ export const Header: React.FC = () => {
                 <Magnetic strength={0.15} onlyOnHover>
                   <Shine
                     enableOnHover
-                    color="rgba(212,245,140,0.15)"
+                    color="rgba(11,99,255,0.15)"
                     className="inline-block"
                   >
                     <button
@@ -119,7 +119,7 @@ export const Header: React.FC = () => {
                 <Magnetic strength={0.15} onlyOnHover>
                   <Shine
                     enableOnHover
-                    color="rgba(212,245,140,0.25)"
+                    color="rgba(11,99,255,0.25)"
                     className="inline-block"
                   >
                     <Link to="/register">

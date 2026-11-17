@@ -19,7 +19,7 @@ export const Register: React.FC = () => {
       password: '',
       confirmPassword: ''
     },
-    mode: 'onChange' // Validar en tiempo real para mejorar autocompletado
+    mode: 'onBlur' // Validar al perder foco para evitar conflictos con change event
   });
   const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();

@@ -11,7 +11,7 @@ import type { RegisterRequestDTO } from '../types/auth.types';
 import toast from 'react-hot-toast';
 
 export const Register: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, getValues } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm({
     defaultValues: {
       nombre: '',
       apellido: '',
@@ -25,22 +25,6 @@ export const Register: React.FC = () => {
   const navigate = useNavigate();
   const passwordValue = watch('password', '');
   const confirmPasswordValue = watch('confirmPassword', '');
-
-  // Instrumentación para diagnóstico
-  React.useEffect(() => {
-    console.log('[REGISTER] Componente montado');
-  }, []);
-
-  React.useEffect(() => {
-    const values = getValues();
-    console.log('[REGISTER] Valores del formulario:', {
-      nombre: !!values.nombre,
-      apellido: !!values.apellido,
-      email: !!values.email,
-      password: !!values.password,
-      confirmPassword: !!values.confirmPassword
-    });
-  }, [passwordValue, confirmPasswordValue]);
 
   const onSubmit = async (data: any) => {
     try {

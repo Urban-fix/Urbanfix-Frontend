@@ -9,7 +9,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
 
 export const Login: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     defaultValues: {
       email: '',
       password: ''
@@ -84,7 +84,6 @@ export const Login: React.FC = () => {
             label="Email"
             type="email"
             autoComplete="email"
-            onAutoComplete={(value) => setValue('email', value, { shouldValidate: true, shouldDirty: true })}
             {...register('email', {
               required: 'Email es requerido',
               pattern: {
@@ -99,7 +98,6 @@ export const Login: React.FC = () => {
             label="Contraseña"
             type="password"
             autoComplete="current-password"
-            onAutoComplete={(value) => setValue('password', value, { shouldValidate: true, shouldDirty: true })}
             {...register('password', {
               required: 'Contraseña es requerida',
               minLength: {

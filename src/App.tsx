@@ -23,6 +23,7 @@ import { Mapa } from './pages/Mapa';
 
 import { Layout } from './components/layout/Layout';
 import { Spinner } from './components/ui/Spinner';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 import './api/interceptors';
 
@@ -64,7 +65,7 @@ function App() {
               <Route path="/mis-reportes" element={<PrivateRoute><MisReportes /></PrivateRoute>} />
               <Route path="/informes" element={<PrivateRoute><ReporteList /></PrivateRoute>} />
               <Route path="/mapa" element={<PrivateRoute><Mapa /></PrivateRoute>} />
-              <Route path="/reportes/:id" element={<PrivateRoute><ReporteDetail /></PrivateRoute>} />
+              <Route path="/reportes/:id" element={<PrivateRoute><ErrorBoundary><ReporteDetail /></ErrorBoundary></PrivateRoute>} />
               <Route path="/reportes/crear" element={<PrivateRoute><ReporteCreate /></PrivateRoute>} />
               <Route path="/informes/crear" element={<PrivateRoute><ReporteCreate /></PrivateRoute>} />
               <Route path="/reportes/:id/editar" element={<PrivateRoute><ReporteEdit /></PrivateRoute>} />

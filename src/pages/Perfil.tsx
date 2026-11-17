@@ -85,7 +85,7 @@ export const Perfil: React.FC = () => {
 
         <Effect fade slide={{ direction: 'up', offset: 14 }} delay={0.05} inView>
           <Tabs defaultValue="reportes" className="auth-profile-tabs">
-            <TabsHighlight className="mb-4 rounded-full border border-line bg-surface p-1">
+            <TabsHighlight className="mb-8 rounded-full border border-line bg-surface p-1">
               <TabsList className="flex flex-wrap gap-3">
                 <TabsHighlightItem value="reportes">
                   <TabsTrigger

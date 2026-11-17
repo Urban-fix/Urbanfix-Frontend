@@ -8,6 +8,7 @@ export const formatDate = (dateString: string): string => {
 };
 
 export const formatDateTime = (dateString: string): string => {
+  if (!dateString) return '';
   const date = new Date(dateString);
   return date.toLocaleString('es-ES', {
     year: 'numeric',
@@ -19,6 +20,7 @@ export const formatDateTime = (dateString: string): string => {
 };
 
 export const formatRelativeTime = (dateString: string): string => {
+  if (!dateString) return '';
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();

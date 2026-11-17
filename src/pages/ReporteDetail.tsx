@@ -206,11 +206,13 @@ export const ReporteDetail: React.FC = () => {
                     {reporte.titulo}
                   </h2>
                   <div className="mt-2">
-                    <StatusBadge
-                      estado={
-                        reporte.estadoActual as keyof typeof ESTADOS_REPORTE
-                      }
-                    />
+                    {reporte.estadoActual && (
+                      <StatusBadge
+                        estado={
+                          reporte.estadoActual as keyof typeof ESTADOS_REPORTE
+                        }
+                      />
+                    )}
                   </div>
                 </div>
                 <p className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-text-muted shrink-0">
@@ -227,12 +229,12 @@ export const ReporteDetail: React.FC = () => {
                 <div className="auth-info-row">
                   <User className="h-4 w-4 shrink-0 text-accent" />
                   <span className="text-xs sm:text-sm text-text truncate">
-                    {reporte.usuario.nombre}
+                    {reporte.usuario?.nombre || 'Usuario'}
                   </span>
                 </div>
                 <div className="auth-info-row">
                   <MapPin className="h-4 w-4 shrink-0 text-accent" />
-                  <span className="text-xs sm:text-sm text-text truncate">{reporte.zona.nombre}</span>
+                  <span className="text-xs sm:text-sm text-text truncate">{reporte.zona?.nombre || 'Sin zona'}</span>
                 </div>
                 <div className="auth-info-row">
                   <Calendar className="h-4 w-4 shrink-0 text-accent" />
@@ -294,7 +296,7 @@ export const ReporteDetail: React.FC = () => {
                       <option value="">Seleccionar nuevo estado</option>
                       {Object.values(ESTADOS_REPORTE).map((estado) => (
                         <option key={estado} value={estado}>
-                          {estado.replace('_', ' ')}
+                          {estado ? estado.replace('_', ' ') : estado}
                         </option>
                       ))}
                     </select>
@@ -424,18 +426,20 @@ export const ReporteDetail: React.FC = () => {
                           >
                             <div className="auth-timeline-item">
                               <div className="mb-1">
-                                <StatusBadge
-                                  estado={
-                                    historial.estado as keyof typeof ESTADOS_REPORTE
-                                  }
-                                  showIcon={false}
-                                />
+                                {historial.estado && (
+                                  <StatusBadge
+                                    estado={
+                                      historial.estado as keyof typeof ESTADOS_REPORTE
+                                    }
+                                    showIcon={false}
+                                  />
+                                )}
                               </div>
                               <p className="mt-1 text-sm text-text-muted">
                                 {formatDateTime(historial.fechaCambio)}
                               </p>
                               <p className="text-sm text-text-secondary">
-                                Por: {historial.usuario.nombre}
+                                Por: {historial.usuario?.nombre || 'Usuario'}
                               </p>
                             </div>
                           </Effect>

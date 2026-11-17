@@ -185,6 +185,7 @@ export const ReporteEdit: React.FC = () => {
                 setLocationError(undefined);
               }}
               error={locationError}
+              className="mb-8"
             />
 
             <div>

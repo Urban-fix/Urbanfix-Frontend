@@ -40,7 +40,7 @@ export const ReporteCard: React.FC<ReporteCardProps> = ({ reporte }) => {
         <article className="auth-report-card h-full">
           <div className="auth-report-media">
             <img
-              src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
+              src={normalizeImageUrl(reporte.fotoUrl, reporte.id) || homeImages.baches}
               alt={reporte.titulo}
               loading="lazy"
             />

@@ -147,7 +147,7 @@ export const Mapa: React.FC = () => {
                     <aside className="auth-map-detail hidden w-full max-w-sm shrink-0 lg:block">
                       <div className="auth-map-detail-media">
                         <img
-                          src={normalizeImageUrl(selected.fotoUrl) || homeImages.baches}
+                          src={normalizeImageUrl(selected.fotoUrl, selected.id) || homeImages.baches}
                           alt={selected.titulo}
                           loading="lazy"
                         />
@@ -226,7 +226,7 @@ export const Mapa: React.FC = () => {
                 </div>
                 <div className="auth-map-detail-media">
                   <img
-                    src={normalizeImageUrl(selected.fotoUrl) || homeImages.baches}
+                    src={normalizeImageUrl(selected.fotoUrl, selected.id) || homeImages.baches}
                     alt={selected.titulo}
                     loading="lazy"
                   />

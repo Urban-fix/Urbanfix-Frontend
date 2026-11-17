@@ -192,7 +192,7 @@ export const MisReportes: React.FC = () => {
                 <article className="auth-report-card overflow-hidden">
                   <div className="auth-report-media">
                     <img
-                      src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
+                      src={normalizeImageUrl(reporte.fotoUrl, reporte.id) || homeImages.baches}
                       alt={reporte.titulo}
                       loading="lazy"
                     />

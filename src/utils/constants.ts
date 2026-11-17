@@ -1,6 +1,6 @@
 export const ESTADOS_REPORTE = {
-  PENDIENTE: 'PENDIENTE',
-  EN_PROGRESO: 'EN_PROGRESO',
+  REPORTADO: 'REPORTADO',
+  EN_PROCESO: 'EN_PROCESO',
   RESUELTO: 'RESUELTO',
   RECHAZADO: 'RECHAZADO',
 } as const;
@@ -13,15 +13,15 @@ export const ROLES = {
 } as const;
 
 export const ESTADO_COLORS = {
-  PENDIENTE: 'bg-warning/15 text-warning border-warning/30',
-  EN_PROGRESO: 'bg-status-en-proceso/15 text-status-en-proceso border-status-en-proceso/30',
+  REPORTADO: 'bg-warning/15 text-warning border-warning/30',
+  EN_PROCESO: 'bg-status-en-proceso/15 text-status-en-proceso border-status-en-proceso/30',
   RESUELTO: 'bg-success/15 text-success border-success/30',
   RECHAZADO: 'bg-error/15 text-error border-error/30',
 } as const;
 
 export const ESTADO_ICONS = {
-  PENDIENTE: 'AlertCircle',
-  EN_PROGRESO: 'Clock',
+  REPORTADO: 'AlertCircle',
+  EN_PROCESO: 'Clock',
   RESUELTO: 'CheckCircle2',
   RECHAZADO: 'XCircle',
 } as const;

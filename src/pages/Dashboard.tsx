@@ -35,13 +35,13 @@ export const Dashboard: React.FC = () => {
 
   const userStats = {
     total: reportes.length,
-    pendientes: reportes.filter((r) => r.estadoActual === 'PENDIENTE').length,
-    enProgreso: reportes.filter((r) => r.estadoActual === 'EN_PROGRESO').length,
+    pendientes: reportes.filter((r) => r.estadoActual === 'REPORTADO').length,
+    enProgreso: reportes.filter((r) => r.estadoActual === 'EN_PROCESO').length,
     resueltos: reportes.filter((r) => r.estadoActual === 'RESUELTO').length,
   };
 
   const globalStats = {
-    pendientes: publicReportes.filter((r) => r.estadoActual === 'PENDIENTE')
+    pendientes: publicReportes.filter((r) => r.estadoActual === 'REPORTADO')
       .length,
     resueltos: publicReportes.filter((r) => r.estadoActual === 'RESUELTO')
       .length,
@@ -350,7 +350,7 @@ export const Dashboard: React.FC = () => {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
                           <div className="auth-report-media">
                             <img
-                              src={normalizeImageUrl(reporte.fotoUrl) || homeImages.baches}
+                              src={normalizeImageUrl(reporte.fotoUrl, reporte.id) || homeImages.baches}
                               alt={reporte.titulo}
                               loading="lazy"
                             />

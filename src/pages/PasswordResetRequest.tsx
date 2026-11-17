@@ -8,7 +8,12 @@ import { authApi } from '../api/auth';
 import toast from 'react-hot-toast';
 
 export const PasswordResetRequest: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm({
+    defaultValues: {
+      email: ''
+    },
+    mode: 'onChange' // Validar en tiempo real para mejorar autocompletado
+  });
   const navigate = useNavigate();
 
   const onSubmit = async (data: any) => {
@@ -33,6 +38,8 @@ export const PasswordResetRequest: React.FC = () => {
           <Input
             label="Email"
             type="email"
+            autoComplete="email"
+            onAutoComplete={(value) => setValue('email', value, { shouldValidate: true, shouldDirty: true })}
             {...register('email', { 
               required: 'Email es requerido',
               pattern: {

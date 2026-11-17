@@ -12,7 +12,7 @@ export const PasswordResetRequest: React.FC = () => {
     defaultValues: {
       email: ''
     },
-    mode: 'onChange' // Validar en tiempo real para mejorar autocompletado
+    mode: 'onBlur' // Validar al perder foco para evitar conflictos con change event
   });
   const navigate = useNavigate();
 

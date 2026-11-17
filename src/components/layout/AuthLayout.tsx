@@ -65,7 +65,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
               slide={{ direction: 'up', offset: 18 }}
               className="auth-card w-full max-w-md"
             >
-              <h1 className="mb-2 font-heading text-4xl font-bold uppercase tracking-tight text-text text-center">
+              <h1 className="mb-2 font-heading text-3xl font-bold uppercase tracking-tight text-text text-center">
                 <ShimmeringText
                   text={title}
                   duration={3}

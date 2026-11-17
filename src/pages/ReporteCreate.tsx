@@ -184,7 +184,7 @@ export const ReporteCreate: React.FC = () => {
                 setLocationError(undefined);
               }}
               error={locationError}
-              className="h-[min(40vh,400px)] sm:h-[min(50vh,500px)] mb-10"
+              className="mb-6"
             />
 
             <div>

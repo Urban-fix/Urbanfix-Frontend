@@ -1,46 +1,19 @@
-import React, { useState, useId, useEffect, useRef } from 'react';
+import React, { useState, useId, useRef } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
-  onAutoComplete?: (value: string) => void;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = '', id, type = 'text', name, onAutoComplete, onChange, onBlur, ...props }, ref) => {
+  ({ label, error, className = '', id, type = 'text', name, onChange, onBlur, ...props }, ref) => {
     const uniqueId = useId();
     const inputId = id || uniqueId;
     const isPassword = type === 'password';
     const [showPassword, setShowPassword] = useState(false);
     const resolvedType = isPassword ? (showPassword ? 'text' : 'password') : type;
     const inputRef = useRef<HTMLInputElement>(null);
-    const lastValueRef = useRef<string>('');
-
-    // Detectar autocompletado de Chrome
-    useEffect(() => {
-      const input = inputRef.current;
-      if (!input || !onAutoComplete) return;
-
-      const handleAutoComplete = () => {
-        const currentValue = input.value;
-        // Solo procesar si el valor cambió significativamente (autocompletado)
-        // Ignorar cambios pequeños que pueden ser ediciones manuales
-        if (currentValue && currentValue !== lastValueRef.current) {
-          // Verificar si el cambio parece ser autocompletado (valor aparece de golpe)
-          // en lugar de ser una edición gradual
-          onAutoComplete(currentValue);
-        }
-        lastValueRef.current = currentValue;
-      };
-
-      // Escuchar evento 'change' que Chrome dispara al autocompletar
-      input.addEventListener('change', handleAutoComplete);
-
-      return () => {
-        input.removeEventListener('change', handleAutoComplete);
-      };
-    }, [onAutoComplete, name]);
 
     // Manejar ref externo e interno de forma estable
     const setRefs = (node: HTMLInputElement | null) => {

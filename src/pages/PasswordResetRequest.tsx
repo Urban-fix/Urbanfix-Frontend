@@ -8,11 +8,11 @@ import { authApi } from '../api/auth';
 import toast from 'react-hot-toast';
 
 export const PasswordResetRequest: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     defaultValues: {
       email: ''
     },
-    mode: 'onSubmit' // Validar solo al enviar para evitar conflictos con onAutoComplete
+    mode: 'onSubmit' // Validar solo al enviar
   });
   const navigate = useNavigate();
 
@@ -39,7 +39,6 @@ export const PasswordResetRequest: React.FC = () => {
             label="Email"
             type="email"
             autoComplete="email"
-            onAutoComplete={(value) => setValue('email', value, { shouldValidate: true, shouldDirty: true })}
             {...register('email', { 
               required: 'Email es requerido',
               pattern: {

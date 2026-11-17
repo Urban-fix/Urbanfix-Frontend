@@ -11,7 +11,7 @@ import type { RegisterRequestDTO } from '../types/auth.types';
 import toast from 'react-hot-toast';
 
 export const Register: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm({
     defaultValues: {
       nombre: '',
       apellido: '',
@@ -19,7 +19,7 @@ export const Register: React.FC = () => {
       password: '',
       confirmPassword: ''
     },
-    mode: 'onSubmit' // Validar solo al enviar para evitar conflictos con onAutoComplete
+    mode: 'onSubmit' // Validar solo al enviar
   });
   const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
@@ -109,7 +109,6 @@ export const Register: React.FC = () => {
             label="Email"
             type="email"
             autoComplete="email"
-            onAutoComplete={(value) => setValue('email', value, { shouldValidate: true, shouldDirty: true })}
             {...register('email', { 
               required: 'Email es requerido',
               pattern: {
